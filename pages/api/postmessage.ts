@@ -1,10 +1,9 @@
 // pages/api/messages.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import clientPromise from '../../lib/mongolb';
+import { connectToDatabase } from '../../lib/mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const client = await clientPromise;
-    const db = client.db('chippie'); // Replace with your actual DB name
+    const db = await connectToDatabase();
     const collection = db.collection('messages');
 
     if (req.method === 'GET') {
