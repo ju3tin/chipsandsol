@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, ExternalLink } from "lucide-react"
-import CoinMarketCapWidget from "../components/Coinmaket"
+import CoinMarketCapWidget from "../../components/Coinmaket"
 // Remove the direct import and add proper typing
 // import idl from "../idl.json"
 
