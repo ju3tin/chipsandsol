@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, ExternalLink } from "lucide-react"
+import CoinMarketCapWidget from "../components/Coinmaket"
 // Remove the direct import and add proper typing
 // import idl from "../idl.json"
 
@@ -441,6 +442,8 @@ export default function Home() {
   }
 
   return (
+    <>
+    <CoinMarketCapWidget />
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center">
@@ -671,5 +674,6 @@ export default function Home() {
         )}
       </div>
     </div>
+    </>
   )
 }
