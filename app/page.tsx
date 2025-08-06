@@ -1,5 +1,5 @@
 "use client"
-
+import type { Metadata } from 'next';
 import { useState, useMemo, useEffect } from "react"
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react"
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
