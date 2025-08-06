@@ -1,6 +1,6 @@
 // pages/api/messages.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import clientPromise from '../../lib/mongolb';
+import { connectToDatabase } from '../../lib/mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
@@ -8,8 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        const client = await clientPromise;
-        const db = client.db('chippie'); // replace with your DB name
+        const db = await connectToDatabase();
         const collection = db.collection('messages'); // replace with your collection name
 
         const messages = await collection.find({}).sort({ time: -1 }).toArray();
