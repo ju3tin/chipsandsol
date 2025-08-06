@@ -134,6 +134,10 @@ const programId = new PublicKey("8t3WbSNyiKFEZxGdHK5BUZvFbuLvzvjeMfut9R6bmSS4")
 // type StakingProgram = Program<typeof idl>
 
 export default function Home() {
+
+  const [time, setTime] = useState<number | null>(null);
+  setTime(Date.now()); // ✅ Works
+
   const { connection } = useConnection()
   const wallet = useAnchorWallet()
   const [mintAddress, setMintAddress] = useState("")

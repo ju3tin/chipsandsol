@@ -269,7 +269,7 @@ const CrashGame = () => {
   }, [gameState.status, gameState.multiplier])
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center justify-center p-4 bg-black">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Chat - Left Side */}
         {!isMobile && <div className="lg:col-span-3 h-[500px]">

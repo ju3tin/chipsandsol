@@ -8,7 +8,7 @@ export default function Home() {
   //const buttonPressCount = 0; // Set this to the appropriate value
 
   return (
-    <main className="flex flex-col items-center justify-center p-4 bg-black">
+    <main className="flex flex-col items-center justify-center p-4">
       <CrashGame />
     </main>
   )
