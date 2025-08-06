@@ -84,6 +84,7 @@
     "sonner": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.179.1",
     "twitter-api-v2": "^1.24.0",
     "typescript": "^5",
     "use-sound": "^5.0.0",
