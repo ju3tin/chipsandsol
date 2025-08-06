@@ -61,6 +61,7 @@
     "mongobd": "^0.0.1-security.0",
     "mongodb": "^6.18.0",
     "next": "14.2.16",
+    "next-auth": "^4.24.11",
     "next-themes": "latest",
     "react": "^18",
     "react-day-picker": "latest",
