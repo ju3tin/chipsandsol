@@ -13,10 +13,10 @@ import { create } from "zustand";
 
 //import Cors from "cors";
 
-import { elapsedToMultiplier } from '../../lib/utils';
+import { elapsedToMultiplier } from '../lib/utils';
 import { Wallet } from "lucide-react";
 
-import { address1a } from "../../src/components/WalletConnection";
+import { address1a } from "../components/WalletConnection";
 //export let address1a: string = '';
 //const { wallet1a } = useWalletContext();
 export type GameStatus =
