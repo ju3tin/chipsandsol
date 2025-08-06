@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import SideNav from '../components/side-nav';
 import Head from 'next/head'
 import { Analytics } from "@vercel/analytics/react";
 import Header from './header';
