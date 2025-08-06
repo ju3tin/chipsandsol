@@ -28,9 +28,6 @@ interface StakingProgramIDL {
   errors: any[]
 }
 
-const [time, setTime] = useState<number | null>(null);
-setTime(Date.now()); // ✅ Works
-
 
 
 // Import IDL as a module to avoid parsing issues
