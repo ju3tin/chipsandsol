@@ -28,11 +28,6 @@ interface StakingProgramIDL {
   errors: any[]
 }
 
-const [time, setTime] = useState<number | null>(null);
-setTime(Date.now()); // ✅ Works
-
-
-
 // Import IDL as a module to avoid parsing issues
 const getIDL = (): StakingProgramIDL => {
   return {
@@ -133,9 +128,6 @@ type StakingProgram = Program<StakingProgramIDL>
 // Your actual program ID
 const programId = new PublicKey("8t3WbSNyiKFEZxGdHK5BUZvFbuLvzvjeMfut9R6bmSS4")
 
-// Type the IDL properly
-// type StakingProgram = Program<typeof idl>
-
 export default function Home() {
   const { connection } = useConnection()
   const wallet = useAnchorWallet()
@@ -148,6 +140,11 @@ export default function Home() {
   const [poolExists, setPoolExists] = useState(false)
   const [stakeAccountExists, setStakeAccountExists] = useState(false)
   const [stakeInfo, setStakeInfo] = useState<any>(null)
+  const [time, setTime] = useState<number | null>(null)
+
+  useEffect(() => {
+    setTime(Date.now())
+  }, [])
 
   useEffect(() => {
     console.log("Wallet:", wallet?.publicKey?.toBase58())

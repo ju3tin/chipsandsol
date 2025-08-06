@@ -1,0 +1,25 @@
+
+> my-v0-project@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.16
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 1206ms
+Warning: You're using `next/head` inside the `app` directory, please migrate to the Metadata API. See https://nextjs.org/docs/app/building-your-application/upgrading/app-router-migration#step-3-migrating-nexthead for more details.
+ ○ Compiling / ...
+ ⚠ ./app/page.tsx
+Attempted import error: 'web3'.'BN' is not exported from '@coral-xyz/anchor' (imported as 'web3').
+
+Import trace for requested module:
+./app/page.tsx
+
+./app/page.tsx
+Attempted import error: 'web3'.'BN' is not exported from '@coral-xyz/anchor' (imported as 'web3').
+
+Import trace for requested module:
+./app/page.tsx
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 16133ms
+[?25h
