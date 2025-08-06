@@ -2,6 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import Head from 'next/head'
+import Header from './header';
 import { WalletProvider } from "./wallet-provider"
 import { ErrorBoundary } from "../components/error-boundary"
 
@@ -21,6 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Head>
+          <title>Solana Staking App</title>
+          <meta name="description" content="Stake your Solana tokens and earn rewards" />
+        </Head>
+        <Header />
         <ErrorBoundary>
           <WalletProvider>{children}</WalletProvider>
         </ErrorBoundary>
