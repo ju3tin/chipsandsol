@@ -443,12 +443,13 @@ export default function Home() {
   }
 
   return (
-    <>
-    <CoinMarketCapWidget />
+    <div style={{ width: '100%', height: '100%' }}>
    
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex flex-col items-center justify-center p-4">
+   
+    <div className=" bg-gradient-to-br to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center">
+        <CoinMarketCapWidget />
         <CrashGame />
           <div className="flex items-center justify-center gap-2 mt-2">
             <span className="text-sm text-gray-500">Program ID:</span>
@@ -675,6 +676,6 @@ export default function Home() {
         )}
       </div>
     </div>
-    </>
+    </div>
   )
 }
