@@ -1,3 +1,4 @@
+'use client';
 import { PropsWithChildren }from 'react';
 
 import styles from '../styles/GameLayout1.module.css';
