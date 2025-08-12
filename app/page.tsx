@@ -453,7 +453,7 @@ export default function Home() {
         <CrashGame />
           <div className="flex items-center justify-center gap-2 mt-2">
             <span className="text-sm text-gray-500">Program ID:</span>
-            <code className="text-xs bg-gray-100 px-2 py-1 rounded">{programId.toBase58()}</code>
+            <code className="text-xs px-2 py-1 rounded">{programId.toBase58()}</code>
             <a
               href={`https://explorer.solana.com/address/${programId.toBase58()}?cluster=devnet`}
               target="_blank"
