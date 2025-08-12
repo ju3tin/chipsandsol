@@ -14,7 +14,7 @@ import { setWalletAddress } from '../store/walletStore';
 import { useWalletStore } from '../store/walletStore';
 function CustomWalletButton() {
     return (
-        <WalletMultiButton className="custom-wallet-button">
+        <WalletMultiButton style={{ fontSize: '14px' }} className="custom-wallet-button">
             <Wallet className="w-5 h-5 mr-2" />
             Select Wallet
         </WalletMultiButton>
