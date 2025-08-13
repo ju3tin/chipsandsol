@@ -22,7 +22,7 @@ export default function leaderboard() {
     <>
     {/* Pass the layoutWidth as width prop */}
    
-    <Game />
+    <GameControls />
 
     </>
 )
