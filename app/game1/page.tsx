@@ -19,11 +19,12 @@ import Image from 'next/image';
 //import styles from './global1.module.css';
 export default function leaderboard() {
   return (
-    <GameLayout> {/* Pass the layoutWidth as width prop */}
+    <>
+    {/* Pass the layoutWidth as width prop */}
     <CrashList />
     <Game />
 <GameControls />
     <BetList />
-  </GameLayout>
+    </>
 )
 }
