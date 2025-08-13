@@ -21,10 +21,9 @@ export default function leaderboard() {
   return (
     <>
     {/* Pass the layoutWidth as width prop */}
-    <CrashList />
+   
     <Game />
-<GameControls />
-    <BetList />
+
     </>
 )
 }
