@@ -22,7 +22,7 @@ export default function game1() {
     <>
     {/* Pass the layoutWidth as width prop */}
    
-   
+    <GameControls />
 
     </>
 )
