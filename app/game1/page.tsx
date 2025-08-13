@@ -17,12 +17,12 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import Image from 'next/image'; 
 //import styles from './global1.module.css';
-export default function leaderboard() {
+export default function game1() {
   return (
     <>
     {/* Pass the layoutWidth as width prop */}
    
-    <GameControls />
+   
 
     </>
 )
