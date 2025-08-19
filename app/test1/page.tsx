@@ -1,4 +1,5 @@
 import styles from "./page.module.css";
+import BuyChippy from "../../components/buychippy";
 
 import Game from '../../components/Game';
 import CrashList from '../../components/CrashList';
@@ -10,6 +11,7 @@ import GameLayout from '../../components/GameLayout';
 export default function Home() {
 	return (
 		<main className={styles.main}>
+			<BuyChippy />
 	{/*		<GameLayout>
 			<CrashList />
 				<Game />
