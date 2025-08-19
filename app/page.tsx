@@ -467,7 +467,7 @@ export default function Home() {
 			<Script src="/buychippy.js" strategy="beforeInteractive" />
 	
           <div className="flex items-center justify-center gap-2 mt-2">
-            <span className="text-sm text-gray-500">Program ID:</span>
+            <span className="text-sm text-gray-500">Token ID:</span>
             <code className="text-xs px-2 py-1 rounded">{programId.toBase58()}</code>
             <a
               href={`https://explorer.solana.com/address/${programId.toBase58()}?cluster=mainnet-beta`}
