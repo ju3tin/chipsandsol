@@ -127,7 +127,7 @@ const getIDL = (): StakingProgramIDL => {
 type StakingProgram = Program<StakingProgramIDL>
 
 // Your actual program ID
-const programId = new PublicKey("8t3WbSNyiKFEZxGdHK5BUZvFbuLvzvjeMfut9R6bmSS4")
+const programId = new PublicKey("Bz7Nx1F3Mti1BVS7ZAVDLSKGEaejufxvX2DPdjpf8PqT")
 
 // Type the IDL properly
 // type StakingProgram = Program<typeof idl>
@@ -470,7 +470,7 @@ export default function Home() {
             <span className="text-sm text-gray-500">Program ID:</span>
             <code className="text-xs px-2 py-1 rounded">{programId.toBase58()}</code>
             <a
-              href={`https://explorer.solana.com/address/${programId.toBase58()}?cluster=devnet`}
+              href={`https://explorer.solana.com/address/${programId.toBase58()}?cluster=mainnet-beta`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-700"
