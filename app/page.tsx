@@ -458,7 +458,7 @@ export default function Home() {
     <p id="walletAddress"></p>
     
     <label htmlFor="amount">Amount of SOL to spend:</label>
-    <input type="number" id="amount" step="0.01" min="0.01" value="0.1" />
+    <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.1" />
     
     <button id="buyButton" disabled>Buy $CHIPPY</button>
     <p id="status"></p>
