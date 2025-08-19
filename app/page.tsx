@@ -1,6 +1,7 @@
 "use client"
 import type { Metadata } from 'next';
 import { useState, useMemo, useEffect } from "react"
+import Script from "next/script";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react"
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { Program, AnchorProvider, web3 } from "@coral-xyz/anchor"
@@ -450,7 +451,21 @@ export default function Home() {
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center">
         <CoinMarketCapWidget />
-        <CrashGame />
+        {/* <CrashGame /> */}
+        <div className="p-6 max-w-md mx-auto border rounded-2xl shadow-lg space-y-4">
+   
+<button id="connectButton">Connect Wallet</button><br />
+    <p id="walletAddress"></p>
+    
+    <label htmlFor="amount">Amount of SOL to spend:</label>
+    <input type="number" id="amount" step="0.01" min="0.01" value="0.1" />
+    
+    <button id="buyButton" disabled>Buy $CHIPPY</button>
+    <p id="status"></p>
+</div>
+    <Script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js" strategy="beforeInteractive" />
+			<Script src="/buychippy.js" strategy="beforeInteractive" />
+	
           <div className="flex items-center justify-center gap-2 mt-2">
             <span className="text-sm text-gray-500">Program ID:</span>
             <code className="text-xs px-2 py-1 rounded">{programId.toBase58()}</code>
