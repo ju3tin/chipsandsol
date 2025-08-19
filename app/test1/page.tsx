@@ -10,12 +10,12 @@ import GameLayout from '../../components/GameLayout';
 export default function Home() {
 	return (
 		<main className={styles.main}>
-			<GameLayout>
+	{/*		<GameLayout>
 			<CrashList />
 				<Game />
 			<GameControls />
 				<BetList />
-			</GameLayout>
+			</GameLayout>*/}
 		</main>
 	);
 }
