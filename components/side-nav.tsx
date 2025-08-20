@@ -10,7 +10,7 @@ import {
   } from "@solana/wallet-adapter-react";
 
 import Link from 'next/link';
-import LoginButton from './login-buton';
+import LoginButton from './login-button1';
 import {
   Tooltip,
   TooltipContent,

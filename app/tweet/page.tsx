@@ -1,11 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react"
+import { PublicKey, SystemProgram } from "@solana/web3.js"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
+import { getWalletAddress } from "../../store/walletStore";
+import { useWalletStore } from "../../store/walletstore1";
+
 
 export default function TweetVerificationForm() {
   const [tweetText, setTweetText] = useState("");
   const [tweetUrl, setTweetUrl] = useState("");
   const [status, setStatus] = useState("");
+  const walletAddress = useWalletStore((state) => state.walletAddress);
 
   const generateTweet = () => {
     // Open Twitter composer with pre-filled text
@@ -18,8 +25,7 @@ export default function TweetVerificationForm() {
       setStatus("Please paste your tweet URL.");
       return;
     }
-
-    try {
+     try {
       // In production you'd fetch & verify this with a serverless function or backend,
       // since CORS may block direct fetches from frontend
       setStatus(`✅ Tweet submitted: ${tweetUrl}`);
@@ -27,8 +33,16 @@ export default function TweetVerificationForm() {
       setStatus("❌ Could not verify tweet.");
     }
   };
+  //const walletAddress = getWalletAddress();
+  //const walletAddress1 = useWalletStore((state) => state.walletAddress);
 
+  if (!walletAddress) return <p>No wallet connected</p>;
+
+  //const { publicKey, connected } = useWallet()
   return (
+    <>
+     {walletAddress}  
+  
     <div className="max-w-lg mx-auto p-6 space-y-4 border rounded-xl shadow-lg">
       <h2 className="text-xl font-bold">Step 1: Write your tweet</h2>
       <textarea
@@ -64,5 +78,6 @@ export default function TweetVerificationForm() {
 
       {status && <p className="text-sm text-gray-800">{status}</p>}
     </div>
+    </>
   );
 }

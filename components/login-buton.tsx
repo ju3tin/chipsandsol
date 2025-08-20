@@ -35,8 +35,8 @@ function WalletButtonWrapper() {
     React.useEffect(() => {
         if (connected && publicKey) {
             const address = publicKey.toBase58();
-            console.log("Connected wallet address:", address);
-            setWalletAddress(address);
+            console.log('Connected wallet address:', address);
+            setWalletAddress(address); // store globally
         }
     }, [connected, publicKey, setWalletAddress]);
 
