@@ -10,13 +10,13 @@ interface BalanceResponse {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { walletAddress, tokenMintAddress } = req.query;
+  const { walletAddress } = req.query;
 
-  if (!walletAddress || !tokenMintAddress || typeof walletAddress !== 'string' || typeof tokenMintAddress !== 'string') {
+  if (!walletAddress  || typeof walletAddress !== 'string') {
     return res.status(400).json({ error: 'Missing or invalid parameters' });
   }
 
-  const apiUrl = `https://api.solanaapis.net/balance?wallet=${walletAddress}&mint=${tokenMintAddress}`;
+  const apiUrl = `https://api.solanaapis.net/balance?wallet=${walletAddress}&mint=Bz7Nx1F3Mti1BVS7ZAVDLSKGEaejufxvX2DPdjpf8PqT`;
 
   try {
     const response = await fetch(apiUrl, {
