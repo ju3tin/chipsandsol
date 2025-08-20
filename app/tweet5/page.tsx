@@ -6,7 +6,7 @@ import { useWalletStore } from "../../store/walletstore1";
 export default function Page() {
   const walletAddress = useWalletStore((state) => state.walletAddress);
 
-  const [balance, setBalance] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,12 +14,12 @@ export default function Page() {
   const API_URL = "https://mainnet.helius-rpc.com";
   const API_KEY = "4859defa-46ae-4d87-abe4-1355598c6d76";
 
-  // Token mint you’re checking
+  // Token mint
   const TOKEN_MINT = "Bz7Nx1F3Mti1BVS7ZAVDLSKGEaejufxvX2DPdjpf8PqT";
 
   useEffect(() => {
     const fetchBalance = async () => {
-      if (!walletAddress) return; // ✅ wait until wallet address is available
+      if (!walletAddress) return;
 
       setLoading(true);
       setError(null);
@@ -45,7 +45,7 @@ export default function Page() {
         const accounts = data.result?.value || [];
 
         if (accounts.length === 0) {
-          setBalance("0");
+          setBalance(0);
           return;
         }
 
@@ -66,7 +66,7 @@ export default function Page() {
         const balData = await balRes.json();
         const value = balData.result?.value;
 
-        setBalance(value?.uiAmountString ?? "0");
+        setBalance(value?.uiAmount ?? 0); // store as number
       } catch (err: any) {
         console.error(err);
         setError(err.message);
@@ -76,7 +76,7 @@ export default function Page() {
     };
 
     fetchBalance();
-  }, [walletAddress]); // ✅ run only when walletAddress changes
+  }, [walletAddress]);
 
   return (
     <div className="p-6">
@@ -90,12 +90,25 @@ export default function Page() {
       {walletAddress && error && (
         <p className="text-red-500">Error: {error}</p>
       )}
+
       {walletAddress && !loading && !error && balance !== null && (
-        <p>
-          Wallet <span className="font-mono">{walletAddress}</span> has{" "}
-          <strong>{balance}</strong> of token{" "}
-          <span className="font-mono">{TOKEN_MINT}</span>
-        </p>
+        <div>
+          <p>
+            Wallet <span className="font-mono">{walletAddress}</span> has{" "}
+            <strong>{balance}</strong> of token{" "}
+            <span className="font-mono">{TOKEN_MINT}</span>
+          </p>
+
+          {balance < 100 ? (
+            <p className="text-red-600 font-semibold mt-2">
+              ⚠️ Balance is below 100!
+            </p>
+          ) : (
+            <p className="text-green-600 font-semibold mt-2">
+              ✅ Balance is 100 or more.
+            </p>
+          )}
+        </div>
       )}
     </div>
   );
