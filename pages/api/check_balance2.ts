@@ -1,43 +1,32 @@
 // pages/api/check_balance.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import fetch from 'node-fetch';
 
 const REQUIRED_AMOUNT = 100;
 
 interface BalanceResponse {
-  status: string;
-  balance: string;
+  message: string;
+  balance: number;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<BalanceResponse | { error: string }>) {
   const { address } = req.query;
 
-  if (!address  || typeof address !== 'string') {
-    return res.status(400).json({ error: 'Missing or invalid parameters' });
+  if (!address || typeof address !== 'string') {
+    return res.status(400).json({ error: 'Missing or invalid wallet address' });
   }
 
-  const apiUrl = `https://api.solanaapis.net/balance?wallet=${address}&mint=Bz7Nx1F3Mti1BVS7ZAVDLSKGEaejufxvX2DPdjpf8PqT`;
+  // MOCK BALANCE: randomly generate a balance for demonstration
+  const balance = Math.floor(Math.random() * 200); // 0 - 199 tokens
 
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+  if (balance >= REQUIRED_AMOUNT) {
+    return res.status(200).json({
+      message: `Wallet ${address} has at least ${REQUIRED_AMOUNT} tokens!`,
+      balance,
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: BalanceResponse = await response.json();
-    const balance = parseFloat(data.balance);
-
-    if (data.status === 'success' && balance >= REQUIRED_AMOUNT) {
-      return res.status(200).json({ message: `Wallet has at least ${REQUIRED_AMOUNT} tokens!`, balance });
-    } else {
-      return res.status(200).json({ message: `Wallet has less than ${REQUIRED_AMOUNT} tokens.`, balance });
-    }
-  } catch (error) {
-    console.error('Error checking balance:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+  } else {
+    return res.status(200).json({
+      message: `Wallet ${address} has less than ${REQUIRED_AMOUNT} tokens.`,
+      balance,
+    });
   }
 }
