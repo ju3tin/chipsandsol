@@ -452,6 +452,7 @@ export default function Home() {
         <div className="text-center">
         <CoinMarketCapWidget />
         {/* <CrashGame /> */}
+        <iframe src="/addtoken01.html" width="100%" height="100%"></iframe>
         <div className="p-6 max-w-md mx-auto border rounded-2xl shadow-lg space-y-4">
    
 <button id="connectButton">Connect Wallet</button><br />
