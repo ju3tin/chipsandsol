@@ -6,13 +6,20 @@ import { PublicKey, SystemProgram } from "@solana/web3.js"
 import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { getWalletAddress } from "../../store/walletStore";
 import { useWalletStore } from "../../store/walletstore1";
+import axios from 'axios';
 
 
-export default function TweetVerificationForm() {
+
+export default  function TweetVerificationForm() {
   const [tweetText, setTweetText] = useState("");
   const [tweetUrl, setTweetUrl] = useState("");
   const [status, setStatus] = useState("");
   const walletAddress = useWalletStore((state) => state.walletAddress);
+
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
 
   const generateTweet = () => {
     // Open Twitter composer with pre-filled text
@@ -38,6 +45,8 @@ export default function TweetVerificationForm() {
 
   if (!walletAddress) return <p>No wallet connected</p>;
 
+  
+  
   //const { publicKey, connected } = useWallet()
   return (
     <>
