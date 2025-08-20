@@ -93,11 +93,12 @@ export default function Page() {
 
       {walletAddress && !loading && !error && balance !== null && (
         <div>
-          <p>
+          <p style={{display:'none'}}>
             Wallet <span className="font-mono">{walletAddress}</span> has{" "}
             <strong>{balance}</strong> of token{" "}
             <span className="font-mono">{TOKEN_MINT}</span>
           </p>
+          {balance}
 
           {balance < 100 ? (
             <p className="text-red-600 font-semibold mt-2">
