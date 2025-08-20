@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: black;
+        }
+        #walletAddress{
+         display: none !important;   color: white;
+         font-size: 10px;
+        }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Chippy Token</title>
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js"></script>
@@ -9,12 +18,19 @@
 <body bgcolor="black">
      <button id="connectButton">Connect Wallet</button>
     <p id="walletAddress"></p>
-    
+    <div
+  style="
+    display: flex;
+    align-items: center;   /* vertical center */
+    justify-content: center; /* horizontal center */
+    height: 100vh;        /* full viewport height */
+  "
+>
     <label for="amount">Amount of SOL to spend:</label>
-    <input type="number" id="amount" step="0.01" min="0.01" value="0.1">
+    <input type="number" id="amount" step="0.01" min="0.01" value="0.1"><br />
     
     <button id="buyButton" disabled>Buy $CHIPPY</button>
-    <p id="status"></p>
+    <p id="status"></p></div>
 
     <script>
         const connectButton = document.getElementById('connectButton');

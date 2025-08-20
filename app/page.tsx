@@ -453,7 +453,7 @@ export default function Home() {
         <CoinMarketCapWidget />
         {/* <CrashGame /> */}
         <iframe src="/addtoken01.html" width="100%" height="100%"></iframe>
-        <div className="p-6 max-w-md mx-auto border rounded-2xl shadow-lg space-y-4">
+       {/* <div className="p-6 max-w-md mx-auto border rounded-2xl shadow-lg space-y-4">
    
 <button id="connectButton">Connect Wallet</button><br />
     <p id="walletAddress"></p>
@@ -463,7 +463,7 @@ export default function Home() {
     
     <button id="buyButton" disabled>Buy $CHIPPY</button>
     <p id="status"></p>
-</div>
+</div>*/}
     <Script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js" strategy="beforeInteractive" />
 			<Script src="/buychippy.js" strategy="beforeInteractive" />
 	

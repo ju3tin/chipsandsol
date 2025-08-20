@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, VersionedTransaction } from "@solana/web3.js";
-import dynamic from "next/dynamic";
+
 // Constants
 const solMint = "So11111111111111111111111111111111111111112";
 const chippyMint = "Bz7Nx1F3Mti1BVS7ZAVDLSKGEaejufxvX2DPdjpf8PqT";
