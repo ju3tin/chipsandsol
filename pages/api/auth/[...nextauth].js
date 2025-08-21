@@ -1,14 +1,35 @@
-// pages/api/auth/[...nextauth].js
-import NextAuth from 'next-auth';
-import TwitterProvider from 'next-auth/providers/twitter';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcrypt";
 
-export default NextAuth({
+const handler = NextAuth({
   providers: [
-    TwitterProvider({
-      clientId: process.env.TWITTER_CLIENT_ID,
-      clientSecret: process.env.TWITTER_CLIENT_SECRET,
-      version: "2.0", // opt-in to Twitter OAuth 2.0
-    }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user) return null;
+
+        const valid = await bcrypt.compare(credentials.password, user.password);
+        if (!valid) return null;
+
+        return { id: user.id, email: user.email, role: user.role };
+      }
+    })
   ],
-  // Optional: Add a database adapter or callbacks if needed
+  session: { strategy: "jwt" },
+  pages: { signIn: "/login" },
 });
+
+export { handler as GET, handler as POST };
+  

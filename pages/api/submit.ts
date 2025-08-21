@@ -16,7 +16,7 @@ export default async function handler(
 
   const { walletAddress, tweet, date } = req.body;
 
-  if (!walletAddress || !tweet || !date) {
+  if (!walletAddress ) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
