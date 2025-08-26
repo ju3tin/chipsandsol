@@ -3,12 +3,11 @@ import styles from "./page.module.css";
 import axios from "axios";
 import { useRef, useEffect, useState, useCallback } from 'react';
 
-import Game from '../../components/Game2';
+import Game from '../../components/Game';
 import Game5 from '../../components/Game6';
 import CrashList from '../../components/CrashList2';
 import GameControls from '../../components/GameControls2';
 import BetList from '../../components/BetList2';
-import axiosInstance from '../../lib/axiosInstance';
 
 import GameLayout from '../../components/GameLayout3';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
@@ -39,7 +38,7 @@ export default function Home() {
 		<main className={styles.main1}>
 		<GameLayout> {/* Pass the layoutWidth as width prop */}
 		 
-	  <GameControls />
+	  <Game />
 		
 		</GameLayout>
 	  </main>
