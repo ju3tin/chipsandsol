@@ -13,7 +13,7 @@ import BetList from "../../components/BetList1"
 import GameVisual from '../../components/visualization123';
 import GameHistory from '../../components/gamehistory';
 import Tabs from '../../components/tabs3';
-import useSound from 'use-Sound';
+import useSound from 'use-sound';
 import { useGameStore, GameState } from '@/store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
