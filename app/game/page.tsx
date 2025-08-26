@@ -3,14 +3,10 @@ import styles from "./page.module.css";
 import axios from "axios";
 import { useRef, useEffect, useState, useCallback } from 'react';
 
-
-import BetList from '../../components/BetList2';
-
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import Game from '../../components/Game2';
 
 
-export default function Home() {
+export default function Game() {
 	const [layoutWidth, setLayoutWidth] = useState(0);
 
 	useEffect(() => {
@@ -31,11 +27,9 @@ export default function Home() {
 	
 
 	return (
-		<main className={styles.main1}>
-		 {/* Pass the layoutWidth as width prop */}
+	 {/* Pass the layoutWidth as width prop */}
 		
-	  <BetList />
-		
-	  </main>
+	  <Game />
+	
 	);
 }
