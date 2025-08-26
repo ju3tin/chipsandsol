@@ -4,9 +4,17 @@ import axios from "axios";
 import { useRef, useEffect, useState, useCallback } from 'react';
 
 import Game from '../../components/Game2';
+import Game5 from '../../components/Game6';
+import CrashList from '../../components/CrashList2';
+import GameControls from '../../components/GameControls2';
+import BetList from '../../components/BetList2';
+import axiosInstance from '../../lib/axiosInstance';
+
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 
-export default function Game() {
+export default function Home() {
 	const [layoutWidth, setLayoutWidth] = useState(0);
 
 	useEffect(() => {
@@ -27,9 +35,9 @@ export default function Game() {
 	
 
 	return (
-	 {/* Pass the layoutWidth as width prop */}
+		<main className={styles.main1}>
+		  <Game />
 		
-	  <Game />
-	
+	  </main>
 	);
 }
