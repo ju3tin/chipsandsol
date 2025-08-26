@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import axios from "axios";
 import { useRef, useEffect, useState, useCallback } from 'react';
 
-import Game from '../../components/Game';
+import Game from '../../components/Game3';
 import Game5 from '../../components/Game6';
 import CrashList from '../../components/CrashList2';
 import GameControls from '../../components/GameControls2';
