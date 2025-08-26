@@ -10,7 +10,6 @@ import GameControls from '../../components/GameControls2';
 import BetList from '../../components/BetList2';
 import axiosInstance from '../../lib/axiosInstance';
 
-import GameLayout from '../../components/GameLayout3';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
@@ -37,12 +36,12 @@ export default function Home() {
 
 	return (
 		<main className={styles.main1}>
-		<GameLayout> {/* Pass the layoutWidth as width prop */}
+		 {/* Pass the layoutWidth as width prop */}
 		  <CrashList />
 		  <Game />
 	  <GameControls />
 		  <BetList />
-		</GameLayout>
+		
 	  </main>
 	);
 }
