@@ -38,7 +38,8 @@ export default function Home() {
 	return (
 		<main className={styles.main1}>
 		<GameLayout> {/* Pass the layoutWidth as width prop */}
-		
+		 
+		  <BetList />
 		</GameLayout>
 	  </main>
 	);
