@@ -14,7 +14,7 @@ import GameVisual from '../../components/visualization123';
 import GameHistory from '../../components/gamehistory';
 import Tabs from '../../components/tabs3';
 import useSound from 'use-sound';
-import { useGameStore, GameState } from '@/store/gameStore2';
+import { useGameStore, GameState } from '@/store/gameStore3';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
 import { usePressedStore } from '@/store/ispressed';
@@ -45,7 +45,20 @@ interface GameHistoryProps {
 
 const CrashGame = () => {
   // Game state
-  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+  const updateFromApi  = useGameStore((s) => s.updateFromApi);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateFromApi(); // Call store method
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [updateFromApi]);
+
+  return null;
+};
+const gameState5 = useGameStore((s) => s.state);
+const gameState = useGameStore((s) => s.state);
   const [isCashedOut, setIsCashedOut] = useState(false);
 const [newCount, setNewCount] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
@@ -54,7 +67,7 @@ const [newCount, setNewCount] = useState(0);
   const [placeBetCounter, setplaceBetCounter] = useState(0);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState(gameState5.status);
+ // const [gameState, setGameState] = useState(gameState5.status);
   const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
@@ -123,22 +136,22 @@ axios.request(config)
       }
     }, [pressed, hasLogged]);
   
-useEffect(() =>{
-  if(gameState5.status === "Crashed" && hasLogged){
-    setHasLogged(false)
-  }
-},[gameState5.status, hasLogged])
+    useEffect(() => {
+      if (gameState5 === GameState.CRASHED && hasLogged) {
+        setHasLogged(false);
+      }
+    }, [gameState5, hasLogged]);
     
     // Update previous time remaining whenever gameState5.timeRemaining changes
     useEffect(() => {
-      if (isNaN(gameState5.timeRemaining)) {
+      if (isNaN(5-1)) {
         // If timeRemaining is NaN, keep the previous value
         return;
       } else {
         // Otherwise, update previousTimeRemaining with the current timeRemaining
-        setPreviousTimeRemaining(gameState5.timeRemaining);
+        setPreviousTimeRemaining(10);
       }
-    }, [gameState5.timeRemaining]);
+    }, []);
 
   useEffect(() => {
     setbuttonPressCount1(buttonPressCount);
@@ -152,7 +165,7 @@ useEffect(() =>{
   }, []);
 
   useEffect(() =>{
-    if(gameState5.status == "Waiting"){
+    if(gameState5 == GameState.WAITING){
       setplaceBetCounter(0);
       setIsCashedOut(false);
     }
@@ -196,7 +209,7 @@ useEffect(() =>{
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState("Running")
+   // setGameState("Running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -250,7 +263,7 @@ useEffect(() =>{
     }
 
     // Update game state
-    setGameState("Crashed")
+  //  setGameState("Crashed")
     setCurrentMultiplier(finalMultiplier)
     currentMultiplierRef.current = finalMultiplier
 
@@ -258,7 +271,7 @@ useEffect(() =>{
    
     // Reset after a delay
     setTimeout(() => {
-      setGameState("Waiting")
+  //    setGameState("Waiting")
     }, 3000)
   }
 
@@ -276,7 +289,7 @@ useEffect(() =>{
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState("Waiting")
+   // setGameState("Waiting")
   }
 
   // Add a cashout event
@@ -326,11 +339,11 @@ const fucku = (currency: string) => {
   }, [])
 
   useEffect(() => {
-    if (gameState5.status === "Crashed") {
-      console.log(`what is the life of a gangstar ${placeBetCounter}`)
-      setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-    }
-  }, [gameState5.status, gameState5.multiplier])
+  //  if (gameState5.status === "Crashed") {
+  //    console.log(`what is the life of a gangstar ${placeBetCounter}`)
+  //    setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+   // }
+  }, [gameState])
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
@@ -497,6 +510,6 @@ setbuttonPressCount1(buttonPressCount)
       {isMobile && <Tabs gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />}
     </div>
   )
-}
+)
 
 export default CrashGame
