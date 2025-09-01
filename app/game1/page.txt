@@ -45,10 +45,20 @@ interface GameHistoryProps {
 
 const CrashGame = () => {
   // Game state
-  const gameState5 = useGameStore((s) => s.state);
-  const multiplier = useGameStore((state) => state.multiplier);
+  const updateFromApi  = useGameStore((s) => s.updateFromApi);
 
- // const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateFromApi(); // Call store method
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [updateFromApi]);
+
+  return null;
+};
+const gameState5 = useGameStore((s) => s.state);
+const gameState = useGameStore((s) => s.state);
   const [isCashedOut, setIsCashedOut] = useState(false);
 const [newCount, setNewCount] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
@@ -57,7 +67,7 @@ const [newCount, setNewCount] = useState(0);
   const [placeBetCounter, setplaceBetCounter] = useState(0);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState(gameState5);
+ // const [gameState, setGameState] = useState(gameState5.status);
   const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
@@ -126,22 +136,22 @@ axios.request(config)
       }
     }, [pressed, hasLogged]);
   
-useEffect(() =>{
-  if(gameState5 === GameState.CRASHED && hasLogged){
-    setHasLogged(false)
-  }
-},[gameState5, hasLogged])
+    useEffect(() => {
+      if (gameState5 === GameState.CRASHED && hasLogged) {
+        setHasLogged(false);
+      }
+    }, [gameState5, hasLogged]);
     
     // Update previous time remaining whenever gameState5.timeRemaining changes
     useEffect(() => {
-      if (isNaN(GameState.timeRemaining)) {
+      if (isNaN(5-1)) {
         // If timeRemaining is NaN, keep the previous value
         return;
       } else {
         // Otherwise, update previousTimeRemaining with the current timeRemaining
-        setPreviousTimeRemaining(GameState.timeRemaining);
+        setPreviousTimeRemaining(10);
       }
-    }, [GameState.timeRemaining]);
+    }, []);
 
   useEffect(() => {
     setbuttonPressCount1(buttonPressCount);
@@ -155,7 +165,7 @@ useEffect(() =>{
   }, []);
 
   useEffect(() =>{
-    if(gameState5 == GameState.CRASHED ){
+    if(gameState5 == GameState.WAITING){
       setplaceBetCounter(0);
       setIsCashedOut(false);
     }
@@ -199,7 +209,7 @@ useEffect(() =>{
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState(GameState.RUNNING)
+   // setGameState("Running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -253,7 +263,7 @@ useEffect(() =>{
     }
 
     // Update game state
-    setGameState(GameState.CRASHED)
+  //  setGameState("Crashed")
     setCurrentMultiplier(finalMultiplier)
     currentMultiplierRef.current = finalMultiplier
 
@@ -261,7 +271,7 @@ useEffect(() =>{
    
     // Reset after a delay
     setTimeout(() => {
-      setGameState(GameState.WAITING)
+  //    setGameState("Waiting")
     }, 3000)
   }
 
@@ -279,7 +289,7 @@ useEffect(() =>{
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState(GameState.WAITING)
+   // setGameState("Waiting")
   }
 
   // Add a cashout event
@@ -304,7 +314,7 @@ const fucku = (currency: string) => {
 }
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
-    if (gameState5 !== GameState.RUNNING || userCashedOut) return
+    if (gameState5.status !== "Running" || userCashedOut) return
 
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
@@ -329,11 +339,11 @@ const fucku = (currency: string) => {
   }, [])
 
   useEffect(() => {
-    if (gameState5 === GameState.CRASHED ) {
-      console.log(`what is the life of a gangstar ${placeBetCounter}`)
-      setGameHistory(prev => [multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-    }
-  }, [gameState5, multiplier])
+  //  if (gameState5.status === "Crashed") {
+  //    console.log(`what is the life of a gangstar ${placeBetCounter}`)
+  //    setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+   // }
+  }, [gameState])
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
@@ -423,6 +433,7 @@ setbuttonPressCount1(buttonPressCount)
     // Add your logic to send the buttonPressCount to crash-game3 here
   };
 
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -430,7 +441,7 @@ setbuttonPressCount1(buttonPressCount)
        
 
         {!isMobile &&  <div className="lg:col-span-3 h-[500px]">
-          <GameChat currentMultiplier={multiplier} gameState={gameState5.toString() as "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"} crashPoint={crashPoint} onCrash={resetGame} />
+          <GameChat currentMultiplier={gameState5.multiplier} gameState={gameState5.status} crashPoint={crashPoint} onCrash={resetGame} />
         </div>}
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
@@ -438,8 +449,8 @@ setbuttonPressCount1(buttonPressCount)
             <CardContent className="p-1">
               <div className="flex justify-between items-center mb-4">
 
-                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState5 === GameState.CRASHED ? "CRASHED!" : "Multiplier"}</h2>}
-                <div className="text-3xl font-mono font-bold text-green-400">{multiplier}x</div>
+                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
+                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
 
               {/* Game visualization */}
@@ -448,23 +459,23 @@ setbuttonPressCount1(buttonPressCount)
               dude56={currency} 
               dude55={isCashedOut} 
               onCashout={handleCashout} 
-              GameStatus={gameState5.toString()}
-              Gametimeremaining={0}
-              currentMultiplier={multiplier} 
+              GameStatus={gameState5.status}
+              Gametimeremaining={gameState5.timeRemaining}
+              currentMultiplier={gameState5.multiplier} 
               tValues={[
-              { number: 1.25/multiplier, color: "gold", svg: "/demo.svg" },
-              { number: 2.5/multiplier, color: "green", svg: "/31832.png" },
-              { number: 3.85/multiplier, color: "purple", svg: "/sol.svg" },
+              { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },
+              { number: 2.5/gameState5.multiplier, color: "green", svg: "/31832.png" },
+              { number: 3.85/gameState5.multiplier, color: "purple", svg: "/sol.svg" },
               ]}/>
 
               {/* Game history */}
              <GameHistory
                pressed={pressed} 
-               gameState={gameState5.toString()} 
+               gameState={gameState5.status} 
                dude55={isCashedOut} 
                isButtonPressed={isButtonPressed}
                buttonPressCount={buttonPressCount}
-               currentMultiplier={multiplier}
+               currentMultiplier={gameState5.multiplier}
                dude45={userCashedOut}
                dude56a={isButtonPressed}
                dude56b={buttonPressCount}
@@ -477,14 +488,14 @@ setbuttonPressCount1(buttonPressCount)
         {/* Betting controls - Right Side */}
        <Betbutton
         isButtonPressed={isButtonPressed}
-         gametime={0}
-         gameState={gameState5.toString() as "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"}
-         currentMultiplier={multiplier}
+         gametime={12}
+         gameState={gameState.state}
+         currentMultiplier={gameState5.multiplier}
          onStartGame={startGame}
          onCashout={handleCashout}
          userCashedOut={userCashedOut}
          cashouts={cashouts}
-         multiplier={multiplier}
+         multiplier={gameState5.multiplier}
          dude45={handleUserCashedOut}
          dude56={handleCurrencyChange}
          dude56a={handleButtonClicked}
@@ -497,9 +508,8 @@ setbuttonPressCount1(buttonPressCount)
 
       </div>
       {!isMobile && <BetList />}
-      {isMobile && <Tabs gameState={gameState5.toString() as "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"} crashPoint={crashPoint} onCrash={resetGame} />}
+      {isMobile && <Tabs gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />}
     </div>
   )
-}
 
 export default CrashGame

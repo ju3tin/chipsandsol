@@ -5,8 +5,11 @@ import { fetchGameState } from '@/utils/api'; // <-- Your API function
 
 export enum GameState {
   WAITING = 'WAITING',
-  STARTED = 'STARTED',
+ // STARTED = 'STARTED',
   CRASHED = 'CRASHED',
+  RUNNING = 'STARTED',
+  timeRemaining = 0,
+  STOPPED = 'STOPPED'
 }
 
 interface GameStore {
