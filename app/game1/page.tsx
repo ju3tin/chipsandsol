@@ -11,10 +11,10 @@ import GameChat from "../../components/game-chat3a"
 import Betbutton from "../../components/betbutton1a"
 import BetList from "../../components/BetList1"
 import GameVisual from '../../components/visualization123';
-import GameHistory from '../../components/gamehistory';
+import GameHistory from '../../components/gamehistory1';
 import Tabs from '../../components/tabs3';
 import useSound from 'use-sound';
-import { useGameStore, GameState } from '@/store/gameStore3';
+import { useGameStore3, GameState } from '@/store/gameStore3';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
 import { usePressedStore } from '@/store/ispressed';
@@ -44,9 +44,21 @@ interface GameHistoryProps {
 }
 
 const CrashGame = () => {
-  // Game state
-  const gameState5 = useGameStore((s) => s.state);
-  const multiplier = useGameStore((state) => state.multiplier);
+  // Game state from GameStore3
+  const {
+    currentGame,
+    startGame: startGameFromStore,
+    crashGame: crashGameFromStore,
+    placeBet: placeBetFromStore,
+    cashOut: cashOutFromStore,
+    fetchGameStatus,
+    getTotalPlayers,
+    getTotalBets,
+    getActivePlayers,
+  } = useGameStore3();
+
+  const gameState5 = currentGame?.status || GameState.WAITING;
+  const multiplier = currentGame?.multiplier || 1.0;
 
  // const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [isCashedOut, setIsCashedOut] = useState(false);
@@ -58,11 +70,34 @@ const [newCount, setNewCount] = useState(0);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState(gameState5);
-  const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0)
+  
+  // Update crash point from GameStore3
+  useEffect(() => {
+    if (currentGame?.crashPoint) {
+      setCrashPoint(currentGame.crashPoint)
+    }
+  }, [currentGame?.crashPoint])
+
+  // Fetch game status periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchGameStatus()
+    }, 100) // Poll every 100ms
+
+    return () => clearInterval(interval)
+  }, [fetchGameStatus])
+
+  // Fetch game history on mount
+  useEffect(() => {
+    const { fetchGameHistory } = useGameStore3.getState()
+    fetchGameHistory(10) // Get last 10 games
+  }, [])
   const [betAmount, setBetAmount] = useState("0.1")
   const [autoCashoutAt, setAutoCashoutAt] = useState("2")
-  const [gameHistory, setGameHistory] = useState<number[]>([])
+  const [username, setUsername] = useState("Player1")
+  // Use GameStore3 game history instead of local state
+  const { gameHistory: storeGameHistory } = useGameStore3();
   const [userCashedOut, setUserCashedOut] = useState(false)
   const [userWinnings, setUserWinnings] = useState(0)
   const [pathProgress, setPathProgress] = useState(0)
@@ -132,16 +167,10 @@ useEffect(() =>{
   }
 },[gameState5, hasLogged])
     
-    // Update previous time remaining whenever gameState5.timeRemaining changes
+    // Update previous time remaining whenever gameState5 changes
     useEffect(() => {
-      if (isNaN(GameState.timeRemaining)) {
-        // If timeRemaining is NaN, keep the previous value
-        return;
-      } else {
-        // Otherwise, update previousTimeRemaining with the current timeRemaining
-        setPreviousTimeRemaining(GameState.timeRemaining);
-      }
-    }, [GameState.timeRemaining]);
+      // This effect can be used for other game state changes if needed
+    }, [gameState5]);
 
   useEffect(() => {
     setbuttonPressCount1(buttonPressCount);
@@ -170,8 +199,8 @@ useEffect(() =>{
 
   // Update ref when state changes
   useEffect(() => {
-    currentMultiplierRef.current = currentMultiplier
-  }, [currentMultiplier])
+    currentMultiplierRef.current = multiplier
+  }, [multiplier])
 
   // Generate a crash point
   const generateCrashPoint = () => {
@@ -180,8 +209,8 @@ useEffect(() =>{
     return 1 + Math.random() * 5 // Crash between 1x and 6x for testing
   }
 
-  // Start a new game
-  const startGame = (betAmount: string) => {
+  // Start a new game using GameStore3
+  const startGame = async (betAmount: string) => {
     setBetAmount(betAmount)
     if (Number.parseFloat(betAmount) <= 0) {
       return
@@ -191,79 +220,23 @@ useEffect(() =>{
     setUserWinnings(0)
     setCashouts([])
 
-    // Generate crash point
-   // const newCrashPoint = generateCrashPoint()
-   // setCrashPoint(newCrashPoint)
-
-    // Reset multiplier and start game
-    setCurrentMultiplier(1)
-    currentMultiplierRef.current = 1
-    setPathProgress(0)
-    setGameState(GameState.RUNNING)
-    startTimeRef.current = Date.now()
-
-    // Start animation loop
-    animateGame()
-
-
+    // Use GameStore3 to start the game
+    await startGameFromStore()
+    
+    // Place bet for current user
+    await placeBetFromStore(walletAddress, username, Number.parseFloat(betAmount))
   }
 
 
 
-  // Animate the game
-  const animateGame = () => {
-    const elapsed = Date.now() - startTimeRef.current
-    const progress = Math.min(1, elapsed / GAME_DURATION_MS)
-
-    // Calculate current multiplier using bezier curve for smoother acceleration
-    // This creates an exponential growth curve
-    const t = progress
-    const multiplier = 1 + Math.pow(t, 2) * (crashPoint - 1)
-    const formattedMultiplier = Number.parseFloat(multiplier.toFixed(2))
-
-    setCurrentMultiplier(formattedMultiplier)
-    currentMultiplierRef.current = formattedMultiplier
-
-    // Calculate path progress based on multiplier
-    const newPathProgress = Math.min(1, (multiplier - 1) / (crashPoint - 1))
-    setPathProgress(newPathProgress)
-
-    // Check for auto cashout
-    if (multiplier >= Number.parseFloat(autoCashoutAt) && !userCashedOut) {
-      cashout(formattedMultiplier)
+  // Auto cashout check using GameStore3 data
+  useEffect(() => {
+    if (gameState5 === GameState.RUNNING && multiplier >= Number.parseFloat(autoCashoutAt) && !userCashedOut) {
+      cashout(multiplier)
     }
+  }, [multiplier, autoCashoutAt, userCashedOut, gameState5])
 
-    // Check if we've reached the crash point
-    if (multiplier >= crashPoint) {
-      endGame(crashPoint)
-      return
-    }
-
-    // Continue animation
-    animationRef.current = requestAnimationFrame(animateGame)
-  }
-
-  // End the game
-  const endGame = (finalMultiplier: number) => {
-    // Cancel animation and timer
-    cancelAnimationFrame(animationRef.current)
-    if (gameTimerRef.current) {
-      clearTimeout(gameTimerRef.current)
-      gameTimerRef.current = null
-    }
-
-    // Update game state
-    setGameState(GameState.CRASHED)
-    setCurrentMultiplier(finalMultiplier)
-    currentMultiplierRef.current = finalMultiplier
-
-    // Add to history
-   
-    // Reset after a delay
-    setTimeout(() => {
-      setGameState(GameState.WAITING)
-    }, 3000)
-  }
+  // Game state changes are now handled by GameStore3
 
   const ispressed = (isButtonPressed: boolean) => {
     setIsButtonPressed(isButtonPressed)
@@ -271,7 +244,6 @@ useEffect(() =>{
 
   const handleCashout = (multiplier: number) => {
     console.log(`Current Multiplier: ${multiplier} wtf ${fucku}`); // Log the received multiplier
-    setCurrentMultiplier(multiplier); // Update the current multiplier state
     setIsCashedOut(true);
 
     // Additional cashout logic...
@@ -302,13 +274,14 @@ useEffect(() =>{
 const fucku = (currency: string) => {
   console.log(`users fucking thing123 ${currency}`)
 }
-  // Cash out current bet
-  const cashout = (exactMultiplier?: number) => {
+  // Cash out current bet using GameStore3
+  const cashout = async (exactMultiplier?: number) => {
     if (gameState5 !== GameState.RUNNING || userCashedOut) return
 
-    // Use the exact multiplier passed in, or the current multiplier ref value
-    // This ensures we use the most up-to-date multiplier value
-    const cashoutMultiplier = exactMultiplier || currentMultiplierRef.current
+    // Use GameStore3 to cash out
+    await cashOutFromStore(walletAddress)
+    
+    const cashoutMultiplier = exactMultiplier || multiplier
     play();
     setUserCashedOut(true)
     const winnings = Number.parseFloat(betAmount) * cashoutMultiplier
@@ -328,12 +301,7 @@ const fucku = (currency: string) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (gameState5 === GameState.CRASHED ) {
-      console.log(`what is the life of a gangstar ${placeBetCounter}`)
-      setGameHistory(prev => [multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-    }
-  }, [gameState5, multiplier])
+  // Game history is now managed by GameStore3
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
@@ -348,7 +316,7 @@ const fucku = (currency: string) => {
     // End point - moves upward based on multiplier
     // As multiplier increases, the end point moves higher
     const endX = 100
-    const endY = Math.max(0, 50 - (currentMultiplier - 1) * 10)
+    const endY = Math.max(0, 50 - (multiplier - 1) * 10)
 
     // For a curve that goes from bottom left to middle right, then curves upward,
     // we'll use a cubic bezier curve (C command in SVG path)
@@ -452,9 +420,9 @@ setbuttonPressCount1(buttonPressCount)
               Gametimeremaining={0}
               currentMultiplier={multiplier} 
               tValues={[
-              { number: 1.25/multiplier, color: "gold", svg: "/demo.svg" },
-              { number: 2.5/multiplier, color: "green", svg: "/31832.png" },
-              { number: 3.85/multiplier, color: "purple", svg: "/sol.svg" },
+              { number: 1.25, color: "gold", svg: "/demo.svg" },
+              { number: 2.5, color: "green", svg: "/31832.png" },
+              { number: 3.85, color: "purple", svg: "/sol.svg" },
               ]}/>
 
               {/* Game history */}
@@ -469,7 +437,27 @@ setbuttonPressCount1(buttonPressCount)
                dude56a={isButtonPressed}
                dude56b={buttonPressCount}
                buttonPressCount2={buttonPressCount}
+               gameHistory={storeGameHistory}
              />
+             
+             {/* Game Statistics from GameStore3 */}
+             <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+               <h3 className="text-white font-semibold mb-2">Game Stats</h3>
+               <div className="grid grid-cols-3 gap-4 text-sm">
+                 <div>
+                   <p className="text-gray-400">Total Players</p>
+                   <p className="text-white font-bold">{getTotalPlayers()}</p>
+                 </div>
+                 <div>
+                   <p className="text-gray-400">Total Bets</p>
+                   <p className="text-white font-bold">${getTotalBets().toFixed(2)}</p>
+                 </div>
+                 <div>
+                   <p className="text-gray-400">Active Players</p>
+                   <p className="text-white font-bold">{getActivePlayers().length}</p>
+                 </div>
+               </div>
+             </div>
             </CardContent>
           </Card>
         </div>

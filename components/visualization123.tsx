@@ -184,7 +184,7 @@ function animate() {
       loggednum = t;
     }
 
-    if (GameStatus === "Running") {
+    if (GameStatus === "Running" || GameStatus === "Waiting") {
       animate();
     } else {
       if (curveAnimationRef.current) {
@@ -207,7 +207,7 @@ function animate() {
         fill
         className="relative rounded-lg overflow-hidden" 
       />
-      {GameStatus !== "Waiting"&& GameStatus !=="Crashed" && (
+      {GameStatus !== "Crashed" && (
         <div className="absolute inset-0">
           <canvas
             ref={canvasRef}
