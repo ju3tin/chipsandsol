@@ -417,7 +417,7 @@ setbuttonPressCount1(buttonPressCount)
               dude55={isCashedOut} 
               onCashout={handleCashout} 
               GameStatus={gameState5.toString()}
-              Gametimeremaining={0}
+              Gametimeremaining={currentGame?.countdown || 0}
               currentMultiplier={multiplier} 
               tValues={[
               { number: 1.25, color: "gold", svg: "/demo.svg" },

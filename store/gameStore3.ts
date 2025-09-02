@@ -30,6 +30,7 @@ export interface CrashGameData {
   crashPoint: number;
   startTime: number;
   endTime?: number;
+  countdown?: number;
   players: Player[];
   history: GameHistory[];
 }
@@ -157,6 +158,7 @@ export const useGameStore3 = create<GameStore3>((set, get) => ({
             crashPoint: data.crashPoint,
             startTime: data.startTime,
             endTime: data.endTime,
+            countdown: data.countdown,
             players: data.players || [],
             history: []
           }
