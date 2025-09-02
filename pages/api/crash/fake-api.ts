@@ -8,6 +8,7 @@ interface CrashGameData {
   crashPoint: number;
   startTime: number;
   endTime?: number;
+  countdown?: number;
   players: Array<{
     id: string;
     username: string;
@@ -27,6 +28,7 @@ interface CrashGameData {
 let currentGame: CrashGameData | null = null;
 let gameHistory: CrashGameData[] = [];
 let gameCounter = 1;
+let countdownTimer: NodeJS.Timeout | null = null;
 
 // Generate random crash point (1.01x to 100x)
 function generateCrashPoint(): number {
@@ -86,49 +88,74 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 function handleStartGame(req: NextApiRequest, res: NextApiResponse) {
-  if (currentGame && currentGame.status === 'running') {
-    return res.status(400).json({ error: 'Game already running' });
+  if (currentGame && (currentGame.status === 'running' || currentGame.status === 'waiting')) {
+    return res.status(400).json({ error: 'Game already scheduled or running' });
   }
 
   const gameId = `game_${gameCounter++}`;
   const crashPoint = generateCrashPoint();
-  const startTime = Date.now();
 
   currentGame = {
     gameId,
     multiplier: 1.0,
-    status: 'running',
+    status: 'waiting',
     crashPoint,
-    startTime,
+    startTime: Date.now(),
+    countdown: 10,
     players: generateFakePlayers(),
     history: []
   };
 
-  // Simulate game progression
-  const gameInterval = setInterval(() => {
-    if (!currentGame || currentGame.status !== 'running') {
-      clearInterval(gameInterval);
+  // Start countdown before the game runs
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+  }
+  countdownTimer = setInterval(() => {
+    if (!currentGame || currentGame.status !== 'waiting') {
+      if (countdownTimer) clearInterval(countdownTimer);
+      countdownTimer = null;
       return;
     }
 
-    currentGame.multiplier += 0.01;
-    currentGame.multiplier = Math.round(currentGame.multiplier * 100) / 100;
+    const remaining = (currentGame.countdown ?? 0) - 1;
+    currentGame.countdown = remaining;
 
-    if (currentGame.multiplier >= currentGame.crashPoint) {
-      currentGame.status = 'crashed';
-      currentGame.endTime = Date.now();
-      gameHistory.push({ ...currentGame });
-      clearInterval(gameInterval);
+    if (remaining <= 0) {
+      // Transition to running
+      currentGame.status = 'running';
+      currentGame.startTime = Date.now();
+      currentGame.countdown = undefined;
+
+      if (countdownTimer) clearInterval(countdownTimer);
+      countdownTimer = null;
+
+      // Simulate game progression
+      const gameInterval = setInterval(() => {
+        if (!currentGame || currentGame.status !== 'running') {
+          clearInterval(gameInterval);
+          return;
+        }
+
+        currentGame.multiplier += 0.01;
+        currentGame.multiplier = Math.round(currentGame.multiplier * 100) / 100;
+
+        if (currentGame.multiplier >= currentGame.crashPoint) {
+          currentGame.status = 'crashed';
+          currentGame.endTime = Date.now();
+          gameHistory.push({ ...currentGame });
+          clearInterval(gameInterval);
+        }
+      }, 100);
     }
-  }, 100);
+  }, 1000);
 
   res.status(200).json({
     success: true,
     gameId,
-    status: 'running',
+    status: 'waiting',
     crashPoint,
-    startTime,
-    message: 'Game started successfully'
+    countdown: currentGame.countdown,
+    message: 'Game scheduled. Countdown started.'
   });
 }
 
@@ -148,6 +175,7 @@ function handleGetStatus(req: NextApiRequest, res: NextApiResponse) {
     crashPoint: currentGame.crashPoint,
     startTime: currentGame.startTime,
     endTime: currentGame.endTime,
+    countdown: currentGame.countdown,
     players: currentGame.players,
     duration: currentGame.endTime ? currentGame.endTime - currentGame.startTime : Date.now() - currentGame.startTime
   });
