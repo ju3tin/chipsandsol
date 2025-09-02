@@ -10,7 +10,7 @@ import { Fish } from "lucide-react"
 import GameChat from "../../components/game-chat3a"
 import Betbutton from "../../components/betbutton1a"
 import BetList from "../../components/BetList1"
-import GameVisual from '../../components/visualization123';
+import GameVisual from '../../components/visualization123a';
 import GameHistory from '../../components/gamehistory1';
 import Tabs from '../../components/tabs3';
 import useSound from 'use-sound';
