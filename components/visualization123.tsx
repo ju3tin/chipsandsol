@@ -273,8 +273,6 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
               )}
             </>
           )}
-
-{GameStatus === "Running" && (
           <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
           <Image
             src="/images/chippy.svg"
@@ -287,22 +285,6 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
             }}
           />
           </div>
-          )}
-{GameStatus === "Waiting" && (
-   <div style={{display:"none"}} ref={fishRef} className="">
-   <Image
-     src="/images/chippy.svg"
-     alt="End Fish"
-     width={0}
-     height={0}
-     className="absolute w-6 h-6"
-     style={{
-     //  transform: `translate(${pointBRef.current.x - 50}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
-     }}
-   />
-   </div>
-)}
-
         </div>
       )}
       {GameStatus === "Crashed" && (
