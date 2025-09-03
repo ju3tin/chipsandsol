@@ -63,6 +63,7 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
     const frame = data[selected];
     const total = data.length;
     const svgRef = React.useRef<SVGSVGElement | null>(null);
+    const groupRef = React.useRef<SVGGElement | null>(null);
     const draggingRef = React.useRef<null | "cp1" | "cp2" | "pointB">(null);
 
     function toPath(start: Point, cp1: Point, cp2: Point, end: Point): string {
@@ -70,14 +71,46 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
     }
 
     const start: Point = { x: -50, y: 170 };
+    const width = 420;
+    const height = 220;
+    const viewX = -60;
+    const viewY = -20;
+    const centerX = viewX + width / 2;
+    const centerY = viewY + height / 2;
+
+    const [zoom, setZoom] = React.useState<number>(1);
+    const [panX, setPanX] = React.useState<number>(0);
+    const [panY, setPanY] = React.useState<number>(0);
+    const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
+    const [speedMs, setSpeedMs] = React.useState<number>(250);
+    const rafRef = React.useRef<number | null>(null);
+    const lastTickRef = React.useRef<number>(0);
+
+    React.useEffect(() => {
+        function step(timestamp: number) {
+            if (!isPlaying || total <= 1) {
+                rafRef.current = requestAnimationFrame(step);
+                return;
+            }
+            if (timestamp - lastTickRef.current >= speedMs) {
+                lastTickRef.current = timestamp;
+                setSelected((idx) => (idx + 1) % total);
+            }
+            rafRef.current = requestAnimationFrame(step);
+        }
+        rafRef.current = requestAnimationFrame(step);
+        return () => {
+            if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+        };
+    }, [isPlaying, speedMs, total]);
 
     function clientToSvg(evt: React.MouseEvent): { x: number; y: number } | null {
-        const svg = svgRef.current;
-        if (!svg) return null;
+        const target = groupRef.current ?? svgRef.current;
+        if (!target) return null;
         const pt = (svg as any).createSVGPoint();
         pt.x = evt.clientX;
         pt.y = evt.clientY;
-        const ctm = svg.getScreenCTM();
+        const ctm = (target as any).getScreenCTM();
         if (!ctm) return null;
         const ip = pt.matrixTransform(ctm.inverse());
         return { x: ip.x, y: ip.y };
@@ -107,10 +140,68 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                <button
+                    onClick={() => setIsPlaying((p) => !p)}
+                    style={{ padding: "6px 12px", border: "1px solid #ccc", borderRadius: 6 }}
+                >
+                    {isPlaying ? "Pause" : "Play"}
+                </button>
+                <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>Speed</span>
+                    <input
+                        type="range"
+                        min={50}
+                        max={1000}
+                        step={10}
+                        value={speedMs}
+                        onChange={(e) => setSpeedMs(Number(e.target.value))}
+                    />
+                    <span>{speedMs}ms</span>
+                </label>
+                <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>Zoom</span>
+                    <input
+                        type="range"
+                        min={0.5}
+                        max={4}
+                        step={0.1}
+                        value={zoom}
+                        onChange={(e) => setZoom(Number(e.target.value))}
+                    />
+                    <span>{zoom.toFixed(1)}x</span>
+                </label>
+                <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>Pan X</span>
+                    <input
+                        type="range"
+                        min={-200}
+                        max={200}
+                        step={1}
+                        value={panX}
+                        onChange={(e) => setPanX(Number(e.target.value))}
+                    />
+                    <span>{panX}</span>
+                </label>
+                <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>Pan Y</span>
+                    <input
+                        type="range"
+                        min={-200}
+                        max={200}
+                        step={1}
+                        value={panY}
+                        onChange={(e) => setPanY(Number(e.target.value))}
+                    />
+                    <span>{panY}</span>
+                </label>
+                <span>Frame: {selected} / {Math.max(0, total - 1)}</span>
+            </div>
+
             <div style={{ background: "#0b1020", borderRadius: 8, border: "1px solid #1f2a44", padding: 8 }}>
                 <svg
                     ref={svgRef}
-                    viewBox={`-60 -20 420 220`}
+                    viewBox={`${viewX} ${viewY} ${width} ${height}`}
                     width={588}
                     height={308}
                     onMouseMove={onDragMove}
@@ -120,23 +211,25 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
                 >
                     <g opacity={0.25}>
                         {Array.from({ length: 20 }).map((_, i) => (
-                            <line key={`v-${i}`} x1={i * 20} y1={-20} x2={i * 20} y2={220} stroke="#2a3354" strokeWidth={1} />
+                            <line key={`v-${i}`} x1={i * 20} y1={-20} x2={i * 20} y2={height} stroke="#2a3354" strokeWidth={1} />
                         ))}
                         {Array.from({ length: 14 }).map((_, i) => (
-                            <line key={`h-${i}`} x1={-60} y1={i * 20} x2={420} y2={i * 20} stroke="#2a3354" strokeWidth={1} />
+                            <line key={`h-${i}`} x1={-60} y1={i * 20} x2={width} y2={i * 20} stroke="#2a3354" strokeWidth={1} />
                         ))}
                     </g>
-                    {frame && (
-                        <>
-                            <line x1={start.x} y1={start.y} x2={frame.cp1.x} y2={frame.cp1.y} stroke="#7aa2f7" strokeDasharray="4 4" />
-                            <line x1={frame.pointB.x} y1={frame.pointB.y} x2={frame.cp2.x} y2={frame.cp2.y} stroke="#7aa2f7" strokeDasharray="4 4" />
-                            <path d={toPath(start, frame.cp1, frame.cp2, frame.pointB)} stroke="#67e8f9" strokeWidth={3} fill="none" />
-                            <circle cx={start.x} cy={start.y} r={4} fill="#22c55e" />
-                            <circle cx={frame.cp1.x} cy={frame.cp1.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp1")} />
-                            <circle cx={frame.cp2.x} cy={frame.cp2.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp2")} />
-                            <circle cx={frame.pointB.x} cy={frame.pointB.y} r={6} fill="#ef4444" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("pointB")} />
-                        </>
-                    )}
+                    <g ref={groupRef} transform={`translate(${panX} ${panY}) translate(${centerX} ${centerY}) scale(${zoom}) translate(${-centerX} ${-centerY})`}>
+                        {frame && (
+                            <>
+                                <line x1={start.x} y1={start.y} x2={frame.cp1.x} y2={frame.cp1.y} stroke="#7aa2f7" strokeDasharray="4 4" />
+                                <line x1={frame.pointB.x} y1={frame.pointB.y} x2={frame.cp2.x} y2={frame.cp2.y} stroke="#7aa2f7" strokeDasharray="4 4" />
+                                <path d={toPath(start, frame.cp1, frame.cp2, frame.pointB)} stroke="#67e8f9" strokeWidth={3} fill="none" />
+                                <circle cx={start.x} cy={start.y} r={4} fill="#22c55e" />
+                                <circle cx={frame.cp1.x} cy={frame.cp1.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp1")} />
+                                <circle cx={frame.cp2.x} cy={frame.cp2.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp2")} />
+                                <circle cx={frame.pointB.x} cy={frame.pointB.y} r={6} fill="#ef4444" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("pointB")} />
+                            </>
+                        )}
+                    </g>
                 </svg>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
