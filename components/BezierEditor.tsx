@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import BezierVisualizer from "./BezierVisualizer";
 import { controlPoints as defaultControlPoints } from "./controlPoints";
 
 type Point = { x: number; y: number };
@@ -63,11 +62,82 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
 
     const frame = data[selected];
     const total = data.length;
+    const svgRef = React.useRef<SVGSVGElement | null>(null);
+    const draggingRef = React.useRef<null | "cp1" | "cp2" | "pointB">(null);
+
+    function toPath(start: Point, cp1: Point, cp2: Point, end: Point): string {
+        return `M ${start.x},${start.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y}`;
+    }
+
+    const start: Point = { x: -50, y: 170 };
+
+    function clientToSvg(evt: React.MouseEvent): { x: number; y: number } | null {
+        const svg = svgRef.current;
+        if (!svg) return null;
+        const pt = (svg as any).createSVGPoint();
+        pt.x = evt.clientX;
+        pt.y = evt.clientY;
+        const ctm = svg.getScreenCTM();
+        if (!ctm) return null;
+        const ip = pt.matrixTransform(ctm.inverse());
+        return { x: ip.x, y: ip.y };
+    }
+
+    function onDragStart(which: "cp1" | "cp2" | "pointB") {
+        draggingRef.current = which;
+    }
+
+    function onDragMove(evt: React.MouseEvent) {
+        if (!draggingRef.current || !frame) return;
+        const p = clientToSvg(evt);
+        if (!p) return;
+        const which = draggingRef.current;
+        updateFrame(selected, (f) => {
+            const next = { ...f, cp1: { ...f.cp1 }, cp2: { ...f.cp2 }, pointB: { ...f.pointB } };
+            if (which === "cp1") { next.cp1.x = p.x; next.cp1.y = p.y; }
+            if (which === "cp2") { next.cp2.x = p.x; next.cp2.y = p.y; }
+            if (which === "pointB") { next.pointB.x = p.x; next.pointB.y = p.y; }
+            return next;
+        });
+    }
+
+    function onDragEnd() {
+        draggingRef.current = null;
+    }
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div>
-                <BezierVisualizer data={data} autoplay={false} frameIndex={selected} />
+            <div style={{ background: "#0b1020", borderRadius: 8, border: "1px solid #1f2a44", padding: 8 }}>
+                <svg
+                    ref={svgRef}
+                    viewBox={`-60 -20 420 220`}
+                    width={588}
+                    height={308}
+                    onMouseMove={onDragMove}
+                    onMouseUp={onDragEnd}
+                    onMouseLeave={onDragEnd}
+                    style={{ display: "block" }}
+                >
+                    <g opacity={0.25}>
+                        {Array.from({ length: 20 }).map((_, i) => (
+                            <line key={`v-${i}`} x1={i * 20} y1={-20} x2={i * 20} y2={220} stroke="#2a3354" strokeWidth={1} />
+                        ))}
+                        {Array.from({ length: 14 }).map((_, i) => (
+                            <line key={`h-${i}`} x1={-60} y1={i * 20} x2={420} y2={i * 20} stroke="#2a3354" strokeWidth={1} />
+                        ))}
+                    </g>
+                    {frame && (
+                        <>
+                            <line x1={start.x} y1={start.y} x2={frame.cp1.x} y2={frame.cp1.y} stroke="#7aa2f7" strokeDasharray="4 4" />
+                            <line x1={frame.pointB.x} y1={frame.pointB.y} x2={frame.cp2.x} y2={frame.cp2.y} stroke="#7aa2f7" strokeDasharray="4 4" />
+                            <path d={toPath(start, frame.cp1, frame.cp2, frame.pointB)} stroke="#67e8f9" strokeWidth={3} fill="none" />
+                            <circle cx={start.x} cy={start.y} r={4} fill="#22c55e" />
+                            <circle cx={frame.cp1.x} cy={frame.cp1.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp1")} />
+                            <circle cx={frame.cp2.x} cy={frame.cp2.y} r={6} fill="#f59e0b" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("cp2")} />
+                            <circle cx={frame.pointB.x} cy={frame.pointB.y} r={6} fill="#ef4444" style={{ cursor: "grab" }} onMouseDown={() => onDragStart("pointB")} />
+                        </>
+                    )}
+                </svg>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
