@@ -237,7 +237,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
         fill
         className="relative rounded-lg overflow-hidden" 
       />
-      {GameStatus !== "Crashed" && (
+      {GameStatus === "Running" && (
         <div className="absolute inset-0">
           <canvas
             ref={canvasRef}
