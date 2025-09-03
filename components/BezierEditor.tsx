@@ -14,10 +14,16 @@ interface BezierEditorProps {
 export default function BezierEditor({ value, onChange }: BezierEditorProps): JSX.Element {
     const [data, setData] = React.useState<ControlPoint[]>(value ?? defaultControlPoints);
     const [selected, setSelected] = React.useState<number>(0);
+    const [jsonText, setJsonText] = React.useState<string>(JSON.stringify(data, null, 2));
+    const [jsonError, setJsonError] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         if (value) setData(value);
     }, [value]);
+
+    React.useEffect(() => {
+        setJsonText(JSON.stringify(data, null, 2));
+    }, [data]);
 
     function updateFrame(index: number, updater: (f: ControlPoint) => ControlPoint) {
         setData((prev) => {
@@ -31,6 +37,16 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
 
     function renumber(frames: ControlPoint[]): ControlPoint[] {
         return frames.map((f, i) => ({ ...f, num: i }));
+    }
+
+    function isValidFrameArray(input: any): input is ControlPoint[] {
+        if (!Array.isArray(input)) return false;
+        return input.every((f) =>
+            f && typeof f === 'object' &&
+            f.cp1 && typeof f.cp1.x === 'number' && typeof f.cp1.y === 'number' &&
+            f.cp2 && typeof f.cp2.x === 'number' && typeof f.cp2.y === 'number' &&
+            f.pointB && typeof f.pointB.x === 'number' && typeof f.pointB.y === 'number'
+        );
     }
 
     function addFrame(afterIndex: number) {
@@ -311,12 +327,44 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
             ) : null}
 
             <div>
-                <label style={{ display: "block", marginBottom: 6, color: "#94a3b8" }}>JSON</label>
+                <label style={{ display: "block", marginBottom: 6, color: "#94a3b8" }}>JSON (editable)</label>
                 <textarea
-                    readOnly
-                    value={JSON.stringify(data, null, 2)}
+                    value={jsonText}
+                    onChange={(e) => { setJsonText(e.target.value); setJsonError(null); }}
+                    spellCheck={false}
                     style={{ width: "100%", height: 240, background: "#0b1020", color: "#e2e8f0", border: "1px solid #1f2a44", borderRadius: 8, padding: 12, fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace", fontSize: 12 }}
                 />
+                {jsonError ? (
+                    <div style={{ color: "#ef4444", marginTop: 6 }}>{jsonError}</div>
+                ) : null}
+                <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                    <button
+                        onClick={() => {
+                            try {
+                                const parsed = JSON.parse(jsonText);
+                                if (!isValidFrameArray(parsed)) {
+                                    setJsonError('Invalid format: expected an array of frames with cp1/cp2/pointB {x,y}.');
+                                    return;
+                                }
+                                const next = renumber(parsed);
+                                setData(next);
+                                onChange?.(next);
+                                setJsonError(null);
+                            } catch (e: any) {
+                                setJsonError(e?.message ?? 'Failed to parse JSON');
+                            }
+                        }}
+                        style={{ padding: "6px 12px", border: "1px solid #ccc", borderRadius: 6 }}
+                    >
+                        Apply JSON
+                    </button>
+                    <button
+                        onClick={() => setJsonText(JSON.stringify(data, null, 2))}
+                        style={{ padding: "6px 12px", border: "1px solid #ccc", borderRadius: 6 }}
+                    >
+                        Reformat
+                    </button>
+                </div>
             </div>
         </div>
     );
