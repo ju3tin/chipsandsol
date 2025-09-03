@@ -105,9 +105,10 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
     }, [isPlaying, speedMs, total]);
 
     function clientToSvg(evt: React.MouseEvent): { x: number; y: number } | null {
-        const target = groupRef.current ?? svgRef.current;
-        if (!target) return null;
-        const pt = (svg as any).createSVGPoint();
+        const svgEl = svgRef.current;
+        const target = groupRef.current ?? svgEl;
+        if (!svgEl || !target) return null;
+        const pt = (svgEl as any).createSVGPoint();
         pt.x = evt.clientX;
         pt.y = evt.clientY;
         const ctm = (target as any).getScreenCTM();
