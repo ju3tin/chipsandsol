@@ -129,7 +129,7 @@ function animate() {
   ctx.stroke();
 
   // 🟠 Draw dots
-  tValues.forEach((dotT) => {
+  tValuesRef.current.forEach((dotT) => {
     const { x, y } = getBezierPoint(
       dotT.number,
       { x: startx, y: starty },

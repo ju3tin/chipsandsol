@@ -249,6 +249,22 @@ useEffect(() =>{
     // Additional cashout logic...
   };
 
+  // Map enum status to the string variants expected by UI components
+  const gameStatusToString = (status: GameState): "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped" => {
+    switch (status) {
+      case GameState.WAITING:
+        return "Waiting";
+      case GameState.RUNNING:
+        return "Running";
+      case GameState.CRASHED:
+        return "Crashed";
+      case GameState.STOPPED:
+        return "Stopped";
+      default:
+        return "Unknown";
+    }
+  };
+
   // Reset game to idle state
   const resetGame = () => {
     setGameState(GameState.WAITING)
@@ -416,7 +432,7 @@ setbuttonPressCount1(buttonPressCount)
               dude56={currency} 
               dude55={isCashedOut} 
               onCashout={handleCashout} 
-              GameStatus={gameState5.toString()}
+              GameStatus={gameStatusToString(gameState5)}
               Gametimeremaining={currentGame?.countdown || 0}
               currentMultiplier={multiplier} 
               tValues={[
@@ -428,7 +444,7 @@ setbuttonPressCount1(buttonPressCount)
               {/* Game history */}
              <GameHistory
                pressed={pressed} 
-               gameState={gameState5.toString()} 
+               gameState={gameStatusToString(gameState5)} 
                dude55={isCashedOut} 
                isButtonPressed={isButtonPressed}
                buttonPressCount={buttonPressCount}
@@ -466,7 +482,7 @@ setbuttonPressCount1(buttonPressCount)
        <Betbutton
         isButtonPressed={isButtonPressed}
          gametime={0}
-         gameState={gameState5.toString() as "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"}
+         gameState={gameStatusToString(gameState5)}
          currentMultiplier={multiplier}
          onStartGame={startGame}
          onCashout={handleCashout}
@@ -485,7 +501,7 @@ setbuttonPressCount1(buttonPressCount)
 
       </div>
       {!isMobile && <BetList />}
-      {isMobile && <Tabs gameState={gameState5.toString() as "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"} crashPoint={crashPoint} onCrash={resetGame} />}
+      {isMobile && <Tabs gameState={gameStatusToString(gameState5)} crashPoint={crashPoint} onCrash={resetGame} />}
     </div>
   )
 }
