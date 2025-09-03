@@ -214,7 +214,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
       loggednum = t;
     }
 
-    if (GameStatus === "Running" || GameStatus === "Waiting") {
+    if (GameStatus === "Running" ) {
       animate();
     } else {
       if (curveAnimationRef.current) {
