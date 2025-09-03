@@ -2,8 +2,9 @@ import { StaticImageData } from 'next/image';
 
 import ChippyIcon from '../images/currencies/31832.png';
 import SolanaIcon from '../images/currencies/sol.svg';
+import DemoIcon from '../images/currencies/demo.svg';
 
-export type CurrencyId = 'sol' | 'chp';
+export type CurrencyId = 'demo' | 'sol' | 'chp';
 
 export type Currency = {
 	id: CurrencyId;
@@ -17,6 +18,14 @@ export type Currency = {
 
 export const currencies: Currency[] = [
 	{
+		id: 'demo',
+		coinId: 0,
+		name: 'Demo',
+		units: 'Demo',
+		icon:  DemoIcon,
+		decimals: 8,
+		contractDecimals: 18,
+	},{
 		id: 'sol',
 		coinId: 1,
 		name: 'Solana',
