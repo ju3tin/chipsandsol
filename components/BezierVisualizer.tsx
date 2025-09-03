@@ -51,12 +51,11 @@ export default function BezierVisualizer({ data, autoplay = true, frameIndex: fr
     }, [isPlaying, speedMs, data]);
 
     const series = data ?? defaultControlPoints;
-    const current = series[frameIndex];
+    const safeLength = Math.max(0, series.length);
+    const clampedIndex = safeLength > 0 ? Math.min(Math.max(0, frameIndex), safeLength - 1) : 0;
+    const current = safeLength > 0 ? series[clampedIndex] : undefined;
     const initialStart: Point = { x: -50, y: 170 };
     const start: Point = initialStart;
-    const cp1: Point = current.cp1;
-    const cp2: Point = current.cp2;
-    const end: Point = current.pointB;
 
     const width = 420;
     const height = 220;
@@ -126,7 +125,7 @@ export default function BezierVisualizer({ data, autoplay = true, frameIndex: fr
                     />
                     <span>{panY}</span>
                 </label>
-                <span>Frame: {frameIndex} / {series.length - 1} (num: {current.num})</span>
+                <span>Frame: {safeLength > 0 ? clampedIndex : 0} / {Math.max(0, safeLength - 1)}{safeLength > 0 ? ` (num: ${current!.num})` : ""}</span>
             </div>
 
             <svg
@@ -146,26 +145,34 @@ export default function BezierVisualizer({ data, autoplay = true, frameIndex: fr
                         ))}
                     </g>
 
-                    {/* Control lines */}
-                    <line x1={start.x} y1={start.y} x2={cp1.x} y2={cp1.y} stroke="#7aa2f7" strokeDasharray="4 4" strokeWidth={gridStroke} />
-                    <line x1={end.x} y1={end.y} x2={cp2.x} y2={cp2.y} stroke="#7aa2f7" strokeDasharray="4 4" strokeWidth={gridStroke} />
+                    {safeLength > 0 && current ? (
+                        <>
+                            {/* Control lines */}
+                            <line x1={start.x} y1={start.y} x2={current.cp1.x} y2={current.cp1.y} stroke="#7aa2f7" strokeDasharray="4 4" strokeWidth={gridStroke} />
+                            <line x1={current.pointB.x} y1={current.pointB.y} x2={current.cp2.x} y2={current.cp2.y} stroke="#7aa2f7" strokeDasharray="4 4" strokeWidth={gridStroke} />
 
-                    {/* Curve */}
-                    <path d={toPath(start, cp1, cp2, end)} stroke="#67e8f9" strokeWidth={curveStroke} fill="none" />
+                            {/* Curve */}
+                            <path d={toPath(start, current.cp1, current.cp2, current.pointB)} stroke="#67e8f9" strokeWidth={curveStroke} fill="none" />
 
-                    {/* Points */}
-                    <circle cx={start.x} cy={start.y} r={pointRadius} fill="#22c55e" />
-                    <circle cx={cp1.x} cy={cp1.y} r={pointRadius} fill="#f59e0b" />
-                    <circle cx={cp2.x} cy={cp2.y} r={pointRadius} fill="#f59e0b" />
-                    <circle cx={end.x} cy={end.y} r={pointRadius} fill="#ef4444" />
+                            {/* Points */}
+                            <circle cx={start.x} cy={start.y} r={pointRadius} fill="#22c55e" />
+                            <circle cx={current.cp1.x} cy={current.cp1.y} r={pointRadius} fill="#f59e0b" />
+                            <circle cx={current.cp2.x} cy={current.cp2.y} r={pointRadius} fill="#f59e0b" />
+                            <circle cx={current.pointB.x} cy={current.pointB.y} r={pointRadius} fill="#ef4444" />
 
-                    {/* Labels */}
-                    <g fontSize={labelFont} fill="#cbd5e1">
-                        <text x={start.x + 6 / zoom} y={start.y - 6 / zoom}>A ({start.x},{start.y})</text>
-                        <text x={cp1.x + 6 / zoom} y={cp1.y - 6 / zoom}>cp1 ({cp1.x},{cp1.y})</text>
-                        <text x={cp2.x + 6 / zoom} y={cp2.y - 6 / zoom}>cp2 ({cp2.x},{cp2.y})</text>
-                        <text x={end.x + 6 / zoom} y={end.y - 6 / zoom}>B ({end.x},{end.y})</text>
-                    </g>
+                            {/* Labels */}
+                            <g fontSize={labelFont} fill="#cbd5e1">
+                                <text x={start.x + 6 / zoom} y={start.y - 6 / zoom}>A ({start.x},{start.y})</text>
+                                <text x={current.cp1.x + 6 / zoom} y={current.cp1.y - 6 / zoom}>cp1 ({current.cp1.x},{current.cp1.y})</text>
+                                <text x={current.cp2.x + 6 / zoom} y={current.cp2.y - 6 / zoom}>cp2 ({current.cp2.x},{current.cp2.y})</text>
+                                <text x={current.pointB.x + 6 / zoom} y={current.pointB.y - 6 / zoom}>B ({current.pointB.x},{current.pointB.y})</text>
+                            </g>
+                        </>
+                    ) : (
+                        <g fontSize={labelFont} fill="#cbd5e1">
+                            <text x={viewX + 12} y={viewY + 24}>No frames to display</text>
+                        </g>
+                    )}
                 </g>
             </svg>
         </div>
