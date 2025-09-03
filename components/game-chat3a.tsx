@@ -256,11 +256,11 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       <CardHeader className="pb-2">
         <CardTitle className="text-white text-lg">Game Chat</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-3 h-full">
+      <CardContent className="flex-1 flex flex-col p-3 h-[80%]">
         <div
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700"
-          style={{ height: "100%" }}
+          style={{ height: "80%" }}
         >
 
 {/*messages1.map((msg, i) => (
