@@ -435,11 +435,11 @@ setbuttonPressCount1(buttonPressCount)
               GameStatus={gameStatusToString(gameState5)}
               Gametimeremaining={currentGame?.countdown || 0}
               currentMultiplier={multiplier} 
-              tValues={[
+              tValues={[/*
               { number: 1.25, color: "gold", svg: "/demo.svg" },
               { number: 2.5, color: "green", svg: "/31832.png" },
               { number: 3.85, color: "purple", svg: "/sol.svg" },
-              ]}/>
+              */]}/>
 
               {/* Game history */}
              <GameHistory
