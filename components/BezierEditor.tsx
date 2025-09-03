@@ -21,6 +21,7 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
 
     function updateFrame(index: number, updater: (f: ControlPoint) => ControlPoint) {
         setData((prev) => {
+            if (!prev || index < 0 || index >= prev.length) return prev;
             const copy = prev.map((f) => ({ ...f, cp1: { ...f.cp1 }, cp2: { ...f.cp2 }, pointB: { ...f.pointB } }));
             copy[index] = updater(copy[index]);
             onChange?.(copy);
@@ -35,7 +36,14 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
     function addFrame(afterIndex: number) {
         setData((prev) => {
             const insertAt = Math.min(Math.max(afterIndex + 1, 0), prev.length);
-            const base = prev[Math.max(0, afterIndex)];
+            const base: ControlPoint = prev.length > 0
+                ? prev[Math.max(0, afterIndex)]
+                : {
+                    cp1: { x: -50, y: 170 },
+                    cp2: { x: -50, y: 170 },
+                    pointB:{ x: -50, y: 170 },
+                    num: 0,
+                };
             const newFrame: ControlPoint = {
                 cp1: { ...base.cp1 },
                 cp2: { ...base.cp2 },
