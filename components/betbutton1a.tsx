@@ -197,7 +197,7 @@ useEffect(() => {
     const jsConfetti = useRef<JSConfetti>();
   //  jsConfetti.current = new JSConfetti()
 	// load conconfetti with images ch1ppy123ax
-		const img = new window.Image()
+		const img = new Image()
 		img.src = '/images/chip.jpg'
 	
 		img.onload = () => {
