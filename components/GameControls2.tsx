@@ -7,9 +7,10 @@ import QRCode from "react-qr-code";
 import JSConfetti from 'js-confetti';
 import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
 import {Tabs, Tab, CardBody} from "@nextui-org/react";
+
 import copy from "copy-to-clipboard";
 //import { toast } from "react-toastify";
-
+import Image from 'next/image'
 
 import {
 	Card,
@@ -100,6 +101,24 @@ export default function GameControls() {
 	const jsConfetti = useRef<JSConfetti>();
 
 	useEffect(() => {
+		jsConfetti.current = new JSConfetti()
+	
+		const img = new window.Image()
+		img.src = '/images/star.png'
+	
+		img.onload = () => {
+			jsConfetti.current?.addConfetti({
+			images: [img],
+			confettiNumber: 50,
+			confettiRadius: 30,
+		  })
+		}}
+	)
+
+	useEffect(() => {
+
+
+		
 		jsConfetti.current = new JSConfetti();
 	}, []);
 
