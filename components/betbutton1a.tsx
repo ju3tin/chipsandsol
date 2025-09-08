@@ -194,12 +194,19 @@ useEffect(() => {
       audioRef.current.play();
     }
 
-    const jsConfetti = new JSConfetti();
-    jsConfetti.addConfetti({
-      emojis: ["💰", "🎉", "✨"],
-      emojiSize: 50,
-      confettiNumber: 100,
-    });
+    const jsConfetti = useRef<JSConfetti>();
+  //  jsConfetti.current = new JSConfetti()
+	// load conconfetti with images ch1ppy123ax
+		const img = new window.Image()
+		img.src = '/images/star.png'
+	
+		img.onload = () => {
+			jsConfetti.current?.addConfetti({
+			images: [img],
+			confettiNumber: 50,
+			confettiRadius: 30,
+		  })
+		}
 
     onCashout(current12);
     dude56(currency);
