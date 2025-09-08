@@ -39,7 +39,7 @@ const confettiImages = [
 ];
 
 interface ConfettiCanvasProps {
-  triggerConfetti: boolean; // Prop to trigger confetti
+  triggerConfetti: boolean;
 }
 
 const ConfettiCanvas = ({ triggerConfetti }: ConfettiCanvasProps) => {
@@ -145,7 +145,6 @@ const ConfettiCanvas = ({ triggerConfetti }: ConfettiCanvasProps) => {
   );
 };
 
-// Type for cashout events
 type CashoutEvent = {
   id: string
   multiplier: number
@@ -190,7 +189,7 @@ const CrashGame = () => {
   const pressed = usePressedStore((state) => state.pressed);
   const [hasLogged, setHasLogged] = useState(false);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
-  const [triggerConfetti, setTriggerConfetti] = useState(false); // State to trigger confetti
+  const [triggerConfetti, setTriggerConfetti] = useState(false);
   const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User";
 
   const animationRef = useRef<number>(0);
@@ -376,6 +375,8 @@ const CrashGame = () => {
     const cashoutMultiplier = exactMultiplier || currentMultiplierRef.current;
     play();
     setUserCashedOut(true);
+    setTriggerConfetti(true); // Trigger confetti on cashout
+    setTimeout(() => setTriggerConfetti(false), 100); // Reset trigger to allow future triggers
     const winnings = Number.parseFloat(betAmount) * cashoutMultiplier;
     setUserWinnings(winnings);
     addCashoutEvent("you", cashoutMultiplier, betAmount);
@@ -444,8 +445,6 @@ const CrashGame = () => {
 
   const handleButtonClicked = (buttonClicked: boolean) => {
     setbuttonClicked1(buttonClicked);
-    setTriggerConfetti(true); // Trigger confetti when button is clicked
-    setTimeout(() => setTriggerConfetti(false), 100); // Reset trigger to allow future triggers
   };
 
   const placebet123 = (placeBetCounter: number) => {
