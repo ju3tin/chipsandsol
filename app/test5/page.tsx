@@ -15,9 +15,9 @@ interface ConfettiParticle {
 }
 
 const confettiImages = [
-    '/confetti1.png',
-    '/confetti2.png',
-    '/confetti3.png',
+    'images/chip.jpg',
+    'images/chip.jpg',
+    'images/chip.jpg',
 ];
 
 const ConfettiCanvas = () => {
