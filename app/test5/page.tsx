@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -57,18 +56,26 @@ const ConfettiCanvas = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const spawnConfetti = (x: number, y: number, count = 100) => {
+    const spawnConfetti = (count = 100) => {
+        const canvas = canvasRef.current!;
+        const ctx = canvas.getContext('2d')!;
         const particles = particlesRef.current;
         const images = loadedImagesRef.current;
+
+        // Clear existing particles and canvas
+        particlesRef.current = [];
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Spawn new particles
         for (let i = 0; i < count; i++) {
-            const angle = Math.random() * Math.PI - Math.PI / 2; // spread
+            const angle = Math.random() * Math.PI; // Spread upwards
             const speed = Math.random() * 6 + 4;
             particles.push({
-                x,
-                y,
+                x: Math.random() * canvas.width, // Random x position across bottom
+                y: canvas.height, // Start at bottom
                 size: Math.random() * 20 + 10,
                 speedX: speed * Math.cos(angle),
-                speedY: speed * Math.sin(angle) * -1,
+                speedY: speed * Math.sin(angle) * -1, // Move upward
                 rotation: Math.random() * 360,
                 rotationSpeed: Math.random() * 10 - 5,
                 image: images[Math.floor(Math.random() * images.length)],
@@ -87,7 +94,7 @@ const ConfettiCanvas = () => {
         for (const p of particles) {
             p.x += p.speedX;
             p.y += p.speedY;
-            p.speedY += 0.1; // gravity
+            p.speedY += 0.1; // Gravity pulls downward
             p.rotation += p.rotationSpeed;
 
             ctx.save();
@@ -105,20 +112,50 @@ const ConfettiCanvas = () => {
         }
     };
 
-    const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-        const rect = canvasRef.current!.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        spawnConfetti(x, y, 100);
-    };
-
-    return <canvas ref={canvasRef} onClick={handleClick} style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'auto', zIndex: 9999 }} />;
+    return (
+        <>
+            <canvas ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 9999 }} />
+            <button 
+                onClick={() => spawnConfetti(100)}
+                style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    position: 'relative',
+                    zIndex: 10000,
+                    margin: '10px'
+                }}
+            >
+                Launch Confetti 🎉
+            </button>
+            <button 
+                onClick={() => alert('Other button clicked!')}
+                style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                    backgroundColor: '#2196F3',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    position: 'relative',
+                    zIndex: 10000,
+                    margin: '10px'
+                }}
+            >
+                Other Button
+            </button>
+        </>
+    );
 };
 
 export default function Page() {
     return (
         <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f0f0' }}>
-            <h1 style={{ cursor: 'pointer' }}>Click anywhere for confetti 🎉</h1>
             <ConfettiCanvas />
         </div>
     );
