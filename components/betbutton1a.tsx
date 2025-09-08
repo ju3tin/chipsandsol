@@ -194,11 +194,14 @@ useEffect(() => {
       audioRef.current.play();
     }
 
+    const img = new Image();
+    img.src = '/path/to/my-fry.png';
+
     const jsConfetti = new JSConfetti();
     jsConfetti.addConfetti({
-      emojis: ["💰", "🎉", "✨"],
-      emojiSize: 50,
-      confettiNumber: 100,
+     emojis: ["💰", "🎉", "✨"],
+     emojiSize: 50,
+     confettiNumber: 100,
     });
 
     onCashout(current12);
