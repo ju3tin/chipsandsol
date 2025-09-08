@@ -194,12 +194,19 @@ useEffect(() => {
       audioRef.current.play();
     }
 
-    const jsConfetti = new JSConfetti();
-    jsConfetti.addConfetti({
-      emojis: ["💰", "🎉", "✨"],
-      emojiSize: 50,
-      confettiNumber: 100,
-    });
+    // Prepare a custom image for the confetti (make sure the file exists in /public/images)
+    const img = new window.Image();
+    img.src = '/images/chippy.png';
+
+    // Wait until the image is fully loaded before firing the confetti so it renders correctly
+    img.onload = () => {
+      const jsConfetti = new JSConfetti();
+      jsConfetti.addConfetti({
+        images: [img],
+        confettiNumber: 100,
+        confettiRadius: 30,
+      });
+    };
 
     onCashout(current12);
     dude56(currency);
