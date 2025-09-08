@@ -626,7 +626,6 @@ setbuttonPressCount1(buttonPressCount)
          sendToCrashGame3={sendToCrashGame3}
          placeBetCounter={placebet123}
        />
-<h1 style={{ cursor: 'default' }}>Click the button for fireworks!</h1>
 <ConfettiCanvas />
       
 
