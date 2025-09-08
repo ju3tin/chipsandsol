@@ -22,7 +22,7 @@ import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList1";
 import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
-import JSConfetti from "js-confetti";
+//import JSConfetti from "js-confetti";
 import { usePressedStore } from '../store/ispressed';
 
 
@@ -194,7 +194,7 @@ useEffect(() => {
       audioRef.current.play();
     }
 
-    const img = new Image();
+  /*  const img = new Image();
     img.src = '/path/to/my-fry.png';
 
     const jsConfetti = new JSConfetti();
@@ -203,7 +203,7 @@ useEffect(() => {
      emojiSize: 50,
      confettiNumber: 100,
     });
-
+*/
     onCashout(current12);
     dude56(currency);
   };
