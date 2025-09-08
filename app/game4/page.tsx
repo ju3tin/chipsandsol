@@ -344,6 +344,8 @@ const CrashGame = () => {
     console.log(`Current Multiplier: ${multiplier}`);
     setCurrentMultiplier(multiplier);
     setIsCashedOut(true);
+    setTriggerConfetti(true); // Trigger confetti on cashout
+    setTimeout(() => setTriggerConfetti(false), 100); // Reset trigger to allow future triggers
   };
 
   const resetGame = () => {
@@ -477,7 +479,7 @@ const CrashGame = () => {
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
               <GameVisual 
-                betAmount={betAmount} 
+                betAmount={betAmount}
                 dude56={currency} 
                 dude55={isCashedOut} 
                 onCashout={handleCashout} 
