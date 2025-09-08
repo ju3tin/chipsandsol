@@ -102,7 +102,7 @@ export default function GameControls() {
 
 	useEffect(() => {
 		jsConfetti.current = new JSConfetti()
-	
+	// load conconfetti with images ch1ppy123ax
 		const img = new window.Image()
 		img.src = '/images/star.png'
 	
