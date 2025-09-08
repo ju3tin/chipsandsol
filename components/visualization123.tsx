@@ -232,7 +232,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
       <Image 
-        src="/images/123.png" 
+        src="/images/123b.png" 
         alt="Background image" 
         fill
         className="relative rounded-lg overflow-hidden" 
