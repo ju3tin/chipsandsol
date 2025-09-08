@@ -404,9 +404,11 @@ useEffect(() =>{
   }
 
   const handleCashout = (multiplier: number) => {
-    console.log(`Current Multiplier: ${multiplier} wtf ${fucku}`); // Log the received multiplier
+   
+    console.log(`Current Multiplier: ${multiplier} wtf ${dude11}`); // Log the received multiplier
     setCurrentMultiplier(multiplier); // Update the current multiplier state
     setIsCashedOut(true);
+    
 
     // Additional cashout logic...
   };
@@ -431,9 +433,9 @@ useEffect(() =>{
 
   const handleUserCashedOut = (hasUserCashedOut: boolean) => {
     // Your logic here, e.g., updating state or performing an action
-    console.log(`User has cashed out: ${hasUserCashedOut} ${fucku}` );
+    console.log(`User has cashed out: ${hasUserCashedOut} ${dude11}` );
 };
-const fucku = (currency: string) => {
+const dude11 = (currency: string) => {
   console.log(`users fucking thing123 ${currency}`)
 }
   // Cash out current bet
@@ -540,6 +542,7 @@ const fucku = (currency: string) => {
 
   const handleButtonClicked = (buttonClicked: boolean) => {
     setbuttonClicked1(buttonClicked);
+    
   };
 
 const placebet123 = (placeBetCounter: number) => {
