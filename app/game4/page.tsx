@@ -33,9 +33,9 @@ interface ConfettiParticle {
 }
 
 const confettiImages = [
-  'images/chip.jpg',
-  'images/chip.jpg',
-  'images/chip.jpg',
+  'images/chip1.png',
+  'images/chip2.png',
+  'images/chip3.png',
 ];
 
 interface ConfettiCanvasProps {
