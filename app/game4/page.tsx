@@ -447,8 +447,8 @@ const CrashGame = () => {
 
   const handleButtonClicked = (buttonClicked: boolean) => {
     setbuttonClicked1(buttonClicked);
-    setTriggerConfetti(true); 
-    setTimeout(() => setTriggerConfetti(false), 100); // Reset trigger to allow future triggers
+   // setTriggerConfetti(true); 
+   // setTimeout(() => setTriggerConfetti(false), 100); // Reset trigger to allow future triggers
   };
 
   const placebet123 = (placeBetCounter: number) => {
