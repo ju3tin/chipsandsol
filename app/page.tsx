@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, ExternalLink } from "lucide-react"
-import CoinMarketCapWidget from "../components/Coinmaket"
+import CoinMarketCapWidget from "@/components/Coinmaket"
 // Remove the direct import and add proper typing
 // import idl from "../idl.json"
 
@@ -452,7 +452,7 @@ export default function Home() {
         <div className="text-center">
         <CoinMarketCapWidget />
         {/* <CrashGame /> */}
-        <iframe src="/addtoken01.html" width="100%" height="100%"></iframe>
+        <iframe src="/addtoken01.html" height="100%"></iframe>
        {/* <div className="p-6 max-w-md mx-auto border rounded-2xl shadow-lg space-y-4">
    
 <button id="connectButton">Connect Wallet</button><br />
