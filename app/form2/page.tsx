@@ -1,35 +1,38 @@
-    "use client"
-    import React, { useState, useEffect, useMemo } from 'react';
-    import { Connection, PublicKey, SystemProgram, Transaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
-    import { Program, AnchorProvider, BN, Idl } from '@project-serum/anchor';
-    import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-    import {
-    useWallet,
-    useAnchorWallet,
-    WalletProvider,
-    ConnectionProvider,
-    } from '@solana/wallet-adapter-react';
-    import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
-    import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-    import idl from '../../public/idl.json'; 
-    import '@solana/wallet-adapter-react-ui/styles.css';
+"use client"
+import React, { useState, useEffect, useMemo } from 'react';
+import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
+import { Program, AnchorProvider, BN } from '@project-serum/anchor';
+import {
+  WalletAdapterNetwork,
+  WalletNotConnectedError,
+} from '@solana/wallet-adapter-base';
+import {
+  useWallet,
+  WalletProvider,
+  ConnectionProvider,
+} from '@solana/wallet-adapter-react';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
+import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import idl from './solana_crash_game.json'; 
+import '@solana/wallet-adapter-react-ui/styles.css';
 
     // Program ID
     const programId = new PublicKey('6NT24hJjnqwKw6JNDkrV2a7nPvB8GdB61Csz9mEB7DnZ');
 
-    // Helius RPC URL (replace with your API key)
-    const heliusRpcUrl = 'https://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
-    const network = WalletAdapterNetwork.Devnet;
-    const endpoint = heliusRpcUrl;
-    const wsEndpoint = 'wss://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
+// Helius RPC URL (replace with your API key)
+const heliusRpcUrl = 'https://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
+const network = WalletAdapterNetwork.Devnet;
+const endpoint = heliusRpcUrl;
+const wsEndpoint = 'wss://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
 
-    // PDAs (derived from IDL expectations)
-    const getVaultPda = () => PublicKey.findProgramAddressSync([Buffer.from('vault')], programId)[0];
-    const getUserBalancePda = (user: PublicKey) =>
-    PublicKey.findProgramAddressSync(
-        [user.toBuffer(), Buffer.from('balance')],
-        programId
-    )[0];
+// PDAs
+const getGamePda = () => PublicKey.findProgramAddressSync([Buffer.from('config')], programId)[0];
+const getSolVaultPda = () => PublicKey.findProgramAddressSync([Buffer.from('sol_vault'), getGamePda().toBuffer()], programId)[0];
+const getUserAccountPda = (user: PublicKey) =>
+  PublicKey.findProgramAddressSync(
+    [Buffer.from('user'), user.toBuffer(), getGamePda().toBuffer()],
+    programId
+  )[0];
 
     const App: React.FC = () => {
     const { publicKey, connected } = useWallet();
@@ -154,4 +157,4 @@
     );
     };
 
-    export default AppWithProviders;
+export default AppWithProviders;
