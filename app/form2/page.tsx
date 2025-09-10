@@ -1,18 +1,16 @@
 "use client"
 import React, { useState, useEffect, useMemo } from 'react';
-import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
-import { Program, AnchorProvider, BN } from '@project-serum/anchor';
-import {
-  WalletAdapterNetwork,
-  WalletNotConnectedError,
-} from '@solana/wallet-adapter-base';
+import { Connection, PublicKey, SystemProgram, Transaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { Program, AnchorProvider, BN, Idl } from '@project-serum/anchor';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   useWallet,
+  useAnchorWallet,
   WalletProvider,
   ConnectionProvider,
 } from '@solana/wallet-adapter-react';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
-import { WalletModalProvide r, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import idl from '../../public/idl.json'; 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -35,7 +33,8 @@ const getUserAccountPda = (user: PublicKey) =>
   )[0];
 
 const App: React.FC = () => {
-  const { publicKey, signTransaction, connected } = useWallet();
+  const { publicKey, connected } = useWallet();
+  const anchorWallet = useAnchorWallet();
   const [amount, setAmount] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -43,20 +42,20 @@ const App: React.FC = () => {
 
   // Initialize Anchor provider with Helius RPC
   const provider = useMemo(() => {
-    if (!publicKey || !signTransaction) return null;
+    if (!publicKey || !anchorWallet) return null;
     const connection = new Connection(endpoint, { wsEndpoint, commitment: 'confirmed' });
-    return new AnchorProvider(connection, { publicKey, signTransaction }, { commitment: 'confirmed' });
-  }, [publicKey, signTransaction]);
+    return new AnchorProvider(connection, anchorWallet, { commitment: 'confirmed' });
+  }, [publicKey, anchorWallet]);
 
   // Initialize program
   const program = useMemo(() => {
     if (!provider) return null;
-    return new Program(idl, programId, provider);
+    return new Program(idl as Idl, programId, provider);
   }, [provider]);
 
   // Check if user account exists, initialize if not
   const initializeUser = async () => {
-    if (!program || !publicKey || !signTransaction) {
+    if (!program || !publicKey || !anchorWallet || !provider) {
       setError('Wallet not connected or program not initialized');
       return;
     }
@@ -79,15 +78,16 @@ const App: React.FC = () => {
 
         tx.recentBlockhash = (await provider.connection.getLatestBlockhash()).blockhash;
         tx.feePayer = publicKey;
-        const signedTx = await signTransaction(tx);
+        const signedTx = await anchorWallet.signTransaction(tx);
         const txId = await provider.connection.sendRawTransaction(signedTx.serialize());
         await provider.connection.confirmTransaction(txId);
         setStatus(`User account initialized: ${txId}`);
       } else {
         setStatus('User account already initialized');
       }
-    } catch (err) {
-      setError(`Error initializing user: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Error initializing user: ${message}`);
       setIsLoading(false);
     }
   };
@@ -95,7 +95,7 @@ const App: React.FC = () => {
   // Handle deposit SOL
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!program || !publicKey || !signTransaction) {
+    if (!program || !publicKey || !anchorWallet || !provider) {
       setError('Wallet not connected or program not initialized');
       return;
     }
@@ -113,7 +113,7 @@ const App: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
-      const amountLamports = new BN(parseFloat(amount) * anchor.web3.LAMPORTS_PER_SOL);
+      const amountLamports = new BN(Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL));
       const tx = await program.methods
         .depositSol(amountLamports)
         .accounts({
@@ -127,7 +127,7 @@ const App: React.FC = () => {
 
       tx.recentBlockhash = (await provider.connection.getLatestBlockhash()).blockhash;
       tx.feePayer = publicKey;
-      const signedTx = await signTransaction(tx);
+      const signedTx = await anchorWallet.signTransaction(tx);
       const txId = await provider.connection.sendRawTransaction(signedTx.serialize(), {
         skipPreflight: true,
         maxRetries: 0,
@@ -135,8 +135,9 @@ const App: React.FC = () => {
       await provider.connection.confirmTransaction(txId);
       setStatus(`Deposit successful: ${txId}`);
       setAmount('');
-    } catch (err) {
-      setError(`Deposit failed: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Deposit failed: ${message}`);
       setIsLoading(false);
     }
   };
