@@ -12,8 +12,8 @@ import {
   ConnectionProvider,
 } from '@solana/wallet-adapter-react';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
-import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import idl from './solana_crash_game.json'; 
+import { WalletModalProvide r, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import idl from '../../public/idl.json'; 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 // Program ID
