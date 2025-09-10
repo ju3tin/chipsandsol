@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect, useMemo } from 'react';
 import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { Program, AnchorProvider, BN } from '@project-serum/anchor';
