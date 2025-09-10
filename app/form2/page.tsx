@@ -143,8 +143,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4 text-center">Solana Crash Game Deposit</h1>
         <WalletMultiButton className="w-full mb-4" />
         {connected ? (
