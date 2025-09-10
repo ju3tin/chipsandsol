@@ -18,10 +18,10 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 const programId = new PublicKey('6NT24hJjnqwKw6JNDkrV2a7nPvB8GdB61Csz9mEB7DnZ');
 
 // Helius RPC URL (replace with your API key)
-const heliusRpcUrl = 'https://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
+const heliusRpcUrl = 'https://devnet.helius-rpc.com/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76';
 const network = WalletAdapterNetwork.Devnet;
 const endpoint = heliusRpcUrl;
-const wsEndpoint = 'wss://devnet.helius-rpc.com/?api-key=YOUR_API_KEY';
+const wsEndpoint = 'wss://devnet.helius-rpc.com/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76';
 
 // PDAs
 const getGamePda = () => PublicKey.findProgramAddressSync([Buffer.from('config')], programId)[0];
