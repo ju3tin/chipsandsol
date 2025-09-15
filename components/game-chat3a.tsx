@@ -10,7 +10,6 @@ import axios from "axios"
 import { useWalletStore } from "../store/walletStore"
 import { format, isValid } from "date-fns"
 
-// Chat message type
 type ChatMessage = {
   id: string
   sender: string
@@ -27,8 +26,7 @@ type GameChatProps = {
 }
 
 const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
-  const walletAddress =
-    useWalletStore((state) => state.walletAddress) || "Unknown User"
+  const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User"
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -44,13 +42,13 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [hasGameStarted, setHasGameStarted] = useState(false)
 
-  // ✅ Safe time formatter (no hydration mismatch, no crashes)
+  // ✅ Safe time formatter
   const formatTime = (date: Date) => {
     if (!isValid(date)) return "--:--"
-    return format(date, "hh:mm a") // e.g. "09:27 AM"
+    return format(date, "hh:mm a")
   }
 
-  // Fetch messages from API
+  // ✅ Fetch messages from API (replace instead of merge)
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -60,7 +58,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         const formattedMessages: ChatMessage[] = fetchedMessages.map((msg: any) => {
           const parsedDate = new Date(msg.time)
           return {
-            id: "server-" + (msg._id?.toString() || Date.now().toString()),
+            id: msg._id?.toString() || Date.now().toString(),
             sender: (msg.user || "Unknown").slice(0, 10),
             message: msg.message,
             timestamp: isValid(parsedDate) ? parsedDate : new Date(),
@@ -68,21 +66,18 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           }
         })
 
-        setMessages((prev) => {
-          const preservedMessages = prev.filter(
-            (msg) => msg.isSystem || !msg.id.startsWith("server-")
-          )
-          return [...preservedMessages, ...formattedMessages].sort(
+        setMessages(
+          formattedMessages.sort(
             (a, b) => a.timestamp.getTime() - b.timestamp.getTime()
           )
-        })
+        )
       } catch (error: any) {
         console.error("Failed to fetch messages:", error.message || error)
       }
     }
 
-    fetchMessages() // initial load
-    const interval = setInterval(fetchMessages, 5000) // poll every 5s
+    fetchMessages()
+    const interval = setInterval(fetchMessages, 5000)
 
     return () => clearInterval(interval)
   }, [])
@@ -123,7 +118,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     ])
   }
 
-  // Simulate random player chat messages
+  // Simulate random player messages
   const simulatePlayerMessages = () => {
     const playerMessages = [
       "Good luck everyone!",
@@ -157,10 +152,8 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       const delay = 1000 + Math.random() * 8000
       setTimeout(() => {
         if (gameState === "Running") {
-          const randomPlayer =
-            playerNames[Math.floor(Math.random() * playerNames.length)]
-          const randomMessage =
-            playerMessages[Math.floor(Math.random() * playerMessages.length)]
+          const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
+          const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
           setMessages((prev) => [
             ...prev,
@@ -176,13 +169,27 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     }
   }
 
-  // Handle sending new message
+  // Handle sending new message (optimistic update)
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (newMessage.trim() === "") return
 
     const messageToSend = newMessage.trim()
     const timestamp = new Date()
+
+    // ✅ Optimistic update
+    const tempId = "local-" + Date.now()
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: tempId,
+        sender: walletAddress || "You",
+        message: messageToSend,
+        timestamp,
+      },
+    ])
+
+    setNewMessage("")
 
     const data = {
       user: walletAddress,
@@ -191,12 +198,24 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     }
 
     try {
-      await axios.post("/api/postmessage", data, {
+      const response = await axios.post("/api/postmessage", data, {
         headers: { "Content-Type": "application/json" },
       })
-      setNewMessage("")
+
+      // ✅ Replace temp ID with real ID from server
+      if (response.data?._id) {
+        setMessages((prev) =>
+          prev.map((msg) => (msg.id === tempId ? { ...msg, id: response.data._id } : msg))
+        )
+      }
     } catch (error) {
       console.error("Error sending message:", error)
+      // ❌ Mark failed
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === tempId ? { ...msg, message: msg.message + " (failed)" } : msg
+        )
+      )
     }
   }
 
@@ -229,9 +248,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
                   {msg.message}
                 </span>
               </div>
-              <span className="text-gray-500 text-xs">
-                {formatTime(msg.timestamp)}
-              </span>
+              <span className="text-gray-500 text-xs">{formatTime(msg.timestamp)}</span>
             </div>
           ))}
         </div>
