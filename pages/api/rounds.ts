@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const totalRounds = await collection.countDocuments();
       const rounds = await collection
         .find({})
-        .sort({ createdAt: -1 }) // newest first
+        .sort({ startTime: -1 }) // newest first
         .skip(skip)
         .limit(limit)
         .toArray();
