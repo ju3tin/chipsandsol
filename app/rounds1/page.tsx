@@ -43,19 +43,19 @@ export default function GameRounds() {
           <table className="min-w-full border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
-                <th className="border px-4 py-2">ID</th>
-                <th className="border px-4 py-2">Round</th>
-                <th className="border px-4 py-2">Multiplier</th>
-                <th className="border px-4 py-2">Created At</th>
+                <th className="border px-4 py-2"  style={{color: "black"}}>ID</th>
+                <th className="border px-4 py-2"  style={{color: "black"}}>Round</th>
+                <th className="border px-4 py-2"  style={{color: "black"}}>Multiplier</th>
+                <th className="border px-4 py-2"  style={{color: "black"}}>Created At</th>
               </tr>
             </thead>
             <tbody>
               {rounds.map((round) => (
                 <tr key={round._id}>
-                  <td className="border px-4 py-2" style={{color: "black"}}>{round._id}</td>
-                  <td className="border px-4 py-2" style={{color: "black"}}>{round.roundNumber}</td>
-                  <td className="border px-4 py-2" style={{color: "black"}}>{round.crashMultiplier}</td>
-                  <td className="border px-4 py-2" style={{color: "black"}}>{new Date(round.createdAt).toLocaleString()}</td>
+                  <td className="border px-4 py-2" style={{color: "white"}}>{round._id}</td>
+                  <td className="border px-4 py-2" style={{color: "white"}}>{round.roundNumber}</td>
+                  <td className="border px-4 py-2" style={{color: "white"}}>{round.crashMultiplier}</td>
+                  <td className="border px-4 py-2" style={{color: "white"}}>{new Date(round.createdAt).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
