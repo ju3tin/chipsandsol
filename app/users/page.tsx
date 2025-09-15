@@ -1,15 +1,41 @@
-// app/users/page.tsx
-import React from 'react';
-import { User } from '../../types/User';
+'use client';
+import React, { useEffect, useState } from 'react';
 
-async function fetchUsers(): Promise<User[]> {
-  const res = await fetch('http://localhost:8080/api/users', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch users');
-  return res.json();
+interface User {
+  _id: string;
+  username: string;
+  walletAddress?: string;
+  balances: {
+    SOL: number;
+    CHIPPY: number;
+    DEMO: number;
+  };
 }
 
-export default async function UsersPage() {
-  const users = await fetchUsers();
+export default function UsersPage() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('/api/user2'); // Your API endpoint
+        if (!res.ok) throw new Error('Failed to fetch users');
+        const data: User[] = await res.json();
+        setUsers(data);
+      } catch (err: any) {
+        setError(err.message || 'Something went wrong');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (loading) return <p>Loading users...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="p-4">
