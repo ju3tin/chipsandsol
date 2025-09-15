@@ -52,10 +52,10 @@ export default function GameRounds() {
             <tbody>
               {rounds.map((round) => (
                 <tr key={round._id}>
-                  <td className="border px-4 py-2">{round._id}</td>
-                  <td className="border px-4 py-2">{round.roundNumber}</td>
-                  <td className="border px-4 py-2">{round.crashMultiplier}</td>
-                  <td className="border px-4 py-2">{new Date(round.createdAt).toLocaleString()}</td>
+                  <td className="border px-4 py-2" style={{color: "black"}}>{round._id}</td>
+                  <td className="border px-4 py-2" style={{color: "black"}}>{round.roundNumber}</td>
+                  <td className="border px-4 py-2" style={{color: "black"}}>{round.crashMultiplier}</td>
+                  <td className="border px-4 py-2" style={{color: "black"}}>{new Date(round.createdAt).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
