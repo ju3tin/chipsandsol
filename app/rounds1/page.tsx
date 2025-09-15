@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 interface Round {
   _id: string;
   roundNumber: number;
-  multiplier: number;
+  crashMultiplier: number;
   createdAt: string;
 }
 
@@ -54,7 +54,7 @@ export default function GameRounds() {
                 <tr key={round._id}>
                   <td className="border px-4 py-2">{round._id}</td>
                   <td className="border px-4 py-2">{round.roundNumber}</td>
-                  <td className="border px-4 py-2">{round.multiplier}</td>
+                  <td className="border px-4 py-2">{round.crashMultiplier}</td>
                   <td className="border px-4 py-2">{new Date(round.createdAt).toLocaleString()}</td>
                 </tr>
               ))}
