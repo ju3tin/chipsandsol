@@ -5,7 +5,7 @@ interface Round {
   _id: string;
   roundNumber: number;
   crashMultiplier: number;
-  createdAt: string;
+  startTime: string;
 }
 
 export default function GameRounds() {
@@ -55,7 +55,7 @@ export default function GameRounds() {
                   <td className="border px-4 py-2" style={{color: "white"}}>{round._id}</td>
                   <td className="border px-4 py-2" style={{color: "white"}}>{round.roundNumber}</td>
                   <td className="border px-4 py-2" style={{color: "white"}}>{round.crashMultiplier}</td>
-                  <td className="border px-4 py-2" style={{color: "white"}}>{new Date(round.createdAt).toLocaleString()}</td>
+                  <td className="border px-4 py-2" style={{color: "white"}}>{new Date(round.startTime).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
