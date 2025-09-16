@@ -486,7 +486,7 @@ console.log("theis is how many seconds left"+message1.data);
 
 
 
-		  break;
+		  break; 
 	  case 'BTN_BET_CLICKED':
 		// Handle BTN_BET_CLICKED action
 		console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
