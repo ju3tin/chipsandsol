@@ -261,7 +261,6 @@ const handleMessage = (message: any) => {
 	const roundStartTimestamp = new Date();
 	const { set, get } = useGameStore.getState(); // Ensure this is within the correct context
 
-
 	switch (message.action) {
 		case 'ROUND_STARTED':
 			console.log('Round started at:', roundStartTimestamp.toLocaleTimeString());
@@ -276,45 +275,36 @@ const handleMessage = (message: any) => {
 			gameRunTimer = setInterval(gameRunner, 5);
 			break;
 		case 'BET_PLACED':
-/*
-		{
-			"action": "BET_PLACED",
-			"walletAddress": "werwerwerwer",
-			"amount": "0.7",
-			"currency": "SOL",
-			"balance": 975.1335999999998
-		}
-		*/
-		console.log(`bet made by ${message.walletAddress} with amount ${message.amount} and currency ${message.currency} and balance ${message.balance}`);
-		
-		// Check if player already exists in the list to avoid duplicates
-		const existingPlayerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
-		
-		if (existingPlayerIndex === -1) {
-			// Add new player to the list
-			set({
-				players: [...get().players, {
-					wallet: message.walletAddress,
+			console.log(`bet made by ${message.walletAddress} with amount ${message.amount} and currency ${message.currency} and balance ${message.balance}`);
+			
+			// Check if player already exists in the list to avoid duplicates
+			const existingPlayerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
+			
+			if (existingPlayerIndex === -1) {
+				// Add new player to the list
+				set({
+					players: [...get().players, {
+						wallet: message.walletAddress,
+						betAmount: message.amount,
+						currency: message.currency,
+						autoCashOut: '0',
+						cashOut: '0',
+						cashOutTime: new Date(),
+						isCashedOut: false,
+						winnings: '0'
+					}]
+				});
+			} else {
+				// Update existing player's bet amount
+				const updatedPlayers = [...get().players];
+				updatedPlayers[existingPlayerIndex] = {
+					...updatedPlayers[existingPlayerIndex],
 					betAmount: message.amount,
-					currency: message.currency,
-					autoCashOut: '0',
-					cashOut: '0',
-					cashOutTime: new Date(),
-					isCashedOut: false,
-					winnings: '0'
-				}]
-			});
-		} else {
-			// Update existing player's bet amount
-			const updatedPlayers = [...get().players];
-			updatedPlayers[existingPlayerIndex] = {
-				...updatedPlayers[existingPlayerIndex],
-				betAmount: message.amount,
-				currency: message.currency
-			};
-			set({ players: updatedPlayers });
-		}
-		break;
+					currency: message.currency
+				};
+				set({ players: updatedPlayers });
+			}
+			break;
 		case 'ROUND_CRASHED':
 			console.log(`The game crashed at ${message.multiplier}`);
 
@@ -334,12 +324,14 @@ const handleMessage = (message: any) => {
 			break;
 
 		case 'CASHOUT_SUCCESS':
-			console.log(`Cashout success for ${message.walletAddress} with winnings ${message.winnings} ${message.currency} at multiplier ${message.multiplier}`);
+			console.log(`🎉 CASHOUT_SUCCESS received for ${message.walletAddress} with winnings ${message.winnings} ${message.currency} at multiplier ${message.multiplier}`);
 			
 			// Find the player in the current players list
 			const playerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
 			
 			if (playerIndex !== -1) {
+				console.log(`📝 Updating player at index ${playerIndex} with cashout data`);
+				
 				// Update the player's cashout information
 				const updatedPlayers = [...get().players];
 				updatedPlayers[playerIndex] = {
@@ -350,11 +342,16 @@ const handleMessage = (message: any) => {
 					winnings: message.winnings.toString()
 				};
 				
+				console.log(`✅ Updated player data:`, updatedPlayers[playerIndex]);
+				
 				// Update the players list
 				set({ players: updatedPlayers });
 				
+				console.log(`🔄 Players list updated, total players: ${updatedPlayers.length}`);
+				
 				// Update balances if this is the current user
 				if (message.walletAddress === get().userWalletAddress) {
+					console.log(`💰 Updating balance for current user`);
 					set({
 						balances: {
 							...get().balances,
@@ -362,6 +359,38 @@ const handleMessage = (message: any) => {
 						}
 					});
 				}
+			} else {
+				console.warn(`⚠️ Player ${message.walletAddress} not found in current players list`);
+			}
+			break;
+
+		case 'PLAYER_CASHED_OUT':
+			console.log(`🎉 PLAYER_CASHED_OUT received for ${message.walletAddress} with winnings ${message.winnings} at multiplier ${message.multiplier}`);
+			
+			// Find the player in the current players list
+			const cashedOutPlayerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
+			
+			if (cashedOutPlayerIndex !== -1) {
+				console.log(`📝 Updating player at index ${cashedOutPlayerIndex} with cashout data`);
+				
+				// Update the player's cashout information
+				const updatedPlayers = [...get().players];
+				updatedPlayers[cashedOutPlayerIndex] = {
+					...updatedPlayers[cashedOutPlayerIndex],
+					isCashedOut: true,
+					cashOut: message.multiplier,
+					cashOutTime: new Date(),
+					winnings: message.winnings.toString()
+				};
+				
+				console.log(`✅ Updated player data:`, updatedPlayers[cashedOutPlayerIndex]);
+				
+				// Update the players list
+				set({ players: updatedPlayers });
+				
+				console.log(`🔄 Players list updated, total players: ${updatedPlayers.length}`);
+			} else {
+				console.warn(`⚠️ Player ${message.walletAddress} not found in current players list`);
 			}
 			break;
 
@@ -397,226 +426,83 @@ socket1.onopen = () => {
   socket1.onmessage = (event) => {
 	console.log('Message from server: ', event.data);
 	const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-	//setMessage(event.data);
+	
+	// Use the centralized message handler
+	handleMessage(messageData);
 
-	// Add message to chat
-	let roundStartTimestamp; // Store the current timestamp globally
-	const timestamp = new Date().toLocaleTimeString();
-	//setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
-	const message1 = JSON.parse(event.data);
-	switch (message1.action) {
-
-	  case 'ROUND_STARTED':
-		roundStartTimestamp = new Date(); // Store the current timestamp globally
-	   console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
-		
-
-
-	   set({
-		startTime: roundStartTimestamp.getTime(),
-		status: 'Running'
-	});
-
-	if (gameWaitTimer) {
-		clearInterval(gameWaitTimer);
-		gameWaitTimer = null;
-	}
-
-	if (gameRunTimer) {
-		clearInterval(gameRunTimer);
-		gameRunTimer = null;
-	}
-
-	gameRunTimer = setInterval(gameRunner, 5);
-		// Reset chart data when the round starts
-	/*	setChartData({
-		  datasets: [{
-			label: '', // Remove dataset label
-			data: [{ x: 0, y: 0 }],
-			borderColor: '#FF2D00',
-			tension: 0.4,
-			pointRadius: 0,
-		  }],
-		});
-		
-	*/	
-		// Store the round start timestamp in state if needed
-	   // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
-	 
-		break;
-
+	// Handle specific cases that need additional processing
+	switch (messageData.action) {
 		case 'CNT_MULTIPLY':
-			//  setDude34(message.totalMult);
-			console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
-		break;
-		
-		case 'ROUND_CRASHED':
-			//  setDude34(message.totalMult);
-		  /*  if(MessageLost.current){
-			  MessageLost.current.style.opacity = "0"; // Set the message content
+			console.log(`i spoke to the server Multiplier: ${messageData.multiplier}, Data: ${messageData.data}`);
+			break;
+			
+		case 'SECOND_BEFORE_START':
+			const timeRemaining = messageData.data;
+			if (timeRemaining <= 0) {
+				set({ timeRemaining: 0 });
+			} else {
+				set({ timeRemaining });
 			}
-			setIsButtonDisabled(false);
-			setIsLineGraphVisible(false);
-			setDude34(messageData.totalMult); // Set only the totalMult value
-			
-			if (roundCrash.current) {
-			  roundCrash.current.style.opacity = "1"
-			  roundCrash.current.style.display = "block";
-			  roundCrash.current.style.color = "black";
-			  roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
-			}*/
-			console.log(`The game crashed at ${message1.multiplier}`)
-			
-	  
-			  const dude444 = roundStartTimestamp;
-			  const { crashes } = get();
-	  
-			  set({
-				  status: 'Crashed',
-				  crashes: [...(
-					  crashes.length <= 30
-						  ? crashes
-						  : crashes.slice(0, 30)
-				  ), 
-				//  params.game
-				],
-				  timeElapsed: dude444 ? dude444 - 34 : 0,
-			  });
-	  
-			  break
-			  case 'ROUND_ENDS':
-			console.log(`The game crashed at ${message1.multiplier}`)
-				
-			  break;
-				
-	 
-		case "WON":
-		
-	   //   if (multiplyStr){
-		  //  multiplyStr.style.left = "-30%";
-		  //  multiplyLbl.style.color = "#00C208";
-	   //   }
-		  
-		 // multiplyLbl.textContent = "YOU ARE WON: " 
-		 //                         + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
-		 //                         + " x " 
-		 //                         + parseFloat(jsonMessage.mult).toFixed(3);
-		  break;
-
-		case "LOST":
-		  break;
-	  case "SECOND_BEFORE_START":
-
-	  const timeRemaining = message1.data;
-
-	  if (timeRemaining <= 0) {
-		set({ timeRemaining: 0 })
-	} else {
-		set({ timeRemaining });
-	}
-
-	  set({
-		status: 'Waiting',
-		startTime: roundStartTimestamp,
-		timeElapsed: 0,
-	},);
-	
-
-	
-
-	if (gameWaitTimer) {
-		clearInterval(gameWaitTimer);
-		gameWaitTimer = null;
-	}
-console.log("theis is how many seconds left"+message1.data);
-	gameWaitTimer = setInterval(gameWaiter, 1000);
-
-
-
-		  break; 
-	  case 'BTN_BET_CLICKED':
-		// Handle BTN_BET_CLICKED action
-		console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
-		break;
-	  case "PLAYER_BET":
-		console.log(`Bet placed by ${message1.walletAddress} with amount ${message1.amount} and currency ${message1.currency} and balance ${message1.balance}`);
-		
-		// Check if player already exists in the list to avoid duplicates
-		const existingPlayerIndex2 = get().players.findIndex(player => player.wallet === message1.walletAddress);
-		
-		if (existingPlayerIndex2 === -1) {
-			// Add new player to the list
 			set({
-				players: [...get().players, {
-					wallet: message1.walletAddress,
-					betAmount: message1.amount,
-					currency: message1.currency,
-					autoCashOut: '0',
-					cashOut: '0',
-					cashOutTime: new Date(),
-					isCashedOut: false,
-					winnings: '0'
-				}]
+				status: 'Waiting',
+				startTime: new Date().getTime(),
+				timeElapsed: 0,
 			});
-		} else {
-			// Update existing player's bet amount
-			const updatedPlayers2 = [...get().players];
-			updatedPlayers2[existingPlayerIndex2] = {
-				...updatedPlayers2[existingPlayerIndex2],
-				betAmount: message1.amount,
-				currency: message1.currency
-			};
-			set({ players: updatedPlayers2 });
-		}
-		break;
-	  case "CASHOUT_SUCCESS":
-		console.log(`Cashout success for ${message1.walletAddress} with winnings ${message1.winnings} ${message1.currency} at multiplier ${message1.multiplier}`);
-		
-		// Find the player in the current players list
-		const playerIndex = get().players.findIndex(player => player.wallet === message1.walletAddress);
-		
-		if (playerIndex !== -1) {
-			// Update the player's cashout information
-			const updatedPlayers = [...get().players];
-			updatedPlayers[playerIndex] = {
-				...updatedPlayers[playerIndex],
-				isCashedOut: true,
-				cashOut: message1.multiplier,
-				cashOutTime: new Date(),
-				winnings: message1.winnings.toString()
-			};
 			
-			// Update the players list
-			set({ players: updatedPlayers });
-			
-			// Update balances if this is the current user
-			if (message1.walletAddress === get().userWalletAddress) {
-				set({
-					balances: {
-						...get().balances,
-						[message1.currency]: message1.balance.toString()
-					}
-				});
+			if (gameWaitTimer) {
+				clearInterval(gameWaitTimer);
+				gameWaitTimer = null;
 			}
-		}
-		break;
-	  default:
-		console.log(`Unknown action received: ${message1.action}`);
+			console.log("this is how many seconds left: " + messageData.data);
+			gameWaitTimer = setInterval(gameWaiter, 1000);
+			break;
+			
+		case 'BTN_BET_CLICKED':
+			console.log(`BTN_BET_CLICKED action received with bet: ${messageData.bet}`);
+			break;
+			
+		case 'PLAYER_BET':
+			console.log(`Bet placed by ${messageData.walletAddress} with amount ${messageData.amount} and currency ${messageData.currency} and balance ${messageData.balance}`);
+			
+			// Check if player already exists in the list to avoid duplicates
+			const existingPlayerIndex2 = get().players.findIndex(player => player.wallet === messageData.walletAddress);
+			
+			if (existingPlayerIndex2 === -1) {
+				// Add new player to the list
+				set({
+					players: [...get().players, {
+						wallet: messageData.walletAddress,
+						betAmount: messageData.amount,
+						currency: messageData.currency,
+						autoCashOut: '0',
+						cashOut: '0',
+						cashOutTime: new Date(),
+						isCashedOut: false,
+						winnings: '0'
+					}]
+				});
+			} else {
+				// Update existing player's bet amount
+				const updatedPlayers2 = [...get().players];
+				updatedPlayers2[existingPlayerIndex2] = {
+					...updatedPlayers2[existingPlayerIndex2],
+					betAmount: messageData.amount,
+					currency: messageData.currency
+				};
+				set({ players: updatedPlayers2 });
+			}
+			break;
+			
+		case 'WON':
+		case 'LOST':
+		case 'ROUND_ENDS':
+			// These cases don't need special handling
+			break;
+			
+		default:
+			// Message already handled by handleMessage function
+			break;
 	}
-
- 
-
-	// When you receive a new timestamp
-	const newTimestamp = new Date(); // Get the new timestamp
-	if (roundStartTimestamp) { // Check if roundStartTimestamp is not null
-	  const timeDifference = (newTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
-	  console.log('Time since round started:', timeDifference, 'seconds');
-	} else {
-	  console.log('Round has not started yet.'); // Log if round has not started
-	}
-
- 
-
   };
 
   socket1.onclose = () => {
