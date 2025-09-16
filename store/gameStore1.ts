@@ -333,6 +333,38 @@ const handleMessage = (message: any) => {
 			clearTimers();
 			break;
 
+		case 'CASHOUT_SUCCESS':
+			console.log(`Cashout success for ${message.walletAddress} with winnings ${message.winnings} ${message.currency} at multiplier ${message.multiplier}`);
+			
+			// Find the player in the current players list
+			const playerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
+			
+			if (playerIndex !== -1) {
+				// Update the player's cashout information
+				const updatedPlayers = [...get().players];
+				updatedPlayers[playerIndex] = {
+					...updatedPlayers[playerIndex],
+					isCashedOut: true,
+					cashOut: message.multiplier,
+					cashOutTime: new Date(),
+					winnings: message.winnings.toString()
+				};
+				
+				// Update the players list
+				set({ players: updatedPlayers });
+				
+				// Update balances if this is the current user
+				if (message.walletAddress === get().userWalletAddress) {
+					set({
+						balances: {
+							...get().balances,
+							[message.currency]: message.balance.toString()
+						}
+					});
+				}
+			}
+			break;
+
 		// Other cases...
 		default:
 			console.log(`Unknown action received: ${message.action}`);
@@ -535,6 +567,37 @@ console.log("theis is how many seconds left"+message1.data);
 				currency: message1.currency
 			};
 			set({ players: updatedPlayers2 });
+		}
+		break;
+	  case "CASHOUT_SUCCESS":
+		console.log(`Cashout success for ${message1.walletAddress} with winnings ${message1.winnings} ${message1.currency} at multiplier ${message1.multiplier}`);
+		
+		// Find the player in the current players list
+		const playerIndex = get().players.findIndex(player => player.wallet === message1.walletAddress);
+		
+		if (playerIndex !== -1) {
+			// Update the player's cashout information
+			const updatedPlayers = [...get().players];
+			updatedPlayers[playerIndex] = {
+				...updatedPlayers[playerIndex],
+				isCashedOut: true,
+				cashOut: message1.multiplier,
+				cashOutTime: new Date(),
+				winnings: message1.winnings.toString()
+			};
+			
+			// Update the players list
+			set({ players: updatedPlayers });
+			
+			// Update balances if this is the current user
+			if (message1.walletAddress === get().userWalletAddress) {
+				set({
+					balances: {
+						...get().balances,
+						[message1.currency]: message1.balance.toString()
+					}
+				});
+			}
 		}
 		break;
 	  default:
