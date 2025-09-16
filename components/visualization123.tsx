@@ -180,9 +180,20 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
         };
       });
 
-      // 🐟 Draw fish1 at the end of the curve (pointB)
+      // 🐟 Draw fish1 at the end of the curve (pointB) with rotation
       ctx.save();
       ctx.translate(pointBx, pointBy);
+      
+      // Calculate the angle of the curve at the current point
+      const angle = getBezierTangent(t, 
+        { x: startx, y: starty },
+        { x: cp1x, y: cp1y },
+        { x: cp2x, y: cp2y },
+        { x: pointBx, y: pointBy }
+      );
+      
+      // Rotate the fish to match the curve direction
+      ctx.rotate(angle);
       ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust position/size as needed
       ctx.restore();
 
