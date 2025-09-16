@@ -101,7 +101,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
       const tt = t * t;
-      const uu = u * u;
+      const uu = u * u; 
       const uuu = uu * u;
       const ttt = tt * t;
 
