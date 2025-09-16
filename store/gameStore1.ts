@@ -286,19 +286,34 @@ const handleMessage = (message: any) => {
 		}
 		*/
 		console.log(`bet made by ${message.walletAddress} with amount ${message.amount} and currency ${message.currency} and balance ${message.balance}`);
-		set({
-			players: [...get().players, {
-				wallet: message.walletAddress,
+		
+		// Check if player already exists in the list to avoid duplicates
+		const existingPlayerIndex = get().players.findIndex(player => player.wallet === message.walletAddress);
+		
+		if (existingPlayerIndex === -1) {
+			// Add new player to the list
+			set({
+				players: [...get().players, {
+					wallet: message.walletAddress,
+					betAmount: message.amount,
+					currency: message.currency,
+					autoCashOut: '0',
+					cashOut: '0',
+					cashOutTime: new Date(),
+					isCashedOut: false,
+					winnings: '0'
+				}]
+			});
+		} else {
+			// Update existing player's bet amount
+			const updatedPlayers = [...get().players];
+			updatedPlayers[existingPlayerIndex] = {
+				...updatedPlayers[existingPlayerIndex],
 				betAmount: message.amount,
-				currency: message.currency,
-			//	balance: message.balance,
-				autoCashOut: '0',
-				cashOut: '0',
-				cashOutTime: new Date(),
-				isCashedOut: false,
-				winnings: '0'
-			}]
-		});
+				currency: message.currency
+			};
+			set({ players: updatedPlayers });
+		}
 		break;
 		case 'ROUND_CRASHED':
 			console.log(`The game crashed at ${message.multiplier}`);
@@ -493,6 +508,34 @@ console.log("theis is how many seconds left"+message1.data);
 		break;
 	  case "PLAYER_BET":
 		console.log(`Bet placed by ${message1.walletAddress} with amount ${message1.amount} and currency ${message1.currency} and balance ${message1.balance}`);
+		
+		// Check if player already exists in the list to avoid duplicates
+		const existingPlayerIndex2 = get().players.findIndex(player => player.wallet === message1.walletAddress);
+		
+		if (existingPlayerIndex2 === -1) {
+			// Add new player to the list
+			set({
+				players: [...get().players, {
+					wallet: message1.walletAddress,
+					betAmount: message1.amount,
+					currency: message1.currency,
+					autoCashOut: '0',
+					cashOut: '0',
+					cashOutTime: new Date(),
+					isCashedOut: false,
+					winnings: '0'
+				}]
+			});
+		} else {
+			// Update existing player's bet amount
+			const updatedPlayers2 = [...get().players];
+			updatedPlayers2[existingPlayerIndex2] = {
+				...updatedPlayers2[existingPlayerIndex2],
+				betAmount: message1.amount,
+				currency: message1.currency
+			};
+			set({ players: updatedPlayers2 });
+		}
 		break;
 	  default:
 		console.log(`Unknown action received: ${message1.action}`);

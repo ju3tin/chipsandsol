@@ -2,7 +2,7 @@
 
 import Decimal from 'decimal.js';
 
-import { Label } from '@/components/uis/label';
+import { Label } from '@/components/ui/label';
 
 import {
 	Table,
@@ -11,20 +11,20 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/uis/table"
+} from "@/components/ui/table"
  
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
-} from "@/components/uis/card";
+} from "@/components/ui/card";
 
 import { currencyById } from '../lib/currencies';
 
 import { Bet, useGameStore } from '../store/gameStore1';
 
-import { shortenWallet } from '../lib/utils1';
+import { shortenWallet } from '../lib/utils4';
 
 export type BetListProps = {
 }
