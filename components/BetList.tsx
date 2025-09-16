@@ -24,7 +24,7 @@ import { currencyById } from '../lib/currencies';
 
 import { Bet, useGameStore } from '../store/gameStore';
 
-import { shortenWallet } from '../lib/utils';
+import { shortenWallet } from '../lib/utils4';
 
 export type BetListProps = {
 }
