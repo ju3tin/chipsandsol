@@ -324,6 +324,9 @@ socket1.onopen = () => {
 
 		case "LOST":
 		  break;
+		case "PLAYER_BET":
+			console.log(`Bet placed by ${message1.walletAddress} with amount ${message1.amount} and currency ${message1.currency} and balance ${message1.balance}`);
+		  break;
 	  case "SECOND_BEFORE_START":
 
 	  const timeRemaining = message1.data;

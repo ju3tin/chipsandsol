@@ -491,6 +491,9 @@ console.log("theis is how many seconds left"+message1.data);
 		// Handle BTN_BET_CLICKED action
 		console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
 		break;
+	  case "PLAYER_BET":
+		console.log(`Bet placed by ${message1.walletAddress} with amount ${message1.amount} and currency ${message1.currency} and balance ${message1.balance}`);
+		break;
 	  default:
 		console.log(`Unknown action received: ${message1.action}`);
 	}
