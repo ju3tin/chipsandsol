@@ -275,7 +275,31 @@ const handleMessage = (message: any) => {
 			clearTimers();
 			gameRunTimer = setInterval(gameRunner, 5);
 			break;
-
+		case 'BET_PLACED':
+/*
+		{
+			"action": "BET_PLACED",
+			"walletAddress": "werwerwerwer",
+			"amount": "0.7",
+			"currency": "SOL",
+			"balance": 975.1335999999998
+		}
+		*/
+		console.log(`bet made by ${message.walletAddress} with amount ${message.amount} and currency ${message.currency} and balance ${message.balance}`);
+		set({
+			players: [...get().players, {
+				wallet: message.walletAddress,
+				betAmount: message.amount,
+				currency: message.currency,
+			//	balance: message.balance,
+				autoCashOut: '0',
+				cashOut: '0',
+				cashOutTime: new Date(),
+				isCashedOut: false,
+				winnings: '0'
+			}]
+		});
+		break;
 		case 'ROUND_CRASHED':
 			console.log(`The game crashed at ${message.multiplier}`);
 
