@@ -9,6 +9,7 @@ import { Send } from "lucide-react"
 import axios from "axios"
 import { useWalletStore } from "../store/walletStore"
 import { format, isValid } from "date-fns"
+import WalletLoginOverlay from "./WalletLoginOverlay"
 
 type ChatMessage = {
   id: string
@@ -26,7 +27,8 @@ type GameChatProps = {
 }
 
 const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
-  const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User"
+  const walletAddress = useWalletStore((state) => state.walletAddress)
+  const isWalletConnected = !!walletAddress
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -41,6 +43,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [hasGameStarted, setHasGameStarted] = useState(false)
+  const [showWalletOverlay, setShowWalletOverlay] = useState(false)
 
   // ✅ Safe time formatter
   const formatTime = (date: Date) => {
@@ -174,6 +177,12 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     e.preventDefault()
     if (newMessage.trim() === "") return
 
+    // Check if wallet is connected
+    if (!isWalletConnected) {
+      setShowWalletOverlay(true)
+      return
+    }
+
     const messageToSend = newMessage.trim()
     const timestamp = new Date()
 
@@ -257,18 +266,34 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message..."
-            className="bg-gray-700 border-gray-600 text-white text-sm"
+            placeholder={isWalletConnected ? "Type a message..." : "Connect wallet to chat..."}
+            disabled={!isWalletConnected}
+            className={`bg-gray-700 border-gray-600 text-white text-sm ${
+              !isWalletConnected ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           />
           <Button
             type="submit"
             size="sm"
-            className="ml-2 bg-blue-600 hover:bg-blue-700 h-9 w-9 p-0"
+            disabled={!isWalletConnected}
+            className={`ml-2 h-9 w-9 p-0 ${
+              isWalletConnected 
+                ? "bg-blue-600 hover:bg-blue-700" 
+                : "bg-gray-600 cursor-not-allowed opacity-50"
+            }`}
           >
             <Send className="h-4 w-4" />
           </Button>
         </form>
       </CardContent>
+      
+      <WalletLoginOverlay
+        isOpen={showWalletOverlay}
+        onClose={() => setShowWalletOverlay(false)}
+        title="Wallet Connection Required"
+        description="You must connect your wallet before you can send messages in the chat."
+        action="send messages"
+      />
     </Card>
   )
 }
