@@ -13,6 +13,7 @@ import { FaWallet } from "react-icons/fa";
 import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
 import { useGameStore, GameState } from "../store/gameStore";
+import { useWalletStore } from "../store/walletstore1"
 import { useEffectEvent } from "../hooks/useEffectEvent";
 import useWalletAuth from "../hooks/useWalletAuth";
 import { Input } from "@/components/ui/input";
@@ -24,7 +25,6 @@ import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
 //import JSConfetti from "js-confetti";
 import { usePressedStore } from '../store/ispressed';
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import WalletLoginOverlay from './WalletLoginOverlay';
 
 
@@ -95,9 +95,7 @@ const Betbutton = ({
   const [isButtonPressed1, setIsButtonPressed1] = useState<Boolean>(false);
   
   // Wallet validation
-  const { publicKey } = useWallet();
-  const { connection } = useConnection();
-  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const { walletAddress } = useWalletStore();
     
   const handleCopy = () => {
     navigator.clipboard
@@ -126,9 +124,9 @@ const Betbutton = ({
     setWalletOverlayVisible(!walletOverlayVisible);
   };
 
-  // Check if wallet is valid (not null and has at least 3 figures/0.001 SOL)
+  // Check if wallet is valid (wallet address exists)
   const isWalletValid = () => {
-    return publicKey && walletBalance;
+    return walletAddress !== null;
   };
 
   const red1 = () => {
@@ -198,24 +196,6 @@ useEffect(() => {
   }
 }, [gameState, buttonPressCount, setButtonPressCount, setPressedToZero]);
 
-// Get wallet balance when publicKey changes
-useEffect(() => {
-  const getWalletBalance = async () => {
-    if (publicKey && connection) {
-      try {
-        const balance = await connection.getBalance(publicKey);
-        setWalletBalance(balance / 1000000000); // Convert lamports to SOL
-      } catch (error) {
-        console.error('Error fetching wallet balance:', error);
-        setWalletBalance(null);
-      }
-    } else {
-      setWalletBalance(null);
-    }
-  };
-
-  getWalletBalance();
-}, [publicKey, connection]);
 
   const loseout = () => {
     if (audioRef1.current) {
