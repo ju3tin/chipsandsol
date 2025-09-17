@@ -10,7 +10,7 @@ import axios from "axios"
 import { useWalletStore } from "../store/walletStore"
 import { format, isValid } from "date-fns"
 import WalletLoginOverlay from "./WalletLoginOverlay"
-
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 type ChatMessage = {
   id: string
   sender: string
@@ -27,8 +27,11 @@ type GameChatProps = {
 }
 
 const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
-  const walletAddress = useWalletStore((state) => state.walletAddress)
-  const isWalletConnected = !!walletAddress
+  // Wallet validation - same pattern as betbutton
+  const { publicKey } = useWallet()
+  const { connection } = useConnection()
+  const [walletBalance, setWalletBalance] = useState<number | null>(null)
+  const [showWalletOverlay, setShowWalletOverlay] = useState(false)
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -43,13 +46,40 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [hasGameStarted, setHasGameStarted] = useState(false)
-  const [showWalletOverlay, setShowWalletOverlay] = useState(false)
+
+  // Check if wallet is valid (not null and has at least 3 figures/0.001 SOL) - same as betbutton
+  const isWalletValid = () => {
+    return publicKey && walletBalance
+  }
+
+  const toggleWalletOverlay = () => {
+    setShowWalletOverlay(!showWalletOverlay)
+  }
 
   // ✅ Safe time formatter
   const formatTime = (date: Date) => {
     if (!isValid(date)) return "--:--"
     return format(date, "hh:mm a")
   }
+
+  // Get wallet balance when publicKey changes - same as betbutton
+  useEffect(() => {
+    const getWalletBalance = async () => {
+      if (publicKey && connection) {
+        try {
+          const balance = await connection.getBalance(publicKey)
+          setWalletBalance(balance / 1000000000) // Convert lamports to SOL
+        } catch (error) {
+          console.error('Error fetching wallet balance:', error)
+          setWalletBalance(null)
+        }
+      } else {
+        setWalletBalance(null)
+      }
+    }
+
+    getWalletBalance()
+  }, [publicKey, connection])
 
   // ✅ Fetch messages from API (replace instead of merge)
   useEffect(() => {
@@ -177,8 +207,8 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     e.preventDefault()
     if (newMessage.trim() === "") return
 
-    // Check if wallet is connected
-    if (!isWalletConnected) {
+    // Check wallet validity before proceeding - same as betbutton
+    if (!isWalletValid()) {
       setShowWalletOverlay(true)
       return
     }
@@ -192,7 +222,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       ...prev,
       {
         id: tempId,
-        sender: walletAddress || "You",
+        sender: publicKey?.toString().slice(0, 10) || "You",
         message: messageToSend,
         timestamp,
       },
@@ -201,7 +231,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     setNewMessage("")
 
     const data = {
-      user: walletAddress,
+      user: publicKey?.toString() || "Unknown",
       time: timestamp.toISOString(),
       message: messageToSend,
     }
@@ -266,18 +296,18 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder={isWalletConnected ? "Type a message..." : "Connect wallet to chat..."}
-            disabled={!isWalletConnected}
+            placeholder={isWalletValid() ? "Type a message..." : "Connect wallet to chat..."}
+            disabled={!isWalletValid()}
             className={`bg-gray-700 border-gray-600 text-white text-sm ${
-              !isWalletConnected ? "opacity-50 cursor-not-allowed" : ""
+              !isWalletValid() ? "opacity-50 cursor-not-allowed" : ""
             }`}
           />
           <Button
             type="submit"
             size="sm"
-            disabled={!isWalletConnected}
+            disabled={!isWalletValid()}
             className={`ml-2 h-9 w-9 p-0 ${
-              isWalletConnected 
+              isWalletValid() 
                 ? "bg-blue-600 hover:bg-blue-700" 
                 : "bg-gray-600 cursor-not-allowed opacity-50"
             }`}
@@ -289,7 +319,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       
       <WalletLoginOverlay
         isOpen={showWalletOverlay}
-        onClose={() => setShowWalletOverlay(false)}
+        onClose={toggleWalletOverlay}
         title="Wallet Connection Required"
         description="You must connect your wallet before you can send messages in the chat."
         action="send messages"
