@@ -25,6 +25,7 @@ import { useState, useEffect, useRef } from "react";
 //import JSConfetti from "js-confetti";
 import { usePressedStore } from '../store/ispressed';
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import WalletLoginOverlay from './WalletLoginOverlay';
 
 
 type BetbuttonProps = {
@@ -113,6 +114,11 @@ const Betbutton = ({
     setDemoAmount(amount);
   }
   const toggleOverlay = () => {
+    // Check if wallet is connected before allowing access to deposit overlay
+    if (!isWalletValid()) {
+      setWalletOverlayVisible(true);
+      return;
+    }
     setOverlayVisible(!overlayVisible);
   };
 
@@ -415,7 +421,7 @@ useEffect(() => {
               )}
        
         <Button onClick={toggleOverlay}>
-          Open Wallet Options
+          {isWalletValid() ? 'Open Wallet Options' : 'Connect Wallet to Access'}
         </Button>
       </div>
     </div>
@@ -557,18 +563,13 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 		</div>
 	   )}
 
-	   {walletOverlayVisible && (
-		<div className="overlay">
-			 <div className="message-board-container">
-			 <div className="message-form">
-		<p>You must login and have at least 0.001 SOL to place bets.</p>
-		</div>
-		<button onClick={toggleWalletOverlay} className="close-overlay-btn">
-			   Close
-			 </button>
-		</div>
-		</div>
-	   )}
+	   <WalletLoginOverlay
+		isOpen={walletOverlayVisible}
+		onClose={toggleWalletOverlay}
+		title="Wallet Connection Required"
+		description="You must connect your wallet before you can make deposits or place bets."
+		action="make deposits or place bets"
+	   />
           
             <div className="space-y-4">
             <div className={styles.inputGroup}>
@@ -661,8 +662,10 @@ Use demo currency to play our games without any risk. If you run out of demo cre
             </div>
             <div>
 				<Button  onClick={toggleOverlay} className={styles.BetButton}>
-				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
-					Deposit Chippy</Button></div>
+				<FaWallet className={styles.walletIcon} />
+         {/* Icon from FontAwesome */}
+					{isWalletValid() ? 'Deposit Chippy' : 'Connect Wallet to Deposit'}</Button>
+          </div>
             {/* Active players */}
            {/*  {gameState5.status !== "Waiting" && (
               <div className="mt-6">

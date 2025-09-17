@@ -23,13 +23,14 @@ import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
 import { useGameStore, GameState } from "../store/gameStore2";
 import { useEffectEvent } from "../hooks/useEffectEvent";
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { Input } from "@/components/uis/input";	
 import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
 import styles from "../styles/components/GameControls2.module.css";
+import WalletLoginOverlay from './WalletLoginOverlay';
 
 export default function GameControls() {
 	const textRef = useRef();
@@ -51,10 +52,13 @@ export default function GameControls() {
 	
 	
 	const { publicKey } = useWallet();
+	const { connection } = useConnection();
 	const walletAddress = publicKey?.toBase58() || '';
 	const [overlayVisible, setOverlayVisible] = useState(false);
+	const [walletOverlayVisible, setWalletOverlayVisible] = useState(false);
 	const [betgreaterthan0, setBetgreaterthan0] = useState(false);
 	const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
+	const [walletBalance, setWalletBalance] = useState<number | null>(null);
 	const [demoAmount, setDemoAmount] = useState<string>("0");
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
@@ -177,9 +181,42 @@ export default function GameControls() {
 	const showErrorToast = useEffectEvent(() => {
 		if (errors.length > 0) toast("⚠️ " + errors[errors.length - 1]);
 	});
+	// Check if wallet is valid (not null and has at least 3 figures/0.001 SOL)
+	const isWalletValid = () => {
+		return publicKey && walletBalance;
+	};
+
+	// Get wallet balance when publicKey changes
+	useEffect(() => {
+		const getWalletBalance = async () => {
+			if (publicKey && connection) {
+				try {
+					const balance = await connection.getBalance(publicKey);
+					setWalletBalance(balance / 1000000000); // Convert lamports to SOL
+				} catch (error) {
+					console.error('Error fetching wallet balance:', error);
+					setWalletBalance(null);
+				}
+			} else {
+				setWalletBalance(null);
+			}
+		};
+
+		getWalletBalance();
+	}, [publicKey, connection]);
+
 	const toggleOverlay = () => {
+		// Check if wallet is connected before allowing access to deposit overlay
+		if (!isWalletValid()) {
+			setWalletOverlayVisible(true);
+			return;
+		}
 		setOverlayVisible(!overlayVisible);
-	  };
+	};
+
+	const toggleWalletOverlay = () => {
+		setWalletOverlayVisible(!walletOverlayVisible);
+	};
 	  
 	const red1 = () => {
 		setBetgreaterthan0(!betgreaterthan0);
@@ -338,6 +375,14 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 		</div>
 		</div>
 	   )}
+
+	   <WalletLoginOverlay
+		isOpen={walletOverlayVisible}
+		onClose={toggleWalletOverlay}
+		title="Wallet Connection Required"
+		description="You must connect your wallet before you can make deposits or place bets."
+		action="make deposits or place bets"
+	   />
 	
 			<CardHeader>
 				<CardTitle>Place your bets!</CardTitle>
@@ -395,7 +440,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				<div>
 				<Button  onClick={toggleOverlay} className={styles.BetButton}>
 				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
-					Deposit Chippy</Button></div>
+					{isWalletValid() ? 'Deposit Chippy' : 'Connect Wallet to Deposit'}</Button></div>
 			</CardFooter>
 		</Card>
 	);
