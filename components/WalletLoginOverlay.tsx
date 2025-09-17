@@ -56,7 +56,6 @@ const WalletLoginOverlay: React.FC<WalletLoginOverlayProps> = ({
           </div>
           
           <div className="flex flex-col gap-3">
-            <WalletMultiButton className="w-full" />
             <Button 
               variant="outline" 
               onClick={onClose}
