@@ -44,7 +44,6 @@ export default function UsersPage() {
         <thead className="bg-gray-100">
           <tr>
             <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">Username</th>
             <th className="border px-4 py-2">Wallet</th>
             <th className="border px-4 py-2">SOL</th>
             <th className="border px-4 py-2">CHIPPY</th>
@@ -55,7 +54,6 @@ export default function UsersPage() {
           {users.map((user) => (
             <tr key={user._id}>
               <td className="border px-4 py-2">{user._id}</td>
-              <td className="border px-4 py-2">{user.username}</td>
               <td className="border px-4 py-2">{user.walletAddress || '-'}</td>
               <td className="border px-4 py-2">{user.balances.SOL}</td>
               <td className="border px-4 py-2">{user.balances.CHIPPY}</td>
