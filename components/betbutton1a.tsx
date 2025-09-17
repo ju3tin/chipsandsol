@@ -122,7 +122,7 @@ const Betbutton = ({
 
   // Check if wallet is valid (not null and has at least 3 figures/0.001 SOL)
   const isWalletValid = () => {
-    return publicKey && walletBalance !== null && walletBalance >= 0.001;
+    return publicKey && walletBalance;
   };
 
   const red1 = () => {
