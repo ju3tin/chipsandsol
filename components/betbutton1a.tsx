@@ -664,7 +664,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				<Button  onClick={toggleOverlay} className={styles.BetButton}>
 				<FaWallet className={styles.walletIcon} />
          {/* Icon from FontAwesome */}
-					{isWalletValid() ? 'Deposit Chippy' : 'Connect Wallet to Deposit'}</Button>
+					{isWalletValid() ? 'Deposit Chippy' : 'Deposit Chippy'}</Button>
           </div>
             {/* Active players */}
            {/*  {gameState5.status !== "Waiting" && (
