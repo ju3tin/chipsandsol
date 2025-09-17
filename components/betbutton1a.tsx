@@ -24,6 +24,7 @@ import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
 //import JSConfetti from "js-confetti";
 import { usePressedStore } from '../store/ispressed';
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 
 type BetbuttonProps = {
@@ -72,6 +73,7 @@ const Betbutton = ({
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [walletOverlayVisible, setWalletOverlayVisible] = useState(false);
   const [betAmount, setBetAmount] = useState("0.1");
   const [autoCashoutAt, setAutoCashoutAt] = useState("2");
   const [autoCashOut, setAutoCashOut] = useState<string>("0");
@@ -90,6 +92,11 @@ const Betbutton = ({
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const [newCount, setNewCount] = useState(0);
   const [isButtonPressed1, setIsButtonPressed1] = useState<Boolean>(false);
+  
+  // Wallet validation
+  const { publicKey } = useWallet();
+  const { connection } = useConnection();
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
     
   const handleCopy = () => {
     navigator.clipboard
@@ -107,6 +114,15 @@ const Betbutton = ({
   }
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
+  };
+
+  const toggleWalletOverlay = () => {
+    setWalletOverlayVisible(!walletOverlayVisible);
+  };
+
+  // Check if wallet is valid (not null and has at least 3 figures/0.001 SOL)
+  const isWalletValid = () => {
+    return publicKey && walletBalance !== null && walletBalance >= 0.001;
   };
 
   const red1 = () => {
@@ -176,6 +192,25 @@ useEffect(() => {
   }
 }, [gameState, buttonPressCount, setButtonPressCount, setPressedToZero]);
 
+// Get wallet balance when publicKey changes
+useEffect(() => {
+  const getWalletBalance = async () => {
+    if (publicKey && connection) {
+      try {
+        const balance = await connection.getBalance(publicKey);
+        setWalletBalance(balance / 1000000000); // Convert lamports to SOL
+      } catch (error) {
+        console.error('Error fetching wallet balance:', error);
+        setWalletBalance(null);
+      }
+    } else {
+      setWalletBalance(null);
+    }
+  };
+
+  getWalletBalance();
+}, [publicKey, connection]);
+
   const loseout = () => {
     if (audioRef1.current) {
       audioRef1.current.play();
@@ -209,6 +244,12 @@ useEffect(() => {
   };
 
   const handleButtonPress = () => {
+    // Check wallet validity before proceeding
+    if (!isWalletValid()) {
+      setWalletOverlayVisible(true);
+      return;
+    }
+
     setPressedToOne();
     const currentPressed = usePressedStore.getState().pressed;
     setIsButtonPressed1(true)
@@ -510,6 +551,19 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 		<p>Bet amount must be greater than 0.</p>
 		</div>
 		<button onClick={red1} className="close-overlay-btn">
+			   Close
+			 </button>
+		</div>
+		</div>
+	   )}
+
+	   {walletOverlayVisible && (
+		<div className="overlay">
+			 <div className="message-board-container">
+			 <div className="message-form">
+		<p>You must login and have at least 0.001 SOL to place bets.</p>
+		</div>
+		<button onClick={toggleWalletOverlay} className="close-overlay-btn">
 			   Close
 			 </button>
 		</div>
