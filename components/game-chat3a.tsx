@@ -7,10 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
 import axios from "axios"
-import { useWalletStore } from "../store/walletStore"
+import { useWalletStore } from "../store/walletstore1"
 import { format, isValid } from "date-fns"
 import WalletLoginOverlay from "./WalletLoginOverlay"
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 type ChatMessage = {
   id: string
   sender: string
@@ -27,10 +26,8 @@ type GameChatProps = {
 }
 
 const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
-  // Wallet validation - same pattern as betbutton
-  const { publicKey } = useWallet()
-  const { connection } = useConnection()
-  const [walletBalance, setWalletBalance] = useState<number | null>(null)
+  // Use wallet store to check if user is logged in
+  const { walletAddress } = useWalletStore()
   const [showWalletOverlay, setShowWalletOverlay] = useState(false)
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -47,9 +44,9 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [hasGameStarted, setHasGameStarted] = useState(false)
 
-  // Check if wallet is valid (not null and has at least 3 figures/0.001 SOL) - same as betbutton
+  // Check if wallet is connected using wallet store
   const isWalletValid = () => {
-    return publicKey && walletBalance
+    return !!walletAddress
   }
 
   const toggleWalletOverlay = () => {
@@ -62,24 +59,8 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     return format(date, "hh:mm a")
   }
 
-  // Get wallet balance when publicKey changes - same as betbutton
-  useEffect(() => {
-    const getWalletBalance = async () => {
-      if (publicKey && connection) {
-        try {
-          const balance = await connection.getBalance(publicKey)
-          setWalletBalance(balance / 1000000000) // Convert lamports to SOL
-        } catch (error) {
-          console.error('Error fetching wallet balance:', error)
-          setWalletBalance(null)
-        }
-      } else {
-        setWalletBalance(null)
-      }
-    }
-
-    getWalletBalance()
-  }, [publicKey, connection])
+  // Wallet balance is no longer needed since we're using wallet store
+  // The wallet store only tracks the wallet address, not balance
 
   // ✅ Fetch messages from API (replace instead of merge)
   useEffect(() => {
@@ -222,7 +203,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       ...prev,
       {
         id: tempId,
-        sender: publicKey?.toString().slice(0, 10) || "You",
+        sender: walletAddress?.slice(0, 10) || "You",
         message: messageToSend,
         timestamp,
       },
@@ -231,7 +212,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     setNewMessage("")
 
     const data = {
-      user: publicKey?.toString() || "Unknown",
+      user: walletAddress || "Unknown",
       time: timestamp.toISOString(),
       message: messageToSend,
     }
