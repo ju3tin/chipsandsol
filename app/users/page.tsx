@@ -53,11 +53,11 @@ export default function UsersPage() {
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td className="border px-4 py-2">{user._id}</td>
-              <td className="border px-4 py-2">{user.walletAddress || '-'}</td>
-              <td className="border px-4 py-2">{user.balances.SOL}</td>
-              <td className="border px-4 py-2">{user.balances.CHIPPY}</td>
-              <td className="border px-4 py-2">{user.balances.DEMO}</td>
+              <td style={{color: "black"}} className="border px-4 py-2">{user._id}</td>
+              <td style={{color: "black"}} className="border px-4 py-2">{user.walletAddress || '-'}</td>
+              <td style={{color: "black"}} className="border px-4 py-2">{user.balances.SOL}</td>
+              <td style={{color: "black"}} className="border px-4 py-2">{user.balances.CHIPPY}</td>
+              <td style={{color: "black"}} className="border px-4 py-2">{user.balances.DEMO}</td>
             </tr>
           ))}
         </tbody>
