@@ -54,7 +54,7 @@ export default function BezierVisualizer({ data, autoplay = true, frameIndex: fr
     const safeLength = Math.max(0, series.length);
     const clampedIndex = safeLength > 0 ? Math.min(Math.max(0, frameIndex), safeLength - 1) : 0;
     const current = safeLength > 0 ? series[clampedIndex] : undefined;
-    const initialStart: Point = { x: -50, y: 170 };
+    const initialStart: Point = { x: 0, y: 170 };
     const start: Point = initialStart;
 
     const width = 420;
