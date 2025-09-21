@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { color } from "framer-motion";
 import Image from "next/image";
 
-const startx = -50;
+//const startx = -50;
+const startx = 0;
 const starty = 170;
 
 interface ControlPoint {
