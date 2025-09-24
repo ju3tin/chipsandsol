@@ -90,7 +90,8 @@ export default function SideNav() {
               <button className="wallet-adapter-button wallet-adapter-button-trigger" tabIndex={0} type="button" style={{pointerEvents:'auto'}}>Select Wallet</button>
 */}
                 <WalletContextProvider>
-         <LoginButton />
+                <LoginButton />
+
         {/* <Header /> */} 
               </WalletContextProvider>
             </div>

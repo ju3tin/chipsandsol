@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import QRCode from "react-qr-code";
 import { Tabs, Tab, CardBody } from "@nextui-org/react";
+import Form1 from "./form1";
+import Form2 from "./form2";
 import { FaWallet } from "react-icons/fa";
 import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
@@ -287,13 +289,16 @@ useEffect(() => {
                   <Tabs aria-label="Options">
                     <Tab key="Chippydeposit" title="Deposit">
                       <Card>
+                        
                         <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+                      
                           <QRCode
                             size={256}
                             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                             value="Deposit Address Here"
                             viewBox="0 0 256 256"
                           />
+                            <Form1 />
                           <p>{textToCopy}</p>
                           <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
                             {copied ? "Copied!" : "Copy to Clipboard"}
@@ -303,6 +308,7 @@ useEffect(() => {
                     </Tab>
                     <Tab key="ChippyWithdraw" title="Withdraw">
                       <Card>
+                        <Form2 />
                         <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
                           <Label>Amount</Label>
                           <Input type="text" placeholder="SOL" />
@@ -326,6 +332,7 @@ useEffect(() => {
                             value="Deposit Address Here"
                             viewBox="0 0 256 256"
                           />
+                          <Form1 />
                           <p>{textToCopy}</p>
                           <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
                             {copied ? "Copied!" : "Copy to Clipboard"}
@@ -427,6 +434,7 @@ useEffect(() => {
     value='fuck you'
     viewBox={`0 0 256 256`}
   />
+  <Form1 />
         <p>{textToCopy}</p>
       <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
         {copied ? "Copied!" : "Copy to Clipboard"}

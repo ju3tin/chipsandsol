@@ -72,7 +72,7 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
-             <LoginButton />
+            <LoginButton onClick={() => setIsOpen(false)} />
             </div>
           </SheetContent>
         </Sheet>
