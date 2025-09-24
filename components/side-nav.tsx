@@ -20,11 +20,15 @@ import {
 import { NavItems } from '@/config';
 import { cn } from '@/lib/utils2';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useIsMobile } from '@/components/ui/use-mobile';
+import { useRouter } from 'next/navigation';
 
 //import { ThemeToggle } from '../components/theme-toggle';
 
 export default function SideNav() {
   const navItems = NavItems();
+  const isMobile = useIsMobile();
+  const router = useRouter();
 
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -90,7 +94,15 @@ export default function SideNav() {
               <button className="wallet-adapter-button wallet-adapter-button-trigger" tabIndex={0} type="button" style={{pointerEvents:'auto'}}>Select Wallet</button>
 */}
                 <WalletContextProvider>
-                <LoginButton />
+                <LoginButton
+                  onPress={() => {
+                    if (isMobile) {
+                      router.push('/login');
+                    } else if (isSidebarExpanded) {
+                      setIsSidebarExpanded(false);
+                    }
+                  }}
+                />
 
         {/* <Header /> */} 
               </WalletContextProvider>
