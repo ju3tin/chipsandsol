@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+//import { useGameStore, GameState } from "../store/gameStore";
+// import { controlPoints } from "./controlPoints";
+import { color } from "framer-motion";
 import Image from "next/image";
 
+//const startx = -50;
 const startx = 0;
 const starty = 170;
 
@@ -20,27 +24,26 @@ interface GameVisualProps {
   betAmount: string;
   Gametimeremaining: number;
   GameStatus: string;
-  tValues: { number: number; color: string; svg: string }[];
+  tValues: {
+    number: number;
+    color: string;
+    svg: string;
+  }[];
 }
 
-const GameVisual: React.FC<GameVisualProps> = ({
-  Gametimeremaining,
-  GameStatus,
-  currentMultiplier,
-  dude55,
-  dude56,
-  betAmount,
-  tValues,
-}) => {
+const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, currentMultiplier, dude55, dude56, betAmount, tValues }) => {
+//  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
+  const backgroundImage = useRef<HTMLDivElement | null>(null);
+
   const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
-  const currentAngleRef = useRef<number>(0); // Persistent rotation angle
-  const segmentStartAngleRef = useRef<number>(0); // Angle at the start of the segment
-  const segmentTargetAngleRef = useRef<number>(0); // Target angle for the segment
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const tValuesRef = useRef(tValues);
   const dude55Ref = useRef(dude55);
+
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
 
   useEffect(() => {
@@ -49,7 +52,11 @@ const GameVisual: React.FC<GameVisualProps> = ({
   }, [tValues, dude55]);
 
   useEffect(() => {
-    if (!isNaN(Gametimeremaining)) {
+    if (isNaN(Gametimeremaining)) {
+      // If timeRemaining is NaN, keep the previous value
+      return;
+    } else {
+      // Otherwise, update previousTimeRemaining with the current timeRemaining
       setPreviousTimeRemaining(Gametimeremaining);
     }
   }, [Gametimeremaining]);
@@ -75,13 +82,16 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const fish = fishRef.current;
+    if (!canvas || !fish) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
     if (controlPoints.length === 0) return;
 
     let t = 0;
     let transitionIndex = 0;
+
     let currentCP1 = { x: startx, y: starty };
     let currentCP2 = { x: startx, y: starty };
     let currentPointB = { x: startx, y: starty };
@@ -89,17 +99,13 @@ const GameVisual: React.FC<GameVisualProps> = ({
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
 
-    // Initialize angles for the first segment
-    segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
-    segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
-    currentAngleRef.current = segmentStartAngleRef.current;
-
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
       const tt = t * t;
-      const uu = u * u;
+      const uu = u * u; 
       const uuu = uu * u;
       const ttt = tt * t;
+
       const x = uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x;
       const y = uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y;
       return { x, y };
@@ -109,18 +115,29 @@ const GameVisual: React.FC<GameVisualProps> = ({
       const u = 1 - t;
       const tt = t * t;
       const uu = u * u;
+
       const dx = -3 * uu * p0.x + 3 * (uu - 2 * u * t) * p1.x + 3 * (2 * t * u - tt) * p2.x + 3 * tt * p3.x;
       const dy = -3 * uu * p0.y + 3 * (uu - 2 * u * t) * p1.y + 3 * (2 * t * u - tt) * p2.y + 3 * tt * p3.y;
       return Math.atan2(dy, dx);
     }
 
+    let logged = false; // 👈 add this at top of useEffect
+
+    let loggednum = 0;
+/*
+    const tValues = [
+      { number: 0.2, color: 'blue', svg: '/31832.png' },
+      { number: 0.5, color: 'red', svg: '/sol.svg' },
+      { number: 0.75, color: 'orange', svg: '/demo.svg' }
+    ];
+*/
+
     const fish1 = new window.Image();
-    fish1.src = "/images/chippy.svg";
+    fish1.src = "/images/chippy.svg"; // Use your actual path
     fish1.onload = () => {
       requestAnimationFrame(animate);
     };
 
-    let logged = false;
 
     function animate() {
       if (!canvas || !ctx || !fish1.complete) return;
@@ -141,7 +158,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw dots
+      // 🟠 Draw dots
       tValues.forEach((dotT) => {
         const { x, y } = getBezierPoint(
           dotT.number,
@@ -150,61 +167,46 @@ const GameVisual: React.FC<GameVisualProps> = ({
           { x: cp2x, y: cp2y },
           { x: pointBx, y: pointBy }
         );
+
         const img = new window.Image();
         img.src = dotT.svg;
+
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
         ctx.fillStyle = dotT.color;
         ctx.fill();
+
         img.onload = () => {
           ctx.drawImage(img, x - 8, y - 8, 20, 20);
         };
       });
 
-      // Calculate the target angle from the Bezier tangent
-      const targetAngle = getBezierTangent(t, 
+      // 🐟 Draw fish1 at the end of the curve (pointB) with rotation
+      ctx.save();
+      ctx.translate(pointBx, pointBy);
+      
+      // Calculate the angle of the curve at the current point
+      const angle = getBezierTangent(t, 
         { x: startx, y: starty },
         { x: cp1x, y: cp1y },
         { x: cp2x, y: cp2y },
         { x: pointBx, y: pointBy }
       );
-
-      // Interpolate between segmentStartAngle and segmentTargetAngle based on t
-      let startAngle = segmentStartAngleRef.current;
-      let endAngle = segmentTargetAngleRef.current;
-      // Shortest path interpolation
-      let delta = endAngle - startAngle;
-      delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
-      let interpAngle = startAngle + delta * t;
-      currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-
-      // Debugging: Log angle and segment info
-      console.log(
-        `Segment: ${transitionIndex}, t: ${t.toFixed(3)}, ` +
-        `Angle: ${(currentAngleRef.current * 180 / Math.PI).toFixed(2)} deg, ` +
-        `Position: (${pointBx.toFixed(1)}, ${pointBy.toFixed(1)})`
-      );
-
-      // Draw fish with the smoothed angle
-      ctx.save();
-      ctx.translate(pointBx, pointBy);
-      ctx.rotate(currentAngleRef.current);
-      ctx.drawImage(fish1, -25, -25, 50, 50);
+      
+      // Rotate the fish to match the curve direction
+      ctx.rotate(angle);
+      ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust position/size as needed
       ctx.restore();
 
       pointBRef.current = { x: pointBx, y: pointBy };
 
       t += 0.01;
 
-      if (t > 1) {
+      if (t <= 1) {
+        curveAnimationRef.current = requestAnimationFrame(animate);
+      } else {
         if (controlPoints.length === 0) return;
         transitionIndex = (transitionIndex + 1) % controlPoints.length;
-        console.log(
-          `Transition to segment ${transitionIndex}: ` +
-          `CP1(${controlPoints[transitionIndex].cp1.x}, ${controlPoints[transitionIndex].cp1.y}), ` +
-          `CP2(${controlPoints[transitionIndex].cp2.x}, ${controlPoints[transitionIndex].cp2.y}), ` +
-          `PointB(${controlPoints[transitionIndex].pointB.x}, ${controlPoints[transitionIndex].pointB.y})`
-        );
         t = 0;
         currentCP1 = targetCP1;
         currentCP2 = targetCP2;
@@ -212,31 +214,24 @@ const GameVisual: React.FC<GameVisualProps> = ({
         targetCP1 = controlPoints[transitionIndex].cp1;
         targetCP2 = controlPoints[transitionIndex].cp2;
         targetPointB = controlPoints[transitionIndex].pointB;
-        // Set up angles for the new segment
-        segmentStartAngleRef.current = currentAngleRef.current;
-        segmentTargetAngleRef.current = getBezierTangent(1, 
-          { x: startx, y: starty },
-          targetCP1,
-          targetCP2,
-          targetPointB
-        );
-        console.log(
-          `New segment initial tangent: ${(segmentStartAngleRef.current * 180 / Math.PI).toFixed(2)} deg, target: ${(segmentTargetAngleRef.current * 180 / Math.PI).toFixed(2)} deg`
-        );
+        curveAnimationRef.current = requestAnimationFrame(animate);
       }
-
-      curveAnimationRef.current = requestAnimationFrame(animate);
     }
+
+
 
     if (dude55 && !logged) {
       console.log("Recording t because dude55 is true:", t.toFixed(4));
-      logged = true;
+      logged = true; // prevent multiple logs
+      loggednum = t;
     }
 
     if (GameStatus === "Running") {
       animate();
-    } else if (curveAnimationRef.current) {
-      cancelAnimationFrame(curveAnimationRef.current);
+    } else {
+      if (curveAnimationRef.current) {
+        cancelAnimationFrame(curveAnimationRef.current);
+      }
     }
 
     return () => {
@@ -244,15 +239,15 @@ const GameVisual: React.FC<GameVisualProps> = ({
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [GameStatus, dude55, controlPoints]);
+  }, [GameStatus, dude55, controlPoints]); // ❗ added controlPoints here
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
-      <Image
-        src="/images/123b.png"
-        alt="Background image"
+      <Image 
+        src="/images/123b.png" 
+        alt="Background image" 
         fill
-        className="relative rounded-lg overflow-hidden"
+        className="relative rounded-lg overflow-hidden" 
       />
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
@@ -262,104 +257,103 @@ const GameVisual: React.FC<GameVisualProps> = ({
             height={200}
             className="w-full h-full"
           />
-          <span
-            style={{
-              top: "100px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-              color:
-                currentMultiplier > 5
-                  ? "red"
-                  : currentMultiplier > 2
-                  ? "yellow"
-                  : "white",
-              fontSize: "2rem",
-            }}
-          >
-            {currentMultiplier}x
-          </span>
-          {dude55 && (
-            <div
-              className="absolute w-4 h-4 bg-red-500 rounded-full"
-              style={{
-                left: pointBRef.current.x - currentMultiplier * 10,
-                top: pointBRef.current.y + currentMultiplier * 5,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              {dude56} and your bet amount {betAmount}
-            </div>
+          {GameStatus === "Running" && (
+            <>
+              <span style={{ 
+                top: '100px', 
+                left: '50%', 
+                transform: 'translateX(-50%)', 
+                display: 'block', 
+                position: 'absolute',
+                color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
+                fontSize: '2rem',
+               // fontWeight: 'bold'
+              }}>
+                {currentMultiplier}x
+              </span>
+
+              {/* 🛑 Draw RED dot moving based on multiplier */}
+              {dude55 && (
+                <div
+                  className="absolute w-4 h-4 bg-red-500 rounded-full"
+                  style={{
+                    left: pointBRef.current.x - currentMultiplier * 10, // ← move left
+                    top: pointBRef.current.y + currentMultiplier * 5,   // ↓ move downward
+                    transform: "translate(-50%, -50%)",
+                  }}>{dude56} and your bet amount {betAmount}</div>
+               
+              )}
+            </>
           )}
+          <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
+          <Image
+            src="/images/chippy.svg"
+            alt="End Fish"
+            width={24}
+            height={24}
+            className="absolute w-6 h-6"
+            style={{
+              transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
+            }}
+          />
+          </div>
         </div>
       )}
       {GameStatus === "Crashed" && (
-        <>
-          <span
-            style={{
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-            }}
-          >
-            <Image
-              width={275}
-              height={275}
-              src="/explode1.svg"
-              alt="Explosion effect"
-            />
+          <>
+          
+
+          <span style={{ 
+            
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            display: 'block', 
+            position: 'absolute',
+          }}>
+            <Image width={275} height={275} src="/explode1.svg" alt="Explosion effect" />
           </span>
-          <span
-            style={{
-              top: "100px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-              color:
-                currentMultiplier > 5
-                  ? "red"
-                  : currentMultiplier > 2
-                  ? "yellow"
-                  : "white",
-              fontSize: "2rem",
-            }}
-          >
+
+
+
+          <span style={{ 
+            top: '100px', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            display: 'block', 
+            position: 'absolute',
+            color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
+            fontSize: '2rem',
+           // fontWeight: 'bold'
+          }}>
             {currentMultiplier}x
           </span>
-        </>
+          </>
       )}
       {GameStatus === "Waiting" && (
-        <span
-          style={{
-            top: "100px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "block",
-            position: "absolute",
-            color: "white",
-            fontSize: "2rem",
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          Launch in{" "}
-          {typeof Gametimeremaining === "number" && !isNaN(Gametimeremaining) ? (
-            <>
-              {Gametimeremaining}{" "}
-              {Gametimeremaining > 1 ? "secs" : "sec"}
-            </>
-          ) : (
-            <>
-              {previousTimeRemaining}{" "}
-              {previousTimeRemaining != null && previousTimeRemaining > 1
-                ? "secs"
-                : "sec"}
-            </>
-          )}
-        </span>
+        <>
+         <span style={{ 
+                top: '100px', 
+                left: '50%', 
+                transform: 'translateX(-50%)', 
+                display: 'block', 
+                position: 'absolute',
+                color: 'white',
+                fontSize: '2rem',
+                width: '100%',
+                textAlign: 'center',
+               // fontWeight: 'bold'
+              }}>
+                Launch in
+                {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) ? (
+                  <> {Gametimeremaining} {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) && Gametimeremaining > 1 ? `secs` : `sec`)}</>
+                    ) : (
+                      <> {previousTimeRemaining} {previousTimeRemaining != null && previousTimeRemaining > 1 ? 'secs' : 'sec'}
+</>
+                    )
+                  )}
+
+              </span>
+        </>
       )}
     </div>
   );
