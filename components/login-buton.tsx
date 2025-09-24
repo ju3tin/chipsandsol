@@ -42,7 +42,7 @@ function WalletButtonWrapper() {
 
     return connected ? <WalletMultiButton /> : <CustomWalletButton />;
 }
-function LoginButton() {
+function LoginButton() { 
     const network = "https://rpc.test.honeycombprotocol.com";
     const endpoint = useMemo(() => network, []);
   
