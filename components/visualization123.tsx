@@ -1,12 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-//import { useGameStore, GameState } from "../store/gameStore";
-// import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
 import Image from "next/image";
 
-//const startx = -50;
 const startx = 0;
 const starty = 170;
 
@@ -31,19 +28,22 @@ interface GameVisualProps {
   }[];
 }
 
-const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, currentMultiplier, dude55, dude56, betAmount, tValues }) => {
-//  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
-
+const GameVisual: React.FC<GameVisualProps> = ({
+  Gametimeremaining,
+  GameStatus,
+  currentMultiplier,
+  dude55,
+  dude56,
+  betAmount,
+  tValues,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
-  const backgroundImage = useRef<HTMLDivElement | null>(null);
-
   const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const tValuesRef = useRef(tValues);
   const dude55Ref = useRef(dude55);
-
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
 
   useEffect(() => {
@@ -53,10 +53,8 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
 
   useEffect(() => {
     if (isNaN(Gametimeremaining)) {
-      // If timeRemaining is NaN, keep the previous value
       return;
     } else {
-      // Otherwise, update previousTimeRemaining with the current timeRemaining
       setPreviousTimeRemaining(Gametimeremaining);
     }
   }, [Gametimeremaining]);
@@ -64,7 +62,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
   useEffect(() => {
     async function fetchControlPoints() {
       try {
-        const response = await fetch('/api/bezier');
+        const response = await fetch("/api/bezier");
         const data = await response.json();
         if (!data || !data.frames) return;
         const mappedPoints = data.frames.map((frame: any) => ({
@@ -74,7 +72,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
         }));
         setControlPoints(mappedPoints);
       } catch (error) {
-        console.error('Error fetching control points:', error);
+        console.error("Error fetching control points:", error);
       }
     }
     fetchControlPoints();
@@ -86,23 +84,47 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
     if (!canvas || !fish) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
     if (controlPoints.length === 0) return;
 
-    let t = 0;
-    let transitionIndex = 0;
+    // Preload dot images to prevent flickering
+    const dotImages = tValues.map((dot) => {
+      const img = new window.Image();
+      img.src = dot.svg;
+      return img;
+    });
 
-    let currentCP1 = { x: startx, y: starty };
-    let currentCP2 = { x: startx, y: starty };
-    let currentPointB = { x: startx, y: starty };
-    let targetCP1 = controlPoints[0].cp1;
-    let targetCP2 = controlPoints[0].cp2;
-    let targetPointB = controlPoints[0].pointB;
+    const fish1 = new window.Image();
+    fish1.src = "/images/chippy.svg";
+
+    // Calculate position and tangent based on currentMultiplier
+    const getMultiplierPosition = (multiplier: number) => {
+      // Map multiplier to t (0-1) and segment
+      const maxMultiplierPerSegment = 10; // Adjust based on your game logic
+      const segmentIndex = Math.floor(multiplier / maxMultiplierPerSegment);
+      const segmentT = (multiplier % maxMultiplierPerSegment) / maxMultiplierPerSegment;
+
+      let cp1 = { x: startx, y: starty };
+      let cp2 = { x: startx, y: starty };
+      let pointB = { x: startx, y: starty };
+
+      if (segmentIndex < controlPoints.length) {
+        cp1 = controlPoints[segmentIndex].cp1;
+        cp2 = controlPoints[segmentIndex].cp2;
+        pointB = controlPoints[segmentIndex].pointB;
+      }
+
+      const prevPointB = segmentIndex > 0 ? controlPoints[segmentIndex - 1].pointB : { x: startx, y: starty };
+
+      const position = getBezierPoint(segmentT, prevPointB, cp1, cp2, pointB);
+      const tangent = getBezierTangent(segmentT, prevPointB, cp1, cp2, pointB);
+
+      return { position, tangent, curvePoints: { cp1, cp2, pointB } };
+    };
 
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
       const tt = t * t;
-      const uu = u * u; 
+      const uu = u * u;
       const uuu = uu * u;
       const ttt = tt * t;
 
@@ -121,117 +143,76 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
       return Math.atan2(dy, dx);
     }
 
-    let logged = false; // 👈 add this at top of useEffect
-
-    let loggednum = 0;
-/*
-    const tValues = [
-      { number: 0.2, color: 'blue', svg: '/31832.png' },
-      { number: 0.5, color: 'red', svg: '/sol.svg' },
-      { number: 0.75, color: 'orange', svg: '/demo.svg' }
-    ];
-*/
-
-    const fish1 = new window.Image();
-    fish1.src = "/images/chippy.svg"; // Use your actual path
-    fish1.onload = () => {
-      requestAnimationFrame(animate);
-    };
-
+    let logged = false;
 
     function animate() {
       if (!canvas || !ctx || !fish1.complete) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.moveTo(startx, starty);
 
-      const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
-      const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
-      const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
-      const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
-      const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
-      const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
+      // Get current position and tangent based on multiplier
+      const { position, tangent, curvePoints } = getMultiplierPosition(currentMultiplier);
 
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // 🟠 Draw dots
-      tValues.forEach((dotT) => {
-        const { x, y } = getBezierPoint(
-          dotT.number,
-          { x: startx, y: starty },
-          { x: cp1x, y: cp1y },
-          { x: cp2x, y: cp2y },
-          { x: pointBx, y: pointBy }
-        );
-
-        const img = new window.Image();
-        img.src = dotT.svg;
-
+      // Draw the curve up to the current point
+      if (curvePoints) {
         ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = dotT.color;
-        ctx.fill();
+        ctx.moveTo(startx, starty);
+        const prevPointB = Math.floor(currentMultiplier / 10) > 0 ? controlPoints[Math.floor(currentMultiplier / 10) - 1].pointB : { x: startx, y: starty };
+        ctx.bezierCurveTo(curvePoints.cp1.x, curvePoints.cp1.y, curvePoints.cp2.x, curvePoints.cp2.y, position.x, position.y);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
 
-        img.onload = () => {
-          ctx.drawImage(img, x - 8, y - 8, 20, 20);
-        };
+      // Draw dots
+      tValues.forEach((dotT, index) => {
+        if (dotT.number * 10 <= currentMultiplier) {
+          const dotPos = getBezierPoint(
+            dotT.number,
+            { x: startx, y: starty },
+            curvePoints?.cp1 || { x: startx, y: starty },
+            curvePoints?.cp2 || { x: startx, y: starty },
+            position
+          );
+
+          ctx.beginPath();
+          ctx.arc(dotPos.x, dotPos.y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = dotT.color;
+          ctx.fill();
+
+          if (dotImages[index].complete) {
+            ctx.drawImage(dotImages[index], dotPos.x - 8, dotPos.y - 8, 20, 20);
+          }
+        }
       });
 
-      // 🐟 Draw fish1 at the end of the curve (pointB) with rotation
+      // Draw fish with smooth rotation
       ctx.save();
-      ctx.translate(pointBx, pointBy);
-      
-      // Calculate the angle of the curve at the current point
-      const angle = getBezierTangent(t, 
-        { x: startx, y: starty },
-        { x: cp1x, y: cp1y },
-        { x: cp2x, y: cp2y },
-        { x: pointBx, y: pointBy }
-      );
-      
-      // Rotate the fish to match the curve direction
-      ctx.rotate(angle);
-      ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust position/size as needed
+      ctx.translate(position.x, position.y);
+      ctx.rotate(tangent);
+      ctx.drawImage(fish1, -25, -25, 50, 50);
       ctx.restore();
 
-      pointBRef.current = { x: pointBx, y: pointBy };
+      pointBRef.current = position;
 
-      t += 0.01;
+      if (dude55 && !logged) {
+        console.log("Recording multiplier because dude55 is true:", currentMultiplier.toFixed(4));
+        logged = true;
+      }
 
-      if (t <= 1) {
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      } else {
-        if (controlPoints.length === 0) return;
-        transitionIndex = (transitionIndex + 1) % controlPoints.length;
-        t = 0;
-        currentCP1 = targetCP1;
-        currentCP2 = targetCP2;
-        currentPointB = targetPointB;
-        targetCP1 = controlPoints[transitionIndex].cp1;
-        targetCP2 = controlPoints[transitionIndex].cp2;
-        targetPointB = controlPoints[transitionIndex].pointB;
+      if (GameStatus === "Running") {
         curveAnimationRef.current = requestAnimationFrame(animate);
       }
     }
 
-
-
-    if (dude55 && !logged) {
-      console.log("Recording t because dude55 is true:", t.toFixed(4));
-      logged = true; // prevent multiple logs
-      loggednum = t;
-    }
-
-    if (GameStatus === "Running") {
-      animate();
-    } else {
-      if (curveAnimationRef.current) {
-        cancelAnimationFrame(curveAnimationRef.current);
+    fish1.onload = () => {
+      if (GameStatus === "Running") {
+        animate();
       }
+    };
+
+    if (GameStatus !== "Running" && curveAnimationRef.current) {
+      cancelAnimationFrame(curveAnimationRef.current);
     }
 
     return () => {
@@ -239,121 +220,115 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [GameStatus, dude55, controlPoints]); // ❗ added controlPoints here
+  }, [GameStatus, dude55, controlPoints, currentMultiplier]);
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
-      <Image 
-        src="/images/123b.png" 
-        alt="Background image" 
+      <Image
+        src="/images/123b.png"
+        alt="Background image"
         fill
-        className="relative rounded-lg overflow-hidden" 
+        className="relative rounded-lg overflow-hidden"
       />
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
-          <canvas
-            ref={canvasRef}
-            width={400}
-            height={200}
-            className="w-full h-full"
-          />
-          {GameStatus === "Running" && (
-            <>
-              <span style={{ 
-                top: '100px', 
-                left: '50%', 
-                transform: 'translateX(-50%)', 
-                display: 'block', 
-                position: 'absolute',
-                color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
-                fontSize: '2rem',
-               // fontWeight: 'bold'
-              }}>
-                {currentMultiplier}x
-              </span>
-
-              {/* 🛑 Draw RED dot moving based on multiplier */}
-              {dude55 && (
-                <div
-                  className="absolute w-4 h-4 bg-red-500 rounded-full"
-                  style={{
-                    left: pointBRef.current.x - currentMultiplier * 10, // ← move left
-                    top: pointBRef.current.y + currentMultiplier * 5,   // ↓ move downward
-                    transform: "translate(-50%, -50%)",
-                  }}>{dude56} and your bet amount {betAmount}</div>
-               
-              )}
-            </>
-          )}
-          <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
-          <Image
-            src="/images/chippy.svg"
-            alt="End Fish"
-            width={24}
-            height={24}
-            className="absolute w-6 h-6"
+          <canvas ref={canvasRef} width={400} height={200} className="w-full h-full" />
+          <span
             style={{
-              transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
+              top: "100px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "block",
+              position: "absolute",
+              color: currentMultiplier > 5 ? "red" : currentMultiplier > 2 ? "yellow" : "white",
+              fontSize: "2rem",
             }}
-          />
+          >
+            {currentMultiplier}x
+          </span>
+          {dude55 && (
+            <div
+              className="absolute w-4 h-4 bg-red-500 rounded-full"
+              style={{
+                left: pointBRef.current.x,
+                top: pointBRef.current.y,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              {dude56} and your bet amount {betAmount}
+            </div>
+          )}
+          <div style={{ display: "none" }} ref={fishRef} className="absolute w-6 h-6">
+            <Image
+              src="/images/chippy.svg"
+              alt="End Fish"
+              width={24}
+              height={24}
+              className="absolute w-6 h-6"
+              style={{
+                transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px)`,
+                marginTop: "-150px",
+              }}
+            />
           </div>
         </div>
       )}
       {GameStatus === "Crashed" && (
-          <>
-          
-
-          <span style={{ 
-            
-            left: '50%', 
-            transform: 'translateX(-50%)', 
-            display: 'block', 
-            position: 'absolute',
-          }}>
+        <>
+          <span
+            style={{
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "block",
+              position: "absolute",
+            }}
+          >
             <Image width={275} height={275} src="/explode1.svg" alt="Explosion effect" />
           </span>
-
-
-
-          <span style={{ 
-            top: '100px', 
-            left: '50%', 
-            transform: 'translateX(-50%)', 
-            display: 'block', 
-            position: 'absolute',
-            color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
-            fontSize: '2rem',
-           // fontWeight: 'bold'
-          }}>
+          <span
+            style={{
+              top: "100px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "block",
+              position: "absolute",
+              color: currentMultiplier > 5 ? "red" : currentMultiplier > 2 ? "yellow" : "white",
+              fontSize: "2rem",
+            }}
+          >
             {currentMultiplier}x
           </span>
-          </>
+        </>
       )}
       {GameStatus === "Waiting" && (
-        <>
-         <span style={{ 
-                top: '100px', 
-                left: '50%', 
-                transform: 'translateX(-50%)', 
-                display: 'block', 
-                position: 'absolute',
-                color: 'white',
-                fontSize: '2rem',
-                width: '100%',
-                textAlign: 'center',
-               // fontWeight: 'bold'
-              }}>
-                Launch in
-                {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) ? (
-                  <> {Gametimeremaining} {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) && Gametimeremaining > 1 ? `secs` : `sec`)}</>
-                    ) : (
-                      <> {previousTimeRemaining} {previousTimeRemaining != null && previousTimeRemaining > 1 ? 'secs' : 'sec'}
-</>
-                    )
-                  )}
-
-              </span>
-        </>
+        <span
+          style={{
+            top: "100px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "block",
+            position: "absolute",
+            color: "white",
+            fontSize: "2rem",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          Launch in
+          {typeof Gametimeremaining === "number" && !isNaN(Gametimeremaining) ? (
+            <>
+              {" "}
+              {Gametimeremaining}{" "}
+              {Gametimeremaining > 1 ? "secs" : "sec"}
+            </>
+          ) : (
+            <>
+              {" "}
+              {previousTimeRemaining}{" "}
+              {previousTimeRemaining != null && previousTimeRemaining > 1 ? "secs" : "sec"}
+            </>
+          )}
+        </span>
       )}
     </div>
   );
