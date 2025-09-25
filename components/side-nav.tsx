@@ -20,12 +20,13 @@ import {
 import { NavItems } from '@/config';
 import { cn } from '@/lib/utils2';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useWindowSize } from "@/hooks/useWindowSize"; // adjust path as needed
 
 //import { ThemeToggle } from '../components/theme-toggle';
 
 export default function SideNav() {
   const navItems = NavItems();
-
+  const width = useWindowSize();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = window.localStorage.getItem('sidebarExpanded');
@@ -64,6 +65,8 @@ export default function SideNav() {
           'border-r transition-all duration-300 ease-in-out transform hidden sm:flex h-full',
         )}
       >
+ 
+
         <aside className="flex h-full flex-col w-full break-words px-4 overflow-x-hidden columns-1">
           {/* Top */}
           <div className="mt-4 relative pb-2">
@@ -93,6 +96,7 @@ export default function SideNav() {
          <LoginButton />
         {/* <Header /> */} 
               </WalletContextProvider>
+             
             </div>
           </div>
           {/* Bottom */}

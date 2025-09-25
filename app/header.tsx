@@ -1,9 +1,11 @@
 'use client';
-
+import { flushSync } from 'react-dom';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from "next/image";
 import LoginButton from '@/components/login-buton';
+import { useWindowSize } from "@/hooks/useWindowSize"; // adjust path as needed
+
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -20,6 +22,7 @@ import { NavItems } from '@/config';
 import { Menu } from 'lucide-react';
 
 export default function Header() {
+  const width = useWindowSize();
   const navItems = NavItems();
   const [isOpen, setIsOpen] = useState(false);
   const handleWalletConnect = (address: string) => {
@@ -72,7 +75,10 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
-             <LoginButton />
+             {width !== undefined && width <= 768 && (
+  <>
+    <LoginButton onClick={() => flushSync(() => setIsOpen(false))} /> </>
+ )}
             </div>
           </SheetContent>
         </Sheet>
