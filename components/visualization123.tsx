@@ -94,6 +94,18 @@ const GameVisual: React.FC<GameVisualProps> = ({
     segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
     currentAngleRef.current = segmentStartAngleRef.current;
 
+    if (GameStatus === "Crashed") {
+      currentAngleRef.current = 0;
+      segmentStartAngleRef.current = 0;
+      segmentTargetAngleRef.current = 0;
+    }
+if (GameStatus === "Waiting") {
+  currentAngleRef.current = 0;
+  segmentStartAngleRef.current = 0;
+  segmentTargetAngleRef.current = 0;
+}
+
+
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
       const tt = t * t;
@@ -168,6 +180,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         { x: cp2x, y: cp2y },
         { x: pointBx, y: pointBy }
       );
+     
 
       // Interpolate between segmentStartAngle and segmentTargetAngle based on t
       let startAngle = segmentStartAngleRef.current;
@@ -177,6 +190,21 @@ const GameVisual: React.FC<GameVisualProps> = ({
       delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
       let interpAngle = startAngle + delta * t;
       currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
+
+      if (GameStatus === "Waiting") {
+        currentAngleRef.current = 0;
+        segmentStartAngleRef.current = 0;
+        segmentTargetAngleRef.current = 0;
+        startAngle = 0;
+        endAngle = 0;
+      }
+      if (GameStatus === "Crashed") {
+        currentAngleRef.current = 0;
+        segmentStartAngleRef.current = 0;
+        segmentTargetAngleRef.current = 0;
+        startAngle = 0;
+        endAngle = 0;
+      }
 
       // Debugging: Log angle and segment info
       console.log(
@@ -239,6 +267,12 @@ const GameVisual: React.FC<GameVisualProps> = ({
       cancelAnimationFrame(curveAnimationRef.current);
     }
 if (GameStatus === "Waiting") {
+  currentAngleRef.current = 0;
+  segmentStartAngleRef.current = 0;
+  segmentTargetAngleRef.current = 0;
+  
+}
+if (GameStatus === "Crashed") {
   currentAngleRef.current = 0;
   segmentStartAngleRef.current = 0;
   segmentTargetAngleRef.current = 0;
