@@ -57,7 +57,7 @@ export default function SideNav() {
   };
 
   return (
-    <div className="pr-4">
+    <div className="prdog">
       <div
         className={cn(
           isSidebarExpanded ? 'w-[200px]' : 'w-[68px]',
