@@ -12,9 +12,9 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 import { Wallet } from 'lucide-react';
 import { setWalletAddress } from '../store/walletStore';
 import { useWalletStore } from '../store/walletStore';
-function CustomWalletButton({ onClick }: { onClick?: () => void }) {
+function CustomWalletButton() {
     return (
-        <WalletMultiButton style={{ fontSize: '14px' }} className="custom-wallet-button" onClick={onClick}>
+        <WalletMultiButton style={{ fontSize: '14px' }} className="custom-wallet-button">
             <Wallet className="w-5 h-5 mr-2" />
             Select Wallet
         </WalletMultiButton>
@@ -28,7 +28,7 @@ const handleWalletConnect = (address: string) => {
 };
 
 
-function WalletButtonWrapper({ onClick }: { onClick?: () => void }) {
+function WalletButtonWrapper() {
     const { connected, publicKey } = useWallet();
     const setWalletAddress = useWalletStore((state) => state.setWalletAddress);
 
@@ -40,9 +40,9 @@ function WalletButtonWrapper({ onClick }: { onClick?: () => void }) {
         }
     }, [connected, publicKey, setWalletAddress]);
 
-    return connected ? <WalletMultiButton onClick={onClick} /> : <CustomWalletButton onClick={onClick} />;
+    return connected ? <WalletMultiButton /> : <CustomWalletButton />;
 }
-function LoginButton() { 
+function LoginButton() {
     const network = "https://rpc.test.honeycombprotocol.com";
     const endpoint = useMemo(() => network, []);
   
@@ -52,7 +52,6 @@ function LoginButton() {
     ], []);
 
     return (
-        <>
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
@@ -60,7 +59,6 @@ function LoginButton() {
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
-        </>
     );
 }
 
