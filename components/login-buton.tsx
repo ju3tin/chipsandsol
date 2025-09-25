@@ -56,7 +56,7 @@ function LoginButton({ onClick }: { onClick?: () => void }) {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    <WalletButtonWrapper onClick={onClick} />
+                    <WalletButtonWrapper />
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
