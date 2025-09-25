@@ -88,12 +88,16 @@ const GameVisual: React.FC<GameVisualProps> = ({
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
-
+if (GameStatus === "Running") {
     // Initialize angles for the first segment
     segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
     segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
     currentAngleRef.current = segmentStartAngleRef.current;
-
+}else{
+  segmentStartAngleRef.current = 0;
+  segmentTargetAngleRef.current = 0;
+  currentAngleRef.current = 0;
+}
     if (GameStatus === "Crashed") {
       currentAngleRef.current = 0;
       segmentStartAngleRef.current = 0;
@@ -199,7 +203,7 @@ if (GameStatus === "Running") {
         segmentTargetAngleRef.current = 0;
         let startAngle = 0;
         let endAngle = 0;
-        let delta = endAngle - startAngle;
+        let delta = 0
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
   
@@ -210,7 +214,7 @@ if (GameStatus === "Running") {
         segmentTargetAngleRef.current = 0;
         let startAngle = 0;
         let endAngle = 0;
-        let delta = endAngle - startAngle;
+        let delta = 0;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
   
@@ -251,13 +255,18 @@ if (GameStatus === "Running") {
         targetCP2 = controlPoints[transitionIndex].cp2;
         targetPointB = controlPoints[transitionIndex].pointB;
         // Set up angles for the new segment
+        if (GameStatus === "Running") {
         segmentStartAngleRef.current = currentAngleRef.current;
         segmentTargetAngleRef.current = getBezierTangent(1, 
           { x: startx, y: starty },
           targetCP1,
           targetCP2,
           targetPointB
-        );
+        )}else{
+          segmentStartAngleRef.current = 0;
+          segmentTargetAngleRef.current = 0;
+          currentAngleRef.current = 0;
+        }
         console.log(
           `New segment initial tangent: ${(segmentStartAngleRef.current * 180 / Math.PI).toFixed(2)} deg, target: ${(segmentTargetAngleRef.current * 180 / Math.PI).toFixed(2)} deg`
         );
