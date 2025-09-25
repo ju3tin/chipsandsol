@@ -238,7 +238,11 @@ const GameVisual: React.FC<GameVisualProps> = ({
     } else if (curveAnimationRef.current) {
       cancelAnimationFrame(curveAnimationRef.current);
     }
-
+if (GameStatus === "Waiting") {
+  currentAngleRef.current = 0;
+  segmentStartAngleRef.current = 0;
+  segmentTargetAngleRef.current = 0;
+}
     return () => {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
