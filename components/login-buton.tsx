@@ -42,7 +42,7 @@ function WalletButtonWrapper({ onClick }: { onClick?: () => void }) {
 
     return connected ? <WalletMultiButton onClick={onClick} /> : <CustomWalletButton onClick={onClick} />;
 }
-function LoginButton({ onClick }: { onClick?: () => void }) { 
+function LoginButton() { 
     const network = "https://rpc.test.honeycombprotocol.com";
     const endpoint = useMemo(() => network, []);
   
