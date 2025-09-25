@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from "next/image";
 import LoginButton from '@/components/login-buton';
-
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +20,17 @@ import { NavItems } from '@/config';
 import { Menu } from 'lucide-react';
 
 export default function Header() {
+  const router = useRouter();
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsOpen(false)
+    // ✅ Action 1: log, API call, state update, etc.
+    console.log("Button clicked!");
+    // maybe call an API here or update state
+
+    // ✅ Action 2: navigate to another page
+    router.push("/login2");
+  };
   const navItems = NavItems();
   const [isOpen, setIsOpen] = useState(false);
   const handleWalletConnect = (address: string) => {
@@ -73,6 +84,12 @@ export default function Header() {
                 </Link>
               ))}
              <LoginButton />
+             <button
+      onClick={handleClick}
+      className="px-4 py-2 bg-purple-500 text-white rounded"
+    >
+      Do Two Things
+    </button>
             </div>
           </SheetContent>
         </Sheet>
