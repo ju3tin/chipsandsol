@@ -197,13 +197,13 @@ if (GameStatus === "Running") {
       }
       // Shortest path interpolation
    
-      if (GameStatus === "Waiting") {
+      if (GameStatus !== "Running") {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
         let startAngle = 0;
         let endAngle = 0;
-        let delta = 0
+        let delta = 0;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
   
