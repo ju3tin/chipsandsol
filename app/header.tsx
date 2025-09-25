@@ -77,7 +77,7 @@ export default function Header() {
               ))}
              {width !== undefined && width <= 768 && (
   <>
-    <LoginButton onClick={() => flushSync(() => setIsOpen(false))} /> </>
+    <LoginButton /> </>
  )}
             </div>
           </SheetContent>
