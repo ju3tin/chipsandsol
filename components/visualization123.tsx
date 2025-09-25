@@ -181,29 +181,39 @@ if (GameStatus === "Waiting") {
         { x: pointBx, y: pointBy }
       );
      
-
+if (GameStatus === "Running") {
       // Interpolate between segmentStartAngle and segmentTargetAngle based on t
       let startAngle = segmentStartAngleRef.current;
       let endAngle = segmentTargetAngleRef.current;
-      // Shortest path interpolation
       let delta = endAngle - startAngle;
       delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
       let interpAngle = startAngle + delta * t;
       currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
 
+      }
+      // Shortest path interpolation
+   
       if (GameStatus === "Waiting") {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
-        startAngle = 0;
-        endAngle = 0;
+        let startAngle = 0;
+        let endAngle = 0;
+        let delta = endAngle - startAngle;
+        let interpAngle = startAngle + delta * t;
+        currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
+  
       }
       if (GameStatus === "Crashed") {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
-        startAngle = 0;
-        endAngle = 0;
+        let startAngle = 0;
+        let endAngle = 0;
+        let delta = endAngle - startAngle;
+        let interpAngle = startAngle + delta * t;
+        currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
+  
       }
 
       // Debugging: Log angle and segment info
