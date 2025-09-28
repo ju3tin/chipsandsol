@@ -55,9 +55,9 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
             const base: ControlPoint = prev.length > 0
                 ? prev[Math.max(0, afterIndex)]
                 : {
-                    cp1: { x: 0, y: 0 },
-                    cp2: { x: 0, y: 0 },
-                    pointB:{ x: 0, y: 0 },
+                    cp1: { x: 0, y: 200 },
+                    cp2: { x: 0, y: 200 },
+                    pointB:{ x: 0, y: 200 },
                     num: 0,
                 };
             const newFrame: ControlPoint = {
@@ -94,7 +94,7 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
         return `M ${start.x},${start.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y}`;
     }
 
-    const start: Point = { x: 0, y: 0 };
+    const start: Point = { x: 0, y: 200 };
     const width = 420;
     const height = 220;
     const viewX = -60;

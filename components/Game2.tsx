@@ -266,7 +266,7 @@ function drawCrashedRocket(
 }
 
 export default function Game() {
-	const [pointB, setPointB] = useState({ x: 0, y: 0 });
+	const [pointB, setPointB] = useState({ x: 0, y: 200 });
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
