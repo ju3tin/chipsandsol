@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const startx = 0;
-const starty = 170;
+const starty = 0;
 
 interface ControlPoint {
   cp1: { x: number; y: number };
