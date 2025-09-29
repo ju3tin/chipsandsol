@@ -3,9 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-const startx = 0;
-const starty = 200;
-
 interface ControlPoint {
   cp1: { x: number; y: number };
   cp2: { x: number; y: number };
@@ -19,12 +16,12 @@ interface ImageData {
   alt: string;
   isAvailable: boolean;
 }
+
 interface Startxy {
   _id?: string;
   uniqueName: string;
   xvalue: string;
   yvalue: string;
-
 }
 
 interface GameVisualProps {
@@ -38,38 +35,6 @@ interface GameVisualProps {
   tValues: { number: number; color: string; svg: string }[];
 }
 
-
-async function fetchCoordinates(): Promise<{ startx: number; starty: number }> {
-  try {
-      const response = await fetch('https://chipsandsol.vercel.app/api/coordinates?uniqueName=backgroundimage');
-      if (!response.ok) {
-          throw new Error('Failed to fetch coordinates');
-      }
-      const data: Startxy = await response.json();
-      
-      const startx = parseInt(data.xvalue, 10);
-      const starty = parseInt(data.yvalue, 10);
-      
-      return { startx, starty };
-  } catch (error) {
-      console.error('Error fetching coordinates:', error);
-      // Return default values in case of error
-      return { startx: 0, starty: 200 };
-  }
-}
-
-async function init() {
-  const { startx, starty } = await fetchCoordinates();
-  console.log('Start X: dude5', startx);
-  console.log('Start Y: dude6', starty);
-  
-  // Use startx and starty as needed
-}
-
-// Call the function
-init();
-
-
 const GameVisual: React.FC<GameVisualProps> = ({
   Gametimeremaining,
   GameStatus,
@@ -79,19 +44,21 @@ const GameVisual: React.FC<GameVisualProps> = ({
   betAmount,
   tValues,
 }) => {
-  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
-  const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
-  const currentAngleRef = useRef<number>(0); // Persistent rotation angle
-  const segmentStartAngleRef = useRef<number>(0); // Angle at the start of the segment
-  const segmentTargetAngleRef = useRef<number>(0); // Target angle for the segment
+  const [startofx, setstartofx] = useState<Startxy | null>(null);
+  const pointBRef = useRef<{ x: number; y: number }>({
+    x: startofx ? parseInt(startofx.xvalue, 10) : 0,
+    y: startofx ? parseInt(startofx.yvalue, 10) : 200,
+  });
+  const currentAngleRef = useRef<number>(0);
+  const segmentStartAngleRef = useRef<number>(0);
+  const segmentTargetAngleRef = useRef<number>(0);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const tValuesRef = useRef(tValues);
   const dude55Ref = useRef(dude55);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
-  const [startofx, setstartofx] = useState<Startxy | null>(null);
 
   useEffect(() => {
     tValuesRef.current = tValues;
@@ -105,9 +72,6 @@ const GameVisual: React.FC<GameVisualProps> = ({
   }, [Gametimeremaining]);
 
   useEffect(() => {
-
-
-    
     async function fetchControlPoints() {
       try {
         const response = await fetch('/api/bezier');
@@ -126,7 +90,6 @@ const GameVisual: React.FC<GameVisualProps> = ({
     fetchControlPoints();
   }, []);
 
-
   useEffect(() => {
     async function fetchStartxy() {
       try {
@@ -136,14 +99,20 @@ const GameVisual: React.FC<GameVisualProps> = ({
         }
         const data: Startxy = await response.json();
         setstartofx(data);
+        // Update pointBRef with fetched coordinates
+        pointBRef.current = {
+          x: parseInt(data.xvalue, 10),
+          y: parseInt(data.yvalue, 10),
+        };
       } catch (error) {
-        console.error('Error fetching background image:', error);
-        setstartofx(null); // Ensure fallback if API fails
+        console.error('Error fetching coordinates:', error);
+        setstartofx(null);
+        // Fallback to default coordinates
+        pointBRef.current = { x: 0, y: 200 };
       }
     }
     fetchStartxy();
   }, []);
-
 
   useEffect(() => {
     async function fetchBackgroundImage() {
@@ -156,7 +125,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         setBackgroundImage(data);
       } catch (error) {
         console.error('Error fetching background image:', error);
-        setBackgroundImage(null); // Ensure fallback if API fails
+        setBackgroundImage(null);
       }
     }
     fetchBackgroundImage();
@@ -169,6 +138,10 @@ const GameVisual: React.FC<GameVisualProps> = ({
     if (!ctx) return;
     if (controlPoints.length === 0) return;
 
+    // Use dynamic startx and starty from startofx state, with fallbacks
+    const startx = startofx ? parseInt(startofx.xvalue, 10) : 0;
+    const starty = startofx ? parseInt(startofx.yvalue, 10) : 200;
+
     let t = 0;
     let transitionIndex = 0;
     let currentCP1 = { x: startx, y: starty };
@@ -177,8 +150,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
+
     if (GameStatus === "Running") {
-      // Initialize angles for the first segment
       segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
       segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
       currentAngleRef.current = segmentStartAngleRef.current;
@@ -187,12 +160,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       segmentTargetAngleRef.current = 0;
       currentAngleRef.current = 0;
     }
-    if (GameStatus === "Crashed") {
-      currentAngleRef.current = 0;
-      segmentStartAngleRef.current = 0;
-      segmentTargetAngleRef.current = 0;
-    }
-    if (GameStatus === "Waiting") {
+    if (GameStatus === "Crashed" || GameStatus === "Waiting") {
       currentAngleRef.current = 0;
       segmentStartAngleRef.current = 0;
       segmentTargetAngleRef.current = 0;
@@ -233,9 +201,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
       // Draw graph axes
       ctx.beginPath();
-      ctx.moveTo(10, 10); // Y-axis (left side)
+      ctx.moveTo(10, 10);
       ctx.lineTo(10, canvas.height - 10);
-      ctx.moveTo(10, canvas.height - 10); // X-axis (bottom)
+      ctx.moveTo(10, canvas.height - 10);
       ctx.lineTo(canvas.width - 10, canvas.height - 10);
       ctx.strokeStyle = "white";
       ctx.lineWidth = 2;
@@ -286,34 +254,16 @@ const GameVisual: React.FC<GameVisualProps> = ({
       );
 
       if (GameStatus === "Running") {
-        // Interpolate between segmentStartAngle and segmentTargetAngle based on t
         let startAngle = segmentStartAngleRef.current;
         let endAngle = segmentTargetAngleRef.current;
         let delta = endAngle - startAngle;
         delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-      }
-
-      if (GameStatus !== "Running") {
+      } else {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
-        let startAngle = 0;
-        let endAngle = 0;
-        let delta = 0;
-        let interpAngle = startAngle + delta * t;
-        currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-      }
-      if (GameStatus === "Crashed") {
-        currentAngleRef.current = 0;
-        segmentStartAngleRef.current = 0;
-        segmentTargetAngleRef.current = 0;
-        let startAngle = 0;
-        let endAngle = 0;
-        let delta = 0;
-        let interpAngle = startAngle + delta * t;
-        currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
       }
 
       // Debugging: Log angle and segment info
@@ -350,7 +300,6 @@ const GameVisual: React.FC<GameVisualProps> = ({
         targetCP1 = controlPoints[transitionIndex].cp1;
         targetCP2 = controlPoints[transitionIndex].cp2;
         targetPointB = controlPoints[transitionIndex].pointB;
-        // Set up angles for the new segment
         if (GameStatus === "Running") {
           segmentStartAngleRef.current = currentAngleRef.current;
           segmentTargetAngleRef.current = getBezierTangent(1,
@@ -382,12 +331,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
     } else if (curveAnimationRef.current) {
       cancelAnimationFrame(curveAnimationRef.current);
     }
-    if (GameStatus === "Waiting") {
-      currentAngleRef.current = 0;
-      segmentStartAngleRef.current = 0;
-      segmentTargetAngleRef.current = 0;
-    }
-    if (GameStatus === "Crashed") {
+    if (GameStatus === "Waiting" || GameStatus === "Crashed") {
       currentAngleRef.current = 0;
       segmentStartAngleRef.current = 0;
       segmentTargetAngleRef.current = 0;
@@ -397,7 +341,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [GameStatus, dude55, controlPoints]);
+  }, [GameStatus, dude55, controlPoints, startofx]);
 
   return (
     <div className="relative h-64 bg-gray-900 overflow-hidden mb-4">
