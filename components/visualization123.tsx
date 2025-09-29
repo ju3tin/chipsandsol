@@ -12,6 +12,14 @@ interface ControlPoint {
   pointB: { x: number; y: number };
 }
 
+interface ImageData {
+  _id: string;
+  imageName: string;
+  url: string;
+  alt: string;
+  isAvailable: boolean;
+}
+
 interface GameVisualProps {
   currentMultiplier: number;
   onCashout: (multiplier: number) => void;
@@ -42,6 +50,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const tValuesRef = useRef(tValues);
   const dude55Ref = useRef(dude55);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
+  const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
 
   useEffect(() => {
     tValuesRef.current = tValues;
@@ -71,6 +80,22 @@ const GameVisual: React.FC<GameVisualProps> = ({
       }
     }
     fetchControlPoints();
+  }, []);
+
+  useEffect(() => {
+    async function fetchBackgroundImage() {
+      try {
+        const response = await fetch('https://chipsandsol.vercel.app/api/image?imageName=backgroundimage');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: ImageData = await response.json();
+        setBackgroundImage(data);
+      } catch (error) {
+        console.error('Error fetching background image:', error);
+      }
+    }
+    fetchBackgroundImage();
   }, []);
 
   useEffect(() => {
@@ -312,12 +337,21 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   return (
     <div className="relative h-64 bg-gray-900  overflow-hidden mb-4">
-      <Image
-        src="/images/123b.png"
-        alt="Background image"
-        fill
-        className="relative overflow-hidden"
-      />
+      {backgroundImage && backgroundImage.isAvailable && backgroundImage.url ? (
+        <Image
+          src={backgroundImage.url}
+          alt={backgroundImage.alt || "Background image"}
+          fill
+          className="relative overflow-hidden"
+        />
+      ) : (
+        <Image
+          src=""
+          alt=""
+          fill
+          className="relative overflow-hidden"
+        />
+      )}
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
           <canvas
