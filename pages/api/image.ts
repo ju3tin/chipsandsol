@@ -1,7 +1,7 @@
 // pages/api/images.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../lib/dbConnect';
-import Image from "../../models/Image";
+import Image from '../../models/Image';
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,6 +14,14 @@ export default async function handler(
 
   if (method === 'GET') {
     try {
+      // Extract imageName from query parameters
+      const { imageName } = req.query;
+
+      // Validate imageName
+      if (!imageName || typeof imageName !== 'string') {
+        return res.status(400).json({ message: 'imageName is required and must be a string' });
+      }
+
       // Fetch the image by its 'imageName'
       const image = await Image.findOne({ imageName });
 
@@ -24,20 +32,25 @@ export default async function handler(
       // Respond with the image data
       res.status(200).json(image);
     } catch (error) {
-      res.status(500).json({ message: 'Server Error', error });
+      res.status(500).json({ message: 'Server Error', error: 'not working' });
     }
   } else if (method === 'PUT') {
     try {
-      // Update the image by 'imageName'
+      // Extract imageName from query parameters or body
+      const { imageName } = req.query;
       const { url, alt } = req.body;
 
-      // Check if URL and alt text are provided
+      // Validate inputs
+      if (!imageName || typeof imageName !== 'string') {
+        return res.status(400).json({ message: 'imageName is required and must be a string' });
+      }
       if (!url || !alt) {
         return res.status(400).json({ message: 'URL and alt text are required' });
       }
 
+      // Update the image by 'imageName'
       const updatedImage = await Image.findOneAndUpdate(
-        { imageName },  // Find the image by 'imageName'
+        { imageName }, // Find the image by 'imageName'
         { url, alt }, // Update the image's url and alt text
         { new: true } // Return the updated document
       );
@@ -49,7 +62,7 @@ export default async function handler(
       // Respond with the updated image
       res.status(200).json(updatedImage);
     } catch (error) {
-      res.status(500).json({ message: 'Server Error', error });
+      res.status(500).json({ message: 'Server Error', error: 'not wrking' });
     }
   } else if (method === 'POST') {
     try {
@@ -74,10 +87,11 @@ export default async function handler(
       // Respond with the created image
       res.status(201).json(newImage);
     } catch (error) {
-      res.status(500).json({ message: 'Server Error', error });
+      res.status(500).json({ message: 'Server Error', error: 'not working' });
     }
   } else {
     // If method is not GET, PUT, or POST
-    res.status(405).json({ message: 'Method Not Allowed' });
+    res.setHeader('Allow', ['GET', 'PUT', 'POST']);
+    res.status(405).json({ message: `Method ${method} Not Allowed` });
   }
 }
