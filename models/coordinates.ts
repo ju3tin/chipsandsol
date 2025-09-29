@@ -17,6 +17,6 @@ const CoordinatesSchema = new mongoose.Schema({
   },
 });
 
-const Coordinates = mongoose.models.Coordinates || mongoose.model('Image', CoordinatesSchema);
+const Coordinates = mongoose.models.Coordinates || mongoose.model('Coordinates', CoordinatesSchema);
 
 export default Coordinates;
