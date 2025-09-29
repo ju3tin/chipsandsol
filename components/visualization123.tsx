@@ -19,6 +19,13 @@ interface ImageData {
   alt: string;
   isAvailable: boolean;
 }
+interface Startxy {
+  _id?: string;
+  uniqueName: string;
+  xvalue: string;
+  yvalue: string;
+
+}
 
 interface GameVisualProps {
   currentMultiplier: number;
@@ -31,6 +38,38 @@ interface GameVisualProps {
   tValues: { number: number; color: string; svg: string }[];
 }
 
+
+async function fetchCoordinates(): Promise<{ startx: number; starty: number }> {
+  try {
+      const response = await fetch('https://chipsandsol.vercel.app/api/coordinates?uniqueName=backgroundimage');
+      if (!response.ok) {
+          throw new Error('Failed to fetch coordinates');
+      }
+      const data: Startxy = await response.json();
+      
+      const startx = parseInt(data.xvalue, 10);
+      const starty = parseInt(data.yvalue, 10);
+      
+      return { startx, starty };
+  } catch (error) {
+      console.error('Error fetching coordinates:', error);
+      // Return default values in case of error
+      return { startx: 0, starty: 200 };
+  }
+}
+
+async function init() {
+  const { startx, starty } = await fetchCoordinates();
+  console.log('Start X: dude5', startx);
+  console.log('Start Y: dude6', starty);
+  
+  // Use startx and starty as needed
+}
+
+// Call the function
+init();
+
+
 const GameVisual: React.FC<GameVisualProps> = ({
   Gametimeremaining,
   GameStatus,
@@ -40,6 +79,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   betAmount,
   tValues,
 }) => {
+  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
   const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
@@ -51,6 +91,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const dude55Ref = useRef(dude55);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
+  const [startofx, setstartofx] = useState<Startxy | null>(null);
 
   useEffect(() => {
     tValuesRef.current = tValues;
@@ -64,6 +105,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
   }, [Gametimeremaining]);
 
   useEffect(() => {
+
+
+    
     async function fetchControlPoints() {
       try {
         const response = await fetch('/api/bezier');
@@ -81,6 +125,25 @@ const GameVisual: React.FC<GameVisualProps> = ({
     }
     fetchControlPoints();
   }, []);
+
+
+  useEffect(() => {
+    async function fetchStartxy() {
+      try {
+        const response = await fetch('https://chipsandsol.vercel.app/api/coordinates?uniqueName=backgroundimage');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: Startxy = await response.json();
+        setstartofx(data);
+      } catch (error) {
+        console.error('Error fetching background image:', error);
+        setstartofx(null); // Ensure fallback if API fails
+      }
+    }
+    fetchStartxy();
+  }, []);
+
 
   useEffect(() => {
     async function fetchBackgroundImage() {
