@@ -1,7 +1,7 @@
 // pages/api/images.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../lib/dbConnect';
-import Image from '../../models/Image';
+import Image from "../../models/Image";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,8 +14,8 @@ export default async function handler(
 
   if (method === 'GET') {
     try {
-      // Fetch the image by its 'name'
-      const image = await Image.findOne({ name });
+      // Fetch the image by its 'imageName'
+      const image = await Image.findOne({ imageName });
 
       if (!image) {
         return res.status(404).json({ message: 'Image not found' });
@@ -28,7 +28,7 @@ export default async function handler(
     }
   } else if (method === 'PUT') {
     try {
-      // Update the image by 'name'
+      // Update the image by 'imageName'
       const { url, alt } = req.body;
 
       // Check if URL and alt text are provided
@@ -37,7 +37,7 @@ export default async function handler(
       }
 
       const updatedImage = await Image.findOneAndUpdate(
-        { name },  // Find the image by 'name'
+        { imageName },  // Find the image by 'imageName'
         { url, alt }, // Update the image's url and alt text
         { new: true } // Return the updated document
       );
@@ -54,21 +54,21 @@ export default async function handler(
   } else if (method === 'POST') {
     try {
       // Create a new image
-      const { name, url, alt } = req.body;
+      const { imageName, url, alt } = req.body;
 
       // Check if all required fields are provided
-      if (!name || !url || !alt) {
-        return res.status(400).json({ message: 'Name, URL, and alt text are required' });
+      if (!imageName || !url || !alt) {
+        return res.status(400).json({ message: 'imageName, URL, and alt text are required' });
       }
 
-      // Check if an image with the same name already exists
-      const existingImage = await Image.findOne({ name });
+      // Check if an image with the same imageName already exists
+      const existingImage = await Image.findOne({ imageName });
       if (existingImage) {
-        return res.status(400).json({ message: 'An image with this name already exists' });
+        return res.status(400).json({ message: 'An image with this imageName already exists' });
       }
 
       // Create and save the new image
-      const newImage = new Image({ name, url, alt });
+      const newImage = new Image({ imageName, url, alt });
       await newImage.save();
 
       // Respond with the created image

@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 const ImageSchema = new mongoose.Schema({
-  name: {
+  imageName: { 
     type: String,
     required: true,
     unique: true,  // Ensures the name is unique in the database
