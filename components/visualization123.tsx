@@ -49,7 +49,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const [startofx, setstartofx] = useState<Startxy | null>(null);
   const pointBRef = useRef<{ x: number; y: number }>({
     x: startofx ? parseInt(startofx.xvalue, 10) : 0,
-    y: startofx ? parseInt(startofx.yvalue, 10) : 200,
+    y: startofx ? parseInt(startofx.yvalue, 10) : 20,
   });
   const currentAngleRef = useRef<number>(0);
   const segmentStartAngleRef = useRef<number>(0);
