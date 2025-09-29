@@ -13,7 +13,7 @@ interface ControlPoint {
 }
 
 interface ImageData {
-  _id: string;
+  _id?: string;
   imageName: string;
   url: string;
   alt: string;
@@ -93,6 +93,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         setBackgroundImage(data);
       } catch (error) {
         console.error('Error fetching background image:', error);
+        setBackgroundImage(null); // Ensure fallback if API fails
       }
     }
     fetchBackgroundImage();
@@ -336,7 +337,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   }, [GameStatus, dude55, controlPoints]);
 
   return (
-    <div className="relative h-64 bg-gray-900  overflow-hidden mb-4">
+    <div className="relative h-64 bg-gray-900 overflow-hidden mb-4">
       {backgroundImage && backgroundImage.isAvailable && backgroundImage.url ? (
         <Image
           src={backgroundImage.url}
@@ -344,14 +345,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
           fill
           className="relative overflow-hidden"
         />
-      ) : (
-        <Image
-          src=""
-          alt=""
-          fill
-          className="relative overflow-hidden"
-        />
-      )}
+      ) : null}
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
           <canvas
