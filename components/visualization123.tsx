@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const startx = 0;
-const starty = 0;
+const starty = 200;
 
 interface ControlPoint {
   cp1: { x: number; y: number };
@@ -61,9 +61,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
         const data = await response.json();
         if (!data || !data.frames) return;
         const mappedPoints = data.frames.map((frame: any) => ({
-          cp1: frame.cp1 || { x: 30, y: 50 },
-          cp2: frame.cp2 || { x: 30, y: 50 },
-          pointB: frame.pointB || { x: 30, y: 50 },
+          cp1: frame.cp1 || { x: 300, y: 50 },
+          cp2: frame.cp2 || { x: 300, y: 50 },
+          pointB: frame.pointB || { x: 300, y: 50 },
         }));
         setControlPoints(mappedPoints);
       } catch (error) {
