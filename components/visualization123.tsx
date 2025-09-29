@@ -311,7 +311,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   }, [GameStatus, dude55, controlPoints]);
 
   return (
-    <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+    <div className="relative h-64 bg-gray-900  overflow-hidden mb-4">
       <Image
         src="/images/123b.png"
         alt="Background image"
