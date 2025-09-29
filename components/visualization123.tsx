@@ -88,27 +88,26 @@ const GameVisual: React.FC<GameVisualProps> = ({
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
-if (GameStatus === "Running") {
-    // Initialize angles for the first segment
-    segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
-    segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
-    currentAngleRef.current = segmentStartAngleRef.current;
-}else{
-  segmentStartAngleRef.current = 0;
-  segmentTargetAngleRef.current = 0;
-  currentAngleRef.current = 0;
-}
+    if (GameStatus === "Running") {
+      // Initialize angles for the first segment
+      segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
+      segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
+      currentAngleRef.current = segmentStartAngleRef.current;
+    } else {
+      segmentStartAngleRef.current = 0;
+      segmentTargetAngleRef.current = 0;
+      currentAngleRef.current = 0;
+    }
     if (GameStatus === "Crashed") {
       currentAngleRef.current = 0;
       segmentStartAngleRef.current = 0;
       segmentTargetAngleRef.current = 0;
     }
-if (GameStatus === "Waiting") {
-  currentAngleRef.current = 0;
-  segmentStartAngleRef.current = 0;
-  segmentTargetAngleRef.current = 0;
-}
-
+    if (GameStatus === "Waiting") {
+      currentAngleRef.current = 0;
+      segmentStartAngleRef.current = 0;
+      segmentTargetAngleRef.current = 0;
+    }
 
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
@@ -142,6 +141,18 @@ if (GameStatus === "Waiting") {
       if (!canvas || !ctx || !fish1.complete) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw graph axes
+      ctx.beginPath();
+      ctx.moveTo(10, 10); // Y-axis (left side)
+      ctx.lineTo(10, canvas.height - 10);
+      ctx.moveTo(10, canvas.height - 10); // X-axis (bottom)
+      ctx.lineTo(canvas.width - 10, canvas.height - 10);
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw Bezier curve
       ctx.beginPath();
       ctx.moveTo(startx, starty);
 
@@ -178,25 +189,23 @@ if (GameStatus === "Waiting") {
       });
 
       // Calculate the target angle from the Bezier tangent
-      const targetAngle = getBezierTangent(t, 
+      const targetAngle = getBezierTangent(t,
         { x: startx, y: starty },
         { x: cp1x, y: cp1y },
         { x: cp2x, y: cp2y },
         { x: pointBx, y: pointBy }
       );
-     
-if (GameStatus === "Running") {
-      // Interpolate between segmentStartAngle and segmentTargetAngle based on t
-      let startAngle = segmentStartAngleRef.current;
-      let endAngle = segmentTargetAngleRef.current;
-      let delta = endAngle - startAngle;
-      delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
-      let interpAngle = startAngle + delta * t;
-      currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
 
+      if (GameStatus === "Running") {
+        // Interpolate between segmentStartAngle and segmentTargetAngle based on t
+        let startAngle = segmentStartAngleRef.current;
+        let endAngle = segmentTargetAngleRef.current;
+        let delta = endAngle - startAngle;
+        delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
+        let interpAngle = startAngle + delta * t;
+        currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
       }
-      // Shortest path interpolation
-   
+
       if (GameStatus !== "Running") {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
@@ -206,7 +215,6 @@ if (GameStatus === "Running") {
         let delta = 0;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-  
       }
       if (GameStatus === "Crashed") {
         currentAngleRef.current = 0;
@@ -217,7 +225,6 @@ if (GameStatus === "Running") {
         let delta = 0;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-  
       }
 
       // Debugging: Log angle and segment info
@@ -256,13 +263,14 @@ if (GameStatus === "Running") {
         targetPointB = controlPoints[transitionIndex].pointB;
         // Set up angles for the new segment
         if (GameStatus === "Running") {
-        segmentStartAngleRef.current = currentAngleRef.current;
-        segmentTargetAngleRef.current = getBezierTangent(1, 
-          { x: startx, y: starty },
-          targetCP1,
-          targetCP2,
-          targetPointB
-        )}else{
+          segmentStartAngleRef.current = currentAngleRef.current;
+          segmentTargetAngleRef.current = getBezierTangent(1,
+            { x: startx, y: starty },
+            targetCP1,
+            targetCP2,
+            targetPointB
+          );
+        } else {
           segmentStartAngleRef.current = 0;
           segmentTargetAngleRef.current = 0;
           currentAngleRef.current = 0;
@@ -285,17 +293,16 @@ if (GameStatus === "Running") {
     } else if (curveAnimationRef.current) {
       cancelAnimationFrame(curveAnimationRef.current);
     }
-if (GameStatus === "Waiting") {
-  currentAngleRef.current = 0;
-  segmentStartAngleRef.current = 0;
-  segmentTargetAngleRef.current = 0;
-  
-}
-if (GameStatus === "Crashed") {
-  currentAngleRef.current = 0;
-  segmentStartAngleRef.current = 0;
-  segmentTargetAngleRef.current = 0;
-}
+    if (GameStatus === "Waiting") {
+      currentAngleRef.current = 0;
+      segmentStartAngleRef.current = 0;
+      segmentTargetAngleRef.current = 0;
+    }
+    if (GameStatus === "Crashed") {
+      currentAngleRef.current = 0;
+      segmentStartAngleRef.current = 0;
+      segmentTargetAngleRef.current = 0;
+    }
     return () => {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
