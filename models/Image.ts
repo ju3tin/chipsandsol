@@ -15,6 +15,7 @@ const ImageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAvailable: { type: Boolean, required: true } // Boolean for "yes" (true) or "no" (false)
 });
 
 const Image = mongoose.models.Image || mongoose.model('Image', ImageSchema);
