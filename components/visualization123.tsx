@@ -338,7 +338,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   return (
     <div className="relative h-64 bg-gray-900 overflow-hidden mb-4">
-      {backgroundImage && backgroundImage.isAvailable && backgroundImage.url ? (
+      {backgroundImage && backgroundImage.isAvailable ? (
         <Image
           src={backgroundImage.url}
           alt={backgroundImage.alt || "Background image"}
