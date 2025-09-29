@@ -309,7 +309,7 @@ if (GameStatus === "Crashed") {
         src="/images/123b.png"
         alt="Background image"
         fill
-        className="relative rounded-lg overflow-hidden"
+        className="relative overflow-hidden"
       />
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
