@@ -78,7 +78,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   // Update timeLabels based on timer5 when GameStatus is Running
   useEffect(() => {
     if (GameStatus === "Running" && !isNaN(timer5)) {
-      if (timer5 > 8) {
+      if (timer5 > 2) {
         setTimeLabels([]); // Clear labels if timer5 exceeds 8 seconds
       } else {
         setTimeLabels((prev) => {
