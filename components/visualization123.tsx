@@ -221,7 +221,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
 // Draw multiplier labels on the right (y-axis)
 ctx.font = "12px Arial";
 ctx.fillStyle = "white";
-ctx.textAlign = "right";
+ctx.textAlign = "left";
 const maxMultiplier = 10; // Adjust based on your game's max multiplier
 const yAxisHeight = canvas.height - 20; // Account for padding
 for (let i = 0; i <= maxMultiplier; i++) {
@@ -290,7 +290,7 @@ timeLabels.forEach((time, index) => {
         delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-
+// updating the timer
         timeRef.current += 0.01; // Increment time based on animation speed
         if (timeRef.current >= timeLabels[timeLabels.length - 1] + 1) {
           setTimeLabels((prev) => {
