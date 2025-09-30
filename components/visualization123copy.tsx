@@ -1,5 +1,7 @@
 "use client";
-//updated on 30/10/25
+
+//updaed 1
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
@@ -59,7 +61,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const dude55Ref = useRef(dude55);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
-
+  const [timeLabels, setTimeLabels] = useState<number[]>([]);
+  const timeRef = useRef<number>(0); // Track elapsed time
   useEffect(() => {
     tValuesRef.current = tValues;
     dude55Ref.current = dude55;
@@ -155,6 +158,12 @@ const GameVisual: React.FC<GameVisualProps> = ({
       segmentStartAngleRef.current = getBezierTangent(0, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
       segmentTargetAngleRef.current = getBezierTangent(1, { x: startx, y: starty }, targetCP1, targetCP2, targetPointB);
       currentAngleRef.current = segmentStartAngleRef.current;
+//timer
+
+
+
+
+
     } else {
       segmentStartAngleRef.current = 0;
       segmentTargetAngleRef.current = 0;
@@ -209,6 +218,29 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.lineWidth = 2;
       ctx.stroke();
 
+      //helper to graph
+      
+// Draw multiplier labels on the left (y-axis)
+ctx.font = "12px Arial";
+ctx.fillStyle = "white";
+ctx.textAlign = "right"; // Align text to the right for left-side labels
+const maxMultiplier = 10; // Adjust based on your game's max multiplier
+const yAxisHeight = canvas.height - 20; // Account for padding
+for (let i = 0; i <= maxMultiplier; i++) {
+  const y = canvas.height - 10 - (i / maxMultiplier) * yAxisHeight;
+  ctx.fillText(`${i}x`, 25, y); // Position labels to the left of y-axis (x=30)
+}
+
+// Draw time labels on the bottom (x-axis)
+ctx.textAlign = "center";
+const maxTimeLabels = 10; // Maximum number of time labels
+const xAxisWidth = canvas.width - 40; // Adjust for left padding
+timeLabels.forEach((time, index) => {
+  const x = 30 + (index / (maxTimeLabels - 1)) * xAxisWidth; // Start at x=30
+  ctx.fillText(`${time}s`, x, canvas.height - 2);
+});
+
+
       // Draw Bezier curve
       ctx.beginPath();
       ctx.moveTo(startx, starty);
@@ -260,7 +292,19 @@ const GameVisual: React.FC<GameVisualProps> = ({
         delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-      } else {
+// updating the timer
+        timeRef.current += 0.01; // Increment time based on animation speed
+        if (timeRef.current >= timeLabels[timeLabels.length - 1] + 1) {
+          setTimeLabels((prev) => {
+            const newLabels = [...prev, Math.floor(timeRef.current)];
+            if (newLabels.length > maxTimeLabels) {
+              return newLabels.slice(1); // Remove oldest time to create scrolling effect
+            }
+            return newLabels;
+          });
+        }
+      }
+      else {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
