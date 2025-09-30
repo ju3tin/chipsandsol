@@ -78,17 +78,16 @@ const GameVisual: React.FC<GameVisualProps> = ({
   // Update timeLabels based on timer5 when GameStatus is Running
   useEffect(() => {
     if (GameStatus === "Running" && !isNaN(timer5)) {
-      if (timer5 > 2) {
+      if (timer5 > 8) {
         setTimeLabels([]); // Clear labels if timer5 exceeds 8 seconds
       } else {
         setTimeLabels((prev) => {
-          const newTime = Math.floor(timer5); // Use server-provided time
-          console.log('im greater you will be Justing'+timer5)
-          if (prev.includes(newTime) || newTime > 7) return prev; // Avoid duplicates and times > 7
-          const newLabels = [...prev, newTime];
-          const maxTimeLabels = 10; // Limit to 8 labels
+          const newTime = Number(timer5.toFixed(1)); // Round to 1 decimal place
+          if (prev.includes(newTime) || newTime > 8) return prev; // Avoid duplicates and times > 8
+          const newLabels = [...prev, newTime].sort((a, b) => a - b); // Sort ascending
+          const maxTimeLabels = 8; // Limit to 8 labels
           if (newLabels.length > maxTimeLabels) {
-            return newLabels.slice(1); // Remove oldest time for scrolling effect
+            return newLabels.slice(-maxTimeLabels); // Keep the most recent 8 labels
           }
           return newLabels;
         });
@@ -97,6 +96,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
       setTimeLabels([]); // Clear time labels when not running
     }
   }, [timer5, GameStatus]);
+
+
+  
 
   useEffect(() => {
     async function fetchControlPoints() {
@@ -246,15 +248,14 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
       // Draw time labels above the x-axis
       ctx.textAlign = "center";
-ctx.font = "12px Arial";
-ctx.fillStyle = "white";
-const maxTimeLabels = 10; // Exactly 7 labels
-const xAxisWidth = canvas.width - 40;
-const fixedLabels = [0, 1, 2, 3, 4, 5, 6, 7, {timer5}]; // Fixed labels 1 to 7
-fixedLabels.forEach((label, index) => {
-  const x = 4 + (index / (maxTimeLabels - 1)) * xAxisWidth;
-  ctx.fillText(`${label}`, x, canvas.height - 20); // Position above x-axis
-});
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "white";
+      const maxTimeLabels = 8; // Exactly 8 labels max
+      const xAxisWidth = canvas.width - 40;
+      timeLabels.forEach((time, index) => {
+        const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
+        ctx.fillText(`${time.toFixed(1)}`, x, canvas.height - 20); // Position above x-axis with 1 decimal
+      });
 
       // Draw Bezier curve
       ctx.beginPath();
