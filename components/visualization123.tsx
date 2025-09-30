@@ -86,7 +86,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
           console.log('im greater you will be Justing'+timer5)
           if (prev.includes(newTime) || newTime > 7) return prev; // Avoid duplicates and times > 7
           const newLabels = [...prev, newTime];
-          const maxTimeLabels = 8; // Limit to 8 labels
+          const maxTimeLabels = 10; // Limit to 8 labels
           if (newLabels.length > maxTimeLabels) {
             return newLabels.slice(1); // Remove oldest time for scrolling effect
           }
@@ -248,7 +248,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.textAlign = "center";
 ctx.font = "12px Arial";
 ctx.fillStyle = "white";
-const maxTimeLabels = 7; // Exactly 7 labels
+const maxTimeLabels = 10; // Exactly 7 labels
 const xAxisWidth = canvas.width - 40;
 const fixedLabels = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // Fixed labels 1 to 7
 fixedLabels.forEach((label, index) => {
