@@ -397,7 +397,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         <>
           <span
             style={{
-              top: '50%',
+              top: '25%',
               left: "50%",
               transform: "translateX(-50%)",
               display: "block",
