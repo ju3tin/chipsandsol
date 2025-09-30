@@ -217,24 +217,24 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.stroke();
 
       //helper to graph
-
-// Draw multiplier labels on the right (y-axis)
+      
+// Draw multiplier labels on the left (y-axis)
 ctx.font = "12px Arial";
 ctx.fillStyle = "white";
-ctx.textAlign = "left";
+ctx.textAlign = "right"; // Align text to the right for left-side labels
 const maxMultiplier = 10; // Adjust based on your game's max multiplier
 const yAxisHeight = canvas.height - 20; // Account for padding
 for (let i = 0; i <= maxMultiplier; i++) {
   const y = canvas.height - 10 - (i / maxMultiplier) * yAxisHeight;
-  ctx.fillText(`${i}x`, canvas.width - 15, y);
+  ctx.fillText(`${i}x`, 25, y); // Position labels to the left of y-axis (x=30)
 }
 
 // Draw time labels on the bottom (x-axis)
 ctx.textAlign = "center";
-const maxTimeLabels = 10; // Maximum number of time labels to display
-const xAxisWidth = canvas.width - 20; // Account for padding
+const maxTimeLabels = 10; // Maximum number of time labels
+const xAxisWidth = canvas.width - 40; // Adjust for left padding
 timeLabels.forEach((time, index) => {
-  const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
+  const x = 30 + (index / (maxTimeLabels - 1)) * xAxisWidth; // Start at x=30
   ctx.fillText(`${time}s`, x, canvas.height - 2);
 });
 
