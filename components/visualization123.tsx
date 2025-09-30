@@ -252,7 +252,7 @@ const maxTimeLabels = 7; // Exactly 7 labels
 const xAxisWidth = canvas.width - 40;
 const fixedLabels = [1, 2, 3, 4, 5, 6, 7, 8]; // Fixed labels 1 to 7
 fixedLabels.forEach((label, index) => {
-  const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
+  const x = 8 + (index / (maxTimeLabels - 1)) * xAxisWidth;
   ctx.fillText(`${label}`, x, canvas.height - 20); // Position above x-axis
 });
 
