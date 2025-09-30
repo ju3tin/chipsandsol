@@ -60,6 +60,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const tValuesRef = useRef(tValues);
   const dude55Ref = useRef(dude55);
+  const timer5Ref = useRef(timer5);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
   const [timeLabels, setTimeLabels] = useState<number[]>([]);
@@ -67,7 +68,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
   useEffect(() => {
     tValuesRef.current = tValues;
     dude55Ref.current = dude55;
-  }, [tValues, dude55]);
+    timer5Ref.current = timer5;
+  }, [tValues, dude55, timer5]);
 
   useEffect(() => {
     if (!isNaN(Gametimeremaining)) {
