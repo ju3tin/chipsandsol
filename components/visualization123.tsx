@@ -59,7 +59,6 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const segmentTargetAngleRef = useRef<number>(0);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const tValuesRef = useRef(tValues);
-  const timer5Ref = useRef(timer5);
   const dude55Ref = useRef(dude55);
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
@@ -67,7 +66,6 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   useEffect(() => {
     tValuesRef.current = tValues;
-    timer5Ref.current = timer5; // Update timer5Ref with latest timer5
     dude55Ref.current = dude55;
   }, [tValues, dude55]);
 
@@ -254,7 +252,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         ctx.font = "12px Arial";
         ctx.fillStyle = "white";
         const x = canvas.width / 2; // Center of the x-axis
-        ctx.fillText(`${timer5Ref.current.toFixed(1)}`, x, canvas.height - 20); // Position above x-axis
+        ctx.fillText(`${timer5.toFixed(1)}`, x, canvas.height - 20); // Position above x-axis
       }
 
       // Draw Bezier curve
@@ -427,6 +425,27 @@ const GameVisual: React.FC<GameVisualProps> = ({
           >
             {currentMultiplier}x
           </span>
+{/* */}
+<span
+      style={{
+        top: "120px", // Below multiplier to avoid overlap
+        left: "50%",
+        transform: "translateX(-50%)",
+        display: "block",
+        position: "absolute",
+        color:
+          currentMultiplier > 5
+            ? "red"
+            : currentMultiplier > 2
+            ? "yellow"
+            : "white",
+        fontSize: "1.5rem",
+        zIndex: 10, // High z-index to ensure visibility
+      }}
+    >
+      {timer5.toFixed(1)}s
+    </span>
+
           {dude55 && (
             <div
               className="absolute w-4 h-4 bg-red-500 rounded-full"
