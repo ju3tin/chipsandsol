@@ -290,7 +290,19 @@ timeLabels.forEach((time, index) => {
         delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
         let interpAngle = startAngle + delta * t;
         currentAngleRef.current = ((interpAngle + Math.PI) % (2 * Math.PI)) - Math.PI;
-      } else {
+
+        timeRef.current += 0.01; // Increment time based on animation speed
+        if (timeRef.current >= timeLabels[timeLabels.length - 1] + 1) {
+          setTimeLabels((prev) => {
+            const newLabels = [...prev, Math.floor(timeRef.current)];
+            if (newLabels.length > maxTimeLabels) {
+              return newLabels.slice(1); // Remove oldest time to create scrolling effect
+            }
+            return newLabels;
+          });
+        }
+      }
+      else {
         currentAngleRef.current = 0;
         segmentStartAngleRef.current = 0;
         segmentTargetAngleRef.current = 0;
