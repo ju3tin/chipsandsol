@@ -58,7 +58,10 @@ const GameVisual: React.FC<GameVisualProps> = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let t = 0; // Ensure t is initialized as a number
+    // Ensure currentMultiplier is a number
+    const safeMultiplier = typeof currentMultiplier === "number" ? currentMultiplier : 0;
+
+    let t: number = 0; // Explicitly type t as number
     let transitionIndex = 0;
     let currentCP1 = { x: 10, y: 190 };
     let currentCP2 = { x: 100, y: 190 };
@@ -113,9 +116,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
         ctx.fillText(`${i}s`, x, canvas.height - 5);
       }
 
-      // Adjust targetPointB based on currentMultiplier
-      const targetX = 10 + (currentMultiplier / maxMultiplier) * xAxisWidth;
-      const targetY = canvas.height - 10 - (currentMultiplier / maxMultiplier) * yAxisHeight;
+      // Adjust targetPointB based on safeMultiplier
+      const targetX = 10 + (safeMultiplier / maxMultiplier) * xAxisWidth;
+      const targetY = canvas.height - 10 - (safeMultiplier / maxMultiplier) * yAxisHeight;
       targetPointB = { x: targetX, y: targetY };
 
       // Draw Bezier curve
@@ -136,14 +139,14 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
       // Draw current multiplier label
       if (GameStatus === "Running") {
-        ctx.fillStyle = currentMultiplier > 5 ? "red" : currentMultiplier > 2 ? "yellow" : "white";
-        ctx.fillText(`${currentMultiplier.toFixed(2)}x`, pointBx + 10, pointBy); // Use currentMultiplier.toFixed
+        ctx.fillStyle = safeMultiplier > 5 ? "red" : safeMultiplier > 2 ? "yellow" : "white";
+        ctx.fillText(`${safeMultiplier.toFixed(2)}x`, pointBx + 10, pointBy);
       }
 
       // Draw crash indicator
       if (GameStatus === "Crashed") {
         ctx.fillStyle = "white";
-        ctx.fillText(`${currentMultiplier.toFixed(2)}x`, pointBx + 10, pointBy);
+        ctx.fillText(`${safeMultiplier.toFixed(2)}x`, pointBx + 10, pointBy);
         ctx.beginPath();
         ctx.moveTo(pointBx + 5, pointBy - 10);
         ctx.lineTo(pointBx + 25, pointBy + 10);
