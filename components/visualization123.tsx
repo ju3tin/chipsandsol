@@ -246,12 +246,15 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
       // Draw time labels above the x-axis
       ctx.textAlign = "center";
-      const maxTimeLabels = 8; // Limit to 8 labels
-      const xAxisWidth = canvas.width - 40;
-      timeLabels.forEach((time, index) => {
-        const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
-        ctx.fillText(`${time}s`, x, canvas.height - 20); // Position above x-axis
-      });
+ctx.font = "12px Arial";
+ctx.fillStyle = "white";
+const maxTimeLabels = 7; // Exactly 7 labels
+const xAxisWidth = canvas.width - 40;
+const fixedLabels = [1, 2, 3, 4, 5, 6, 7]; // Fixed labels 1 to 7
+fixedLabels.forEach((label, index) => {
+  const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
+  ctx.fillText(`${label}`, x, canvas.height - 20); // Position above x-axis
+});
 
       // Draw Bezier curve
       ctx.beginPath();
