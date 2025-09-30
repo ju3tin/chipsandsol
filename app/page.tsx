@@ -476,9 +476,9 @@ const CrashGame = () => {
             <CardContent className="p-1">
               <div className="flex justify-between items-center mb-4">
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
-                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
+                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}{gameState5.timeElapsed}x</div>
               </div>
-              <GameVisual 
+              <GameVisual
                 betAmount={betAmount}
                 dude56={currency} 
                 dude55={isCashedOut} 
