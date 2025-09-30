@@ -390,7 +390,7 @@ fixedLabels.forEach((label, index) => {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [GameStatus, dude55, controlPoints, startofx]);
+  }, [GameStatus, dude55, controlPoints, startofx, timer5]);
 
   return (
     <div className="relative h-64 bg-gray-900 overflow-hidden mb-4">
