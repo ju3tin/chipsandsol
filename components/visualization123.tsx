@@ -242,9 +242,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.textAlign = "center";
       const maxTimeLabels = 10;
       const xAxisWidth = canvas.width - 40;
-      timeLabels.forEach((time, index) => {
+      timeLabels.forEach((time5, index) => {
         const x = 10 + (index / (maxTimeLabels - 1)) * xAxisWidth;
-        ctx.fillText(`${time}s`, x, canvas.height - 2);
+        ctx.fillText(`${time5}s`, x, /*canvas.height -*/ 30);
       });
 
       // Draw Bezier curve
