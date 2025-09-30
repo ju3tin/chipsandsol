@@ -28,6 +28,7 @@ interface Startxy {
 
 interface GameVisualProps {
   currentMultiplier: number;
+  timer5: number;
   onCashout: (multiplier: number) => void;
   dude55: boolean;
   dude56: string;
@@ -41,6 +42,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   Gametimeremaining,
   GameStatus,
   currentMultiplier,
+  timer5,
   dude55,
   dude56,
   betAmount,

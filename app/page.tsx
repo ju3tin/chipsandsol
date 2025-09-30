@@ -480,6 +480,7 @@ const CrashGame = () => {
               </div>
               <GameVisual
                 betAmount={betAmount}
+                timer5={gameState5.timeElapsed}
                 dude56={currency} 
                 dude55={isCashedOut} 
                 onCashout={handleCashout} 
