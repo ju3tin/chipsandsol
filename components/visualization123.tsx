@@ -58,7 +58,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let t = 0;
+    let t = 0; // Ensure t is initialized as a number
     let transitionIndex = 0;
     let currentCP1 = { x: 10, y: 190 };
     let currentCP2 = { x: 100, y: 190 };
@@ -137,7 +137,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       // Draw current multiplier label
       if (GameStatus === "Running") {
         ctx.fillStyle = currentMultiplier > 5 ? "red" : currentMultiplier > 2 ? "yellow" : "white";
-        ctx.fillText(`${currentMultiplier.toFixed(2)}x`, pointBx + 10, pointBy);
+        ctx.fillText(`${currentMultiplier.toFixed(2)}x`, pointBx + 10, pointBy); // Use currentMultiplier.toFixed
       }
 
       // Draw crash indicator
