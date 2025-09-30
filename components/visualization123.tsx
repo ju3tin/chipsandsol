@@ -428,7 +428,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
 {/* */}
 <span
       style={{
-        top: "120px", // Below multiplier to avoid overlap
+        top: "180px", // Below multiplier to avoid overlap
         left: "50%",
         transform: "translateX(-50%)",
         display: "block",
