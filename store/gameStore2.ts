@@ -40,6 +40,7 @@ export type CrashedGame = {
 	winners: number;
 	startTime: number;
 	hash: string;
+	time: number;
 }
 
 export type GameStateData = {
@@ -313,10 +314,11 @@ export const useGameStore = create<GameState>((set, get) => {
 			break;
 	
 			case 'CNT_MULTIPLY':
-				console.log(`Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
+				console.log(`Multiplier: ${message1.multiplier}, Data: ${message1.data}, Time: ${message1.time}`);
 				
 				set({
 					multiplier: message1.multiplier,
+					timeElapsed: message1.time,
 				});
 				break;
 			
