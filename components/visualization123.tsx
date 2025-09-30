@@ -98,7 +98,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   useEffect(() => {
     async function fetchStartxy() {
       try {
-        const response = await fetch('https://chipsandsol.vercel.app/api/coordinates?uniqueName=backgroundimage');
+        const response = await fetch('/api/coordinates?uniqueName=backgroundimage');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -122,7 +122,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
   useEffect(() => {
     async function fetchBackgroundImage() {
       try {
-        const response = await fetch('https://chipsandsol.vercel.app/api/image?imageName=backgroundimage');
+        const response = await fetch('/api/image?imageName=backgroundimage');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
