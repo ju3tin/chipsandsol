@@ -293,7 +293,8 @@ const GameVisual: React.FC<GameVisualProps> = ({ Gametimeremaining, GameStatus, 
       )}
       {GameStatus === "Crashed" && (
         <>
-          <span style={{ 
+          <span style={{
+            top: '50%', 
             left: '50%', 
             transform: 'translateX(-50%)', 
             display: 'block', 
