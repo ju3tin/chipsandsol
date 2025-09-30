@@ -237,9 +237,9 @@ for (let i = 0; i <= maxMultiplier; i++) {
 ctx.textAlign = "center";
 const maxTimeLabels = 10; // Maximum number of time labels
 const xAxisWidth = canvas.width - 40; // Adjust for left padding
-timeLabels.forEach((time, index) => {
+timeLabels.forEach((time5, index) => {
   const x = 30 + (index / (maxTimeLabels - 1)) * xAxisWidth; // Start at x=30
-  ctx.fillText(`${time}s`, x, canvas.height - 2);
+  ctx.fillText(`${time5}s`, x, canvas.height - 2);
 });
 
 
