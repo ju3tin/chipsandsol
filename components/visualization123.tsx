@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import XLabels  from './xlabels';
 import YLabels  from './ylabels';
+import BezierCanvasPage from './curveupdate';
 
 interface ControlPoint {
   cp1: { x: number; y: number };
@@ -404,6 +405,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
             height={200}
             className="w-full h-full"
           />
+          <BezierCanvasPage />
           <span
             style={{
               top: "100px",
