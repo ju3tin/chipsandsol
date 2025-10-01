@@ -86,14 +86,14 @@ const BezierCanvasPage = () => {
   }, []);
 
   return (
-    <>
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
       <canvas
         ref={canvasRef}
-        width={600}
-        height={600}
+        width={400}
+        height={200}
         style={{ border: '1px solid #ccc' }}
       />
-    </>
+    </div>
   );
 };
 
