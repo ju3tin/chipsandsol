@@ -428,7 +428,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
           </span>
 {/* */}
 {
-  timer5 > 2.0 && (
+  timer5 > 10000.0 && (
     <span
       style={{
         top: "0px",
