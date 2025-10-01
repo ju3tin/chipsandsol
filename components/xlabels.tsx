@@ -32,7 +32,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 10.1 && currentMultiplier < 20 && (
+  currentMultiplier > 10.01 && currentMultiplier < 20 && (
     <span
       style={{
         top: "0px",
@@ -60,7 +60,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 20.1 && currentMultiplier < 30 && (
+  currentMultiplier > 20.01 && currentMultiplier < 30 && (
     <span
       style={{
         top: "0px",
@@ -88,7 +88,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 30.1 && currentMultiplier < 40 && (
+  currentMultiplier > 30.01 && currentMultiplier < 40 && (
     <span
       style={{
         top: "0px",
@@ -116,7 +116,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 40.1 && currentMultiplier < 50 && (
+  currentMultiplier > 40.01 && currentMultiplier < 50 && (
     <span
       style={{
         top: "0px",
@@ -144,7 +144,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
   } 
 {
-  currentMultiplier > 50.1 && currentMultiplier < 60 && (
+  currentMultiplier > 50.01 && currentMultiplier < 60 && (
     <span
       style={{
         top: "0px",
@@ -172,7 +172,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 60.1 && currentMultiplier < 70 && (
+  currentMultiplier > 60.01 && currentMultiplier < 70 && (
     <span
       style={{
         top: "0px",
@@ -200,7 +200,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 70.1 && currentMultiplier < 80 && (
+  currentMultiplier > 70.01 && currentMultiplier < 80 && (
     <span
       style={{
         top: "0px",
@@ -228,7 +228,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 } 
 {
-  currentMultiplier > 80.1 && currentMultiplier < 90 && (
+  currentMultiplier > 80.01 && currentMultiplier < 90 && (
     <span
       style={{
         top: "0px",
@@ -256,7 +256,7 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 90.1 && currentMultiplier < 100 && (
+  currentMultiplier > 90.01 && currentMultiplier < 100 && (
     <span
       style={{
         top: "0px",
