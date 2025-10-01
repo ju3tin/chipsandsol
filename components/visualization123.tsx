@@ -250,13 +250,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       }
 */
       // Draw time labels above the x-axis
-      if (GameStatus === "Running" && !isNaN(timer5)) {
-        ctx.textAlign = "center";
-        ctx.font = "12px Arial";
-        ctx.fillStyle = "white";
-        const x = canvas.width / 2; // Center of the x-axis
-        ctx.fillText(`${timer5.toFixed(1)}`, x, canvas.height - 20); // Position above x-axis
-      }
+    
 
       // Draw Bezier curve
       ctx.beginPath();
