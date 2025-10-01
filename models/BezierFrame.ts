@@ -6,6 +6,7 @@ export interface ControlPointDoc extends Document {
   cp1: Point;
   cp2: Point;
   pointB: Point;
+  time: number;
   num: number;
 }
 
@@ -19,6 +20,7 @@ const ControlPointSchema = new Schema<ControlPointDoc>({
   cp2: { type: PointSchema, required: true },
   pointB: { type: PointSchema, required: true },
   num: { type: Number, required: true },
+  time: { type: Number, required: true },
 }, { _id: false });
 
 export interface BezierSetDoc extends Document {
