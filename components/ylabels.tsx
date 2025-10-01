@@ -10,7 +10,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
       style={{
         top: "180px", // Below multiplier to avoid overlap
         left: "50%",
-        transform: "translateX(-50%)",
+      //  transform: "translateX(-50%)",
         display: "block",
         position: "absolute",
         color:
@@ -23,9 +23,10 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
         zIndex: 10, // High z-index to ensure visibility
       }}
     >
-      <span>
+    
+    <span>
       {
-  timer5 > 10.00 && timer5 < 10000.00 && (
+  currentMultiplier > 1.00 && currentMultiplier < 2.00 && (
   <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
     <li style={{marginRight: "10px"}}>Item 1</li>
     <li style={{marginRight: "10px"}}>Item 2</li>
@@ -42,6 +43,8 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 )
 }
 </span>
+
+
     </span>
        {console.log(timer5+ "timer5 this is it dude")}
       </>
