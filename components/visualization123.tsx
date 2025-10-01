@@ -428,13 +428,15 @@ const GameVisual: React.FC<GameVisualProps> = ({
 {/* */}
 <span
       style={{
-        position: 'relative',
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
         zIndex: 11,
         display: 'inline-block', // needed to make span act like a block
       }}
     >
       <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0 }}>
-        <li style={{ marginRight: '10px' }}>Item 1</li>
+        <li style={{ marginRight: '10px' }}>what the fuck dude</li>
         <li style={{ marginRight: '10px' }}>Item 2</li>
         <li>Item 3</li>
       </ul>
