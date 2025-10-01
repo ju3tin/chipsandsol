@@ -236,6 +236,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ctx.stroke();
 
       // Draw multiplier labels on the left (y-axis)
+      /*
       ctx.font = "12px Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "right";
@@ -245,7 +246,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         const y = canvas.height - 10 - (i / maxMultiplier) * yAxisHeight;
         ctx.fillText(`${i}x`, 25, y);
       }
-
+*/
       // Draw time labels above the x-axis
       if (GameStatus === "Running" && !isNaN(timer5)) {
         ctx.textAlign = "center";
@@ -435,7 +436,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
     display: 'inline-block'
   }}
 >
-  <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+  <ul style={{ listStyle: 'none', marginLeft: 10, padding: 0 }}>
     <li style={{ marginBottom: '10px' }}>what the fuck dude</li>
     <li style={{ marginBottom: '10px' }}>Item 2</li>
     <li>Item 3</li>
