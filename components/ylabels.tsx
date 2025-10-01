@@ -11,23 +11,20 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
         top: "180px", // Below multiplier to avoid overlap
         left: "50%",
       //  transform: "translateX(-50%)",
-        display: "block",
+      width: "100",
         position: "absolute",
-        color:
-          currentMultiplier > 5
-            ? "red"
-            : currentMultiplier > 2
-            ? "yellow"
-            : "white",
         fontSize: "1.5rem",
         zIndex: 10, // High z-index to ensure visibility
       }}
     >
     
-    <span>
+    
       {
   currentMultiplier > 1.00 && currentMultiplier < 2.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
+
+   
+   
+  <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
    <li style={{marginRight: "5px"}}>1</li>
     <li style={{marginRight: "5px"}}>2</li>
     <li style={{marginRight: "5px"}}>3</li>
@@ -44,7 +41,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 }
 {
   currentMultiplier > 2.01 && currentMultiplier < 4.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
    <li style={{marginRight: "5px"}}>2</li>
     <li style={{marginRight: "5px"}}>4</li>
     <li style={{marginRight: "5px"}}>6</li>
@@ -60,7 +57,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 )
 }{
   currentMultiplier > 4.01 && currentMultiplier < 8.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
    <li style={{marginRight: "5px"}}>3</li>
     <li style={{marginRight: "5px"}}>6</li>
     <li style={{marginRight: "5px"}}>9</li>
@@ -77,8 +74,8 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 }
 {
   currentMultiplier > 8.01 && currentMultiplier < 16.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
-   <li style={{marginRight: "5px"}}>4</li>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
+    <li style={{marginRight: "5px"}}>4</li>
     <li style={{marginRight: "5px"}}>8</li>
     <li style={{marginRight: "5px"}}>12</li>
     <li style={{marginRight: "5px"}}>16</li>
@@ -94,7 +91,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 }
 {
   currentMultiplier > 16.01 && currentMultiplier < 32.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
    <li style={{marginRight: "5px"}}>5</li>
     <li style={{marginRight: "5px"}}>10</li>
     <li style={{marginRight: "5px"}}>15</li>
@@ -111,8 +108,8 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 }
 {
   currentMultiplier > 32.01 && currentMultiplier < 64.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
-    <li style={{marginRight: "5px"}}>6</li>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
+     <li style={{marginRight: "5px"}}>6</li>
     <li style={{marginRight: "5px"}}>12</li>
     <li style={{marginRight: "5px"}}>18</li>
     <li style={{marginRight: "5px"}}>24</li>
@@ -128,8 +125,8 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 }
 {
   currentMultiplier > 64.01 && currentMultiplier < 128.00 && (
-  <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
-   <li style={{marginRight: "5px"}}>7</li>
+    <ul style={{listStyle: 'none',  padding: 0, margin: 0, display: 'flex', gap: 5, position: 'absolute', zIndex: 11,}}>
+    <li style={{marginRight: "5px"}}>7</li>
     <li style={{marginRight: "5px"}}>14</li>
     <li style={{marginRight: "5px"}}>21</li>
     <li style={{marginRight: "5px"}}>28</li>
@@ -146,7 +143,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
 </span>
 
 
-    </span>
+    
        {console.log(timer5+ "timer5 this is it dude")}
       </>
     );
