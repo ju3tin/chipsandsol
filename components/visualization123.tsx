@@ -436,10 +436,17 @@ const GameVisual: React.FC<GameVisualProps> = ({
     display: 'inline-block'
   }}
 >
-  <ul style={{ listStyle: 'none', marginLeft: 10, padding: 0 }}>
-    <li style={{ marginBottom: '10px' }}>what the fuck dude</li>
-    <li style={{ marginBottom: '10px' }}>Item 2</li>
-    <li>Item 3</li>
+  <ul style={{ listStyle: 'none', marginLeft: 12, padding: 0 }}>
+    <li style={{ marginBottom: '10px' }}>10x</li>
+    <li style={{ marginBottom: '10px' }}>20x</li>
+    <li style={{ marginBottom: '10px' }}>30x</li>
+    <li style={{ marginBottom: '10px' }}>40x</li>
+    <li style={{ marginBottom: '10px' }}>50x</li>
+    <li style={{ marginBottom: '10px' }}>60x</li>
+    <li style={{ marginBottom: '10px' }}>70x</li>
+    <li style={{ marginBottom: '10px' }}>80x</li>
+    <li style={{ marginBottom: '10px' }}>90x</li>
+    <li style={{ marginBottom: '10px' }}>100x</li>
   </ul>
 </span>
 <span
