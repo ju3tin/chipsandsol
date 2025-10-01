@@ -25,7 +25,7 @@ export default function YLabels({ currentMultiplier, timer5 }: Props) {
     >
       <span>
       {
-  timer5 > 0 && timer5 < 10000 && (
+  timer5 > 0.01 && timer5 < 10000 && (
   <ul style={{listStyle: "none", padding: 0, margin: 0, display: 'inline-block', position: 'absolute', zIndex: 11,}}>
     <li style={{marginRight: "10px"}}>Item 1</li>
     <li style={{marginRight: "10px"}}>Item 2</li>
