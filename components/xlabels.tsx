@@ -17,16 +17,11 @@ export default function XLabels({ currentMultiplier }: Props) {
       }}
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
-        <li style={{ marginBottom: '10px' }}>1x</li>
-        <li style={{ marginBottom: '10px' }}>2x</li>
-        <li style={{ marginBottom: '10px' }}>3x</li>
-        <li style={{ marginBottom: '10px' }}>4x</li>
         <li style={{ marginBottom: '10px' }}>5x</li>
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>4x</li>
+        <li style={{ marginBottom: '10px' }}>3x</li>
+        <li style={{ marginBottom: '10px' }}>2x</li>
+        <li style={{ marginBottom: '10px' }}>1x</li>
       </ul>
     </span>
   )
@@ -44,11 +39,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
         <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>5x</li>
       </ul>
     </span>
   )
@@ -66,16 +62,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>11x</li>
-        <li style={{ marginBottom: '10px' }}>12x</li>
-        <li style={{ marginBottom: '10px' }}>13x</li>
-        <li style={{ marginBottom: '10px' }}>14x</li>
         <li style={{ marginBottom: '10px' }}>15x</li>
-        <li style={{ marginBottom: '10px' }}>16x</li>
-        <li style={{ marginBottom: '10px' }}>17x</li>
-        <li style={{ marginBottom: '10px' }}>18x</li>
-        <li style={{ marginBottom: '10px' }}>19x</li>
-        <li style={{ marginBottom: '10px' }}>20x</li>
+        <li style={{ marginBottom: '10px' }}>14x</li>
+        <li style={{ marginBottom: '10px' }}>13x</li>
+        <li style={{ marginBottom: '10px' }}>12x</li>
+        <li style={{ marginBottom: '10px' }}>11x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
        
       </ul>
     </span>
@@ -94,11 +86,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>20x</li>
+        <li style={{ marginBottom: '10px' }}>19x</li>
+        <li style={{ marginBottom: '10px' }}>18x</li>
+        <li style={{ marginBottom: '10px' }}>17x</li>
+        <li style={{ marginBottom: '10px' }}>16x</li>
+        <li style={{ marginBottom: '10px' }}>15x</li>
       </ul>
     </span>
   )
@@ -116,16 +109,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>21x</li>
-        <li style={{ marginBottom: '10px' }}>12x</li>
-        <li style={{ marginBottom: '10px' }}>23x</li>
-        <li style={{ marginBottom: '10px' }}>24x</li>
         <li style={{ marginBottom: '10px' }}>25x</li>
-        <li style={{ marginBottom: '10px' }}>26x</li>
-        <li style={{ marginBottom: '10px' }}>27x</li>
-        <li style={{ marginBottom: '10px' }}>28x</li>
-        <li style={{ marginBottom: '10px' }}>29x</li>
-        <li style={{ marginBottom: '10px' }}>30x</li>
+        <li style={{ marginBottom: '10px' }}>24x</li>
+        <li style={{ marginBottom: '10px' }}>23x</li>
+        <li style={{ marginBottom: '10px' }}>22x</li>
+        <li style={{ marginBottom: '10px' }}>21x</li>
+        <li style={{ marginBottom: '10px' }}>20x</li>
        
       </ul>
     </span>
@@ -144,11 +133,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+      <li style={{ marginBottom: '10px' }}>30x</li>
+        <li style={{ marginBottom: '10px' }}>29x</li>
+        <li style={{ marginBottom: '10px' }}>28x</li>
+        <li style={{ marginBottom: '10px' }}>27x</li>
+        <li style={{ marginBottom: '10px' }}>26x</li>
+        <li style={{ marginBottom: '10px' }}>25x</li>
       </ul>
     </span>
   )
@@ -166,16 +156,13 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>31x</li>
-        <li style={{ marginBottom: '10px' }}>32x</li>
-        <li style={{ marginBottom: '10px' }}>33x</li>
-        <li style={{ marginBottom: '10px' }}>34x</li>
         <li style={{ marginBottom: '10px' }}>35x</li>
-        <li style={{ marginBottom: '10px' }}>36x</li>
-        <li style={{ marginBottom: '10px' }}>37x</li>
-        <li style={{ marginBottom: '10px' }}>38x</li>
-        <li style={{ marginBottom: '10px' }}>39x</li>
-        <li style={{ marginBottom: '10px' }}>40x</li>
+        <li style={{ marginBottom: '10px' }}>34x</li>
+        <li style={{ marginBottom: '10px' }}>33x</li>
+        <li style={{ marginBottom: '10px' }}>32x</li>
+        <li style={{ marginBottom: '10px' }}>31x</li>
+        <li style={{ marginBottom: '10px' }}>30x</li>
+       
        
       </ul>
     </span>
@@ -194,11 +181,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+      <li style={{ marginBottom: '10px' }}>40x</li>
+        <li style={{ marginBottom: '10px' }}>39x</li>
+        <li style={{ marginBottom: '10px' }}>38x</li>
+        <li style={{ marginBottom: '10px' }}>37x</li>
+        <li style={{ marginBottom: '10px' }}>36x</li>
+        <li style={{ marginBottom: '10px' }}>35x</li>
       </ul>
     </span>
   )
@@ -216,17 +204,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>41x</li>
-        <li style={{ marginBottom: '10px' }}>42x</li>
-        <li style={{ marginBottom: '10px' }}>43x</li>
-        <li style={{ marginBottom: '10px' }}>44x</li>
         <li style={{ marginBottom: '10px' }}>45x</li>
-        <li style={{ marginBottom: '10px' }}>46x</li>
-        <li style={{ marginBottom: '10px' }}>47x</li>
-        <li style={{ marginBottom: '10px' }}>48x</li>
-        <li style={{ marginBottom: '10px' }}>49x</li>
-        <li style={{ marginBottom: '10px' }}>50x</li>
-       
+        <li style={{ marginBottom: '10px' }}>44x</li>
+        <li style={{ marginBottom: '10px' }}>43x</li>
+        <li style={{ marginBottom: '10px' }}>42x</li>
+        <li style={{ marginBottom: '10px' }}>41x</li>
+        <li style={{ marginBottom: '10px' }}>40x</li>
       </ul>
     </span>
   )
@@ -244,11 +227,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>50x</li>
+        <li style={{ marginBottom: '10px' }}>49x</li>
+        <li style={{ marginBottom: '10px' }}>48x</li>
+        <li style={{ marginBottom: '10px' }}>47x</li>
+        <li style={{ marginBottom: '10px' }}>46x</li>
+        <li style={{ marginBottom: '10px' }}>45x</li>
       </ul>
     </span>
   )
@@ -265,18 +249,12 @@ export default function XLabels({ currentMultiplier }: Props) {
       }}
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
-       
-        <li style={{ marginBottom: '10px' }}>51x</li>
-        <li style={{ marginBottom: '10px' }}>52x</li>
-        <li style={{ marginBottom: '10px' }}>53x</li>
-        <li style={{ marginBottom: '10px' }}>54x</li>
         <li style={{ marginBottom: '10px' }}>55x</li>
-        <li style={{ marginBottom: '10px' }}>56x</li>
-        <li style={{ marginBottom: '10px' }}>57x</li>
-        <li style={{ marginBottom: '10px' }}>58x</li>
-        <li style={{ marginBottom: '10px' }}>59x</li>
-        <li style={{ marginBottom: '10px' }}>60x</li>
-       
+        <li style={{ marginBottom: '10px' }}>54x</li>
+        <li style={{ marginBottom: '10px' }}>53x</li>
+        <li style={{ marginBottom: '10px' }}>52x</li>
+        <li style={{ marginBottom: '10px' }}>51x</li>
+        <li style={{ marginBottom: '10px' }}>50x</li>
       </ul>
     </span>
   )
@@ -294,11 +272,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>60x</li>
+        <li style={{ marginBottom: '10px' }}>59x</li>
+        <li style={{ marginBottom: '10px' }}>58x</li>
+        <li style={{ marginBottom: '10px' }}>57x</li>
+        <li style={{ marginBottom: '10px' }}>56x</li>
+        <li style={{ marginBottom: '10px' }}>55x</li>
       </ul>
     </span>
   )
@@ -316,16 +295,14 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>61x</li>
-        <li style={{ marginBottom: '10px' }}>62x</li>
-        <li style={{ marginBottom: '10px' }}>63x</li>
-        <li style={{ marginBottom: '10px' }}>64x</li>
         <li style={{ marginBottom: '10px' }}>65x</li>
-        <li style={{ marginBottom: '10px' }}>66x</li>
-        <li style={{ marginBottom: '10px' }}>67x</li>
-        <li style={{ marginBottom: '10px' }}>68x</li>
-        <li style={{ marginBottom: '10px' }}>69x</li>
-        <li style={{ marginBottom: '10px' }}>70x</li>
+        <li style={{ marginBottom: '10px' }}>65x</li>
+        <li style={{ marginBottom: '10px' }}>64x</li>
+        <li style={{ marginBottom: '10px' }}>63x</li>
+        <li style={{ marginBottom: '10px' }}>62x</li>
+        <li style={{ marginBottom: '10px' }}>61x</li>
+        <li style={{ marginBottom: '10px' }}>60x</li>
+        
        
       </ul>
     </span>
@@ -344,11 +321,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>70x</li>
+        <li style={{ marginBottom: '10px' }}>69x</li>
+        <li style={{ marginBottom: '10px' }}>68x</li>
+        <li style={{ marginBottom: '10px' }}>67x</li>
+        <li style={{ marginBottom: '10px' }}>66x</li>
+        <li style={{ marginBottom: '10px' }}>65x</li>
       </ul>
     </span>
   )
@@ -366,16 +344,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>71x</li>
-        <li style={{ marginBottom: '10px' }}>72x</li>
-        <li style={{ marginBottom: '10px' }}>73x</li>
-        <li style={{ marginBottom: '10px' }}>74x</li>
         <li style={{ marginBottom: '10px' }}>75x</li>
-        <li style={{ marginBottom: '10px' }}>76x</li>
-        <li style={{ marginBottom: '10px' }}>77x</li>
-        <li style={{ marginBottom: '10px' }}>78x</li>
-        <li style={{ marginBottom: '10px' }}>79x</li>
-        <li style={{ marginBottom: '10px' }}>80x</li>
+        <li style={{ marginBottom: '10px' }}>74x</li>
+        <li style={{ marginBottom: '10px' }}>73x</li>
+        <li style={{ marginBottom: '10px' }}>72x</li>
+        <li style={{ marginBottom: '10px' }}>71x</li>
+        <li style={{ marginBottom: '10px' }}>70x</li>
        
       </ul>
     </span>
