@@ -443,22 +443,22 @@ const GameVisual: React.FC<GameVisualProps> = ({
       )}
       {GameStatus === "Crashed" && (
         <>
-          <span
-            style={{
-              top: '68.75px',
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-            }}
-          >
-            <Image
-              width={275}
-              height={275}
-              src="/explode1.svg"
-              alt="Explosion effect"
-            />
-          </span>
+         <span
+  style={{
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    display: "block",
+    position: "absolute",
+  }}
+>
+  <Image
+    width={275}
+    height={275}
+    src="/explode1.svg"
+    alt="Explosion effect"
+  />
+</span>
           <span
             style={{
               top: "100px",
