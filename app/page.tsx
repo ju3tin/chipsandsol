@@ -191,6 +191,7 @@ const CrashGame = () => {
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const [triggerConfetti, setTriggerConfetti] = useState(false);
   const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User";
+  const [lastValidTime, setLastValidTime] = useState<number>(0);
 
   const animationRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
@@ -201,6 +202,12 @@ const CrashGame = () => {
 
   const MAX_MULTIPLIER = 100;
   const GAME_DURATION_MS = 15000;
+
+  useEffect(() => {
+    if (typeof gameState5.timeElapsed === 'number' && !isNaN(gameState5.timeElapsed)) {
+      setLastValidTime(gameState5.timeElapsed);
+    }
+  }, [gameState5.timeElapsed]);
 
   useEffect(() => {
     if (pressed === 1 && !hasLogged) {
