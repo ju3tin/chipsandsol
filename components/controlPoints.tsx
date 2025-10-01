@@ -12,7 +12,8 @@ export const controlPoints = [
       "x": 0,
       "y": 0
     },
-    "num": 0
+    "num": 0,
+    "time": 0
   },
   {
     "cp1": {
@@ -27,7 +28,8 @@ export const controlPoints = [
       "x": 0,
       "y": 0
     },
-    "num": 1
+    "num": 1,
+    "time": 0
   },
   {
     "cp1": {
@@ -42,7 +44,8 @@ export const controlPoints = [
       "x": 0,
       "y": 170
     },
-    "num": 2
+    "num": 2,
+    "time": 0
   },
   {
     "cp1": {
@@ -57,7 +60,8 @@ export const controlPoints = [
       "x": 25,
       "y": 170
     },
-    "num": 3
+    "num": 3,
+    "time": 0
   },
   {
     "cp1": {
@@ -72,7 +76,8 @@ export const controlPoints = [
       "x": 50,
       "y": 170
     },
-    "num": 4
+    "num": 4,
+    "time": 0
   },
   {
     "cp1": {
@@ -87,7 +92,8 @@ export const controlPoints = [
       "x": 100,
       "y": 170
     },
-    "num": 5
+    "num": 5,
+    "time": 0
   },
   {
     "cp1": {
@@ -102,7 +108,8 @@ export const controlPoints = [
       "x": 150,
       "y": 170
     },
-    "num": 6
+    "num": 6,
+    "time": 0
   },
   {
     "cp1": {
@@ -117,7 +124,8 @@ export const controlPoints = [
       "x": 170,
       "y": 170
     },
-    "num": 7
+    "num": 7,
+    "time": 0
   },
   {
     "cp1": {
@@ -132,7 +140,8 @@ export const controlPoints = [
       "x": 180,
       "y": 170
     },
-    "num": 8
+    "num": 8,
+    "time": 0
   },
   {
     "cp1": {
@@ -147,7 +156,8 @@ export const controlPoints = [
       "x": 200,
       "y": 170
     },
-    "num": 9
+    "num": 9,
+    "time": 0
   },
   {
     "cp1": {
@@ -162,7 +172,8 @@ export const controlPoints = [
       "x": 225,
       "y": 170
     },
-    "num": 10
+    "num": 10,
+    "time": 0
   },
   {
     "cp1": {
@@ -177,7 +188,8 @@ export const controlPoints = [
       "x": 250,
       "y": 170
     },
-    "num": 11
+    "num": 11,
+    "time": 0
   },
   {
     "cp1": {
@@ -192,7 +204,8 @@ export const controlPoints = [
       "x": 300,
       "y": 170
     },
-    "num": 12
+    "num": 12,
+    "time": 0
   },
   {
     "cp1": {
@@ -207,7 +220,8 @@ export const controlPoints = [
       "x": 325,
       "y": 170
     },
-    "num": 13
+    "num": 13,
+    "time": 0
   },
   {
     "cp1": {
@@ -222,7 +236,8 @@ export const controlPoints = [
       "x": 350,
       "y": 170
     },
-    "num": 14
+    "num": 14,
+    "time": 0
   },
   {
     "cp1": {
@@ -237,7 +252,8 @@ export const controlPoints = [
       "x": 375,
       "y": 170
     },
-    "num": 15
+    "num": 15,
+    "time": 0
   },
   {
     "cp1": {
@@ -252,7 +268,8 @@ export const controlPoints = [
       "x": 375,
       "y": 170
     },
-    "num": 16
+    "num": 16,
+    "time": 0
   },
   {
     "cp1": {
@@ -267,7 +284,8 @@ export const controlPoints = [
       "x": 375,
       "y": 170
     },
-    "num": 17
+    "num": 17,
+    "time": 0
   },
   {
     "cp1": {
@@ -282,7 +300,8 @@ export const controlPoints = [
       "x": 375,
       "y": 100
     },
-    "num": 18
+    "num": 18,
+    "time": 0
   },
   {
     "cp1": {
@@ -297,7 +316,8 @@ export const controlPoints = [
       "x": 375,
       "y": 100
     },
-    "num": 19
+    "num": 19,
+    "time": 0
   },
   {
     "cp1": {
@@ -312,7 +332,8 @@ export const controlPoints = [
       "x": 375,
       "y": 95
     },
-    "num": 20
+    "num": 20,
+    "time": 0
   },
   {
     "cp1": {
@@ -327,7 +348,8 @@ export const controlPoints = [
       "x": 375,
       "y": 95
     },
-    "num": 21
+    "num": 21,
+    "time": 0
   },
   {
     "cp1": {
@@ -342,7 +364,8 @@ export const controlPoints = [
       "x": 375,
       "y": 90
     },
-    "num": 22
+    "num": 22,
+    "time": 0
   },
   {
     "cp1": {
@@ -357,7 +380,8 @@ export const controlPoints = [
       "x": 375,
       "y": 90
     },
-    "num": 23
+    "num": 23,
+    "time": 0
   },
   {
     "cp1": {
@@ -372,7 +396,8 @@ export const controlPoints = [
       "x": 375,
       "y": 85
     },
-    "num": 24
+    "num": 24,
+    "time": 0
   },
   {
     "cp1": {
@@ -387,7 +412,8 @@ export const controlPoints = [
       "x": 375,
       "y": 85
     },
-    "num": 25
+    "num": 25,
+    "time": 0
   },
   {
     "cp1": {
@@ -402,7 +428,8 @@ export const controlPoints = [
       "x": 375,
       "y": 80
     },
-    "num": 26
+    "num": 26,
+    "time": 0
   },
   {
     "cp1": {
@@ -417,7 +444,8 @@ export const controlPoints = [
       "x": 375,
       "y": 80
     },
-    "num": 27
+    "num": 27,
+    "time": 0
   },
   {
     "cp1": {
@@ -432,7 +460,8 @@ export const controlPoints = [
       "x": 375,
       "y": 75
     },
-    "num": 28
+    "num": 28,
+    "time": 0
   },
   {
     "cp1": {
@@ -447,7 +476,8 @@ export const controlPoints = [
       "x": 375,
       "y": 75
     },
-    "num": 30
+    "num": 30,
+    "time": 0
   },
   {
     "cp1": {
@@ -462,7 +492,8 @@ export const controlPoints = [
       "x": 375,
       "y": 70
     },
-    "num": 31
+    "num": 31,
+    "time": 0
   },
   {
     "cp1": {
@@ -477,7 +508,8 @@ export const controlPoints = [
       "x": 375,
       "y": 70
     },
-    "num": 32
+    "num": 32,
+    "time": 0
   },
   {
     "cp1": {
@@ -492,7 +524,8 @@ export const controlPoints = [
       "x": 375,
       "y": 65
     },
-    "num": 33
+    "num": 33,
+    "time": 0
   },
   {
     "cp1": {
@@ -507,7 +540,8 @@ export const controlPoints = [
       "x": 375,
       "y": 65
     },
-    "num": 34
+    "num": 34,
+    "time": 0
   },
   {
     "cp1": {
@@ -522,7 +556,8 @@ export const controlPoints = [
       "x": 375,
       "y": 60
     },
-    "num": 35
+    "num": 35,
+    "time": 0
   },
   {
     "cp1": {
@@ -537,7 +572,8 @@ export const controlPoints = [
       "x": 375,
       "y": 60
     },
-    "num": 36
+    "num": 36,
+    "time": 0
   },
   {
     "cp1": {
@@ -552,7 +588,8 @@ export const controlPoints = [
       "x": 375,
       "y": 50
     },
-    "num": 37
+    "num": 37,
+    "time": 0
   },
   {
     "cp1": {
@@ -567,7 +604,8 @@ export const controlPoints = [
       "x": 375,
       "y": 50
     },
-    "num": 38
+    "num": 38,
+    "time": 0
   },
   {
     "cp1": {
@@ -582,7 +620,8 @@ export const controlPoints = [
       "x": 375,
       "y": 45
     },
-    "num": 39
+    "num": 39,
+    "time": 0
   },
   {
     "cp1": {
@@ -597,7 +636,8 @@ export const controlPoints = [
       "x": 375,
       "y": 45
     },
-    "num": 40
+    "num": 40,
+    "time": 0
   },
   {
     "cp1": {
@@ -612,7 +652,8 @@ export const controlPoints = [
       "x": 375,
       "y": 40
     },
-    "num": 41
+    "num": 41,
+    "time": 0
   },
   {
     "cp1": {
@@ -627,7 +668,8 @@ export const controlPoints = [
       "x": 375,
       "y": 40
     },
-    "num": 42
+    "num": 42,
+    "time": 0
   },
   {
     "cp1": {
@@ -642,7 +684,8 @@ export const controlPoints = [
       "x": 375,
       "y": 35
     },
-    "num": 43
+    "num": 43,
+    "time": 0
   },
   {
     "cp1": {
@@ -657,7 +700,8 @@ export const controlPoints = [
       "x": 375,
       "y": 35
     },
-    "num": 44
+    "num": 44,
+    "time": 0
   },
   {
     "cp1": {
@@ -672,7 +716,8 @@ export const controlPoints = [
       "x": 375,
       "y": 30
     },
-    "num": 45
+    "num": 45,
+    "time": 0
   },
   {
     "cp1": {
@@ -687,7 +732,8 @@ export const controlPoints = [
       "x": 375,
       "y": 30
     },
-    "num": 46
+    "num": 46,
+    "time": 0
   },
   {
     "cp1": {
@@ -702,7 +748,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 47
+    "num": 47,
+    "time": 0
   },
   {
     "cp1": {
@@ -717,7 +764,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 48
+    "num": 48,
+    "time": 0
   },
   {
     "cp1": {
@@ -732,7 +780,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 49
+    "num": 49,
+    "time": 0
   },
   {
     "cp1": {
@@ -747,7 +796,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 50
+    "num": 50,
+    "time": 0
   },
   {
     "cp1": {
@@ -762,7 +812,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 51
+    "num": 51,
+    "time": 0
   },
   {
     "cp1": {
@@ -777,7 +828,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 52
+    "num": 52,
+    "time": 0
   },
   {
     "cp1": {
@@ -792,7 +844,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 53
+    "num": 53,
+    "time": 0
   },
   {
     "cp1": {
@@ -807,7 +860,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 54
+    "num": 54,
+    "time": 0
   },
   {
     "cp1": {
@@ -822,7 +876,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 55
+    "num": 55,
+    "time": 0
   },
   {
     "cp1": {
@@ -837,7 +892,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 56
+    "num": 56,
+    "time": 0
   },
   {
     "cp1": {
@@ -852,7 +908,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 57
+    "num": 57,
+    "time": 0
   },
   {
     "cp1": {
@@ -867,7 +924,8 @@ export const controlPoints = [
       "x": 375,
       "y": 25
     },
-    "num": 58
+    "num": 58,
+    "time": 0
   },
   {
     "cp1": {
@@ -882,7 +940,8 @@ export const controlPoints = [
       "x": 0,
       "y": 170
     },
-    "num": 59
+    "num": 59,
+    "time": 0
   },
   {
     "cp1": {
@@ -897,7 +956,8 @@ export const controlPoints = [
       "x": 0,
       "y": 170
     },
-    "num": 60
+    "num": 60,
+    "time": 0
   },
   {
     "cp1": {
@@ -912,7 +972,8 @@ export const controlPoints = [
       "x": 100,
       "y": 170
     },
-    "num": 61
+    "num": 61,
+    "time": 0
   },
   {
     "cp1": {
@@ -927,7 +988,8 @@ export const controlPoints = [
       "x": 100,
       "y": 170
     },
-    "num": 62
+    "num": 62,
+    "time": 0
   },
   {
     "cp1": {
@@ -942,7 +1004,8 @@ export const controlPoints = [
       "x": 170,
       "y": 110
     },
-    "num": 63
+    "num": 63,
+    "time": 0
   },
   {
     "cp1": {
@@ -957,7 +1020,8 @@ export const controlPoints = [
       "x": 170,
       "y": 110
     },
-    "num": 64
+    "num": 64,
+    "time": 0
   },
   {
     "cp1": {
@@ -972,7 +1036,8 @@ export const controlPoints = [
       "x": 250,
       "y": 80
     },
-    "num": 65
+    "num": 65,
+    "time": 0
   },
   {
     "cp1": {
@@ -987,7 +1052,8 @@ export const controlPoints = [
       "x": 250,
       "y": 80
     },
-    "num": 66
+    "num": 66,
+    "time": 0
   },
   {
     "cp1": {
@@ -1002,7 +1068,8 @@ export const controlPoints = [
       "x": 375,
       "y": 40
     },
-    "num": 67
+    "num": 67,
+    "time": 0
   },
   {
     "cp1": {
@@ -1017,7 +1084,8 @@ export const controlPoints = [
       "x": 375,
       "y": 40
     },
-    "num": 68
+    "num": 68,
+    "time": 0
   },
   {
     "cp1": {
@@ -1032,7 +1100,8 @@ export const controlPoints = [
       "x": 375,
       "y": 0
     },
-    "num": 69
+    "num": 69,
+    "time": 0
   },
   {
     "cp1": {
@@ -1047,6 +1116,7 @@ export const controlPoints = [
       "x": 375,
       "y": 0
     },
-    "num": 70
+    "num": 70,
+    "time": 0
   }
 ];

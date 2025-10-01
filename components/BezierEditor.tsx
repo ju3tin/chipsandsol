@@ -4,7 +4,7 @@ import React from "react";
 import { controlPoints as defaultControlPoints } from "./controlPoints";
 
 type Point = { x: number; y: number };
-type ControlPoint = { cp1: Point; cp2: Point; pointB: Point; num: number };
+type ControlPoint = { cp1: Point; cp2: Point; pointB: Point; num: number, time: number };
 
 interface BezierEditorProps {
     value?: ControlPoint[];
@@ -59,12 +59,14 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
                     cp2: { x: 0, y: 200 },
                     pointB:{ x: 0, y: 200 },
                     num: 0,
+                    time: 0
                 };
             const newFrame: ControlPoint = {
                 cp1: { ...base.cp1 },
                 cp2: { ...base.cp2 },
                 pointB: { ...base.pointB },
                 num: insertAt,
+                time: 0
             };
             const next = renumber([...prev.slice(0, insertAt), newFrame, ...prev.slice(insertAt)]);
             onChange?.(next);
@@ -322,6 +324,10 @@ export default function BezierEditor({ value, onChange }: BezierEditorProps): JS
                         <legend style={{ padding: "0 6px" }}>pointB</legend>
                         <NumberField label="x" value={frame.pointB.x} onChange={(v) => updateFrame(selected, (f) => ({ ...f, pointB: { ...f.pointB, x: v } }))} />
                         <NumberField label="y" value={frame.pointB.y} onChange={(v) => updateFrame(selected, (f) => ({ ...f, pointB: { ...f.pointB, y: v } }))} />
+                    </fieldset>
+                    <fieldset style={{ border: "1px solid #1f2a44", borderRadius: 8, padding: 12 }}>
+                        <legend style={{ padding: "0 6px" }}>time</legend>
+                        <NumberField label="time" value={frame.time} onChange={(v) => updateFrame(selected, (f) => ({ ...f, time: v }))} />
                     </fieldset>
                 </div>
             ) : null}
