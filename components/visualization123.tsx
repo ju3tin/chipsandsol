@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import XLabels  from './xlabels';
+import YLabels  from './ylabels';
 
 interface ControlPoint {
   cp1: { x: number; y: number };
@@ -429,26 +430,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
           </span>
 {/* */}
 <XLabels currentMultiplier={currentMultiplier} />
+<YLabels currentMultiplier={currentMultiplier} timer5={timer5} />
 
-<span
-      style={{
-        top: "180px", // Below multiplier to avoid overlap
-        left: "50%",
-        transform: "translateX(-50%)",
-        display: "block",
-        position: "absolute",
-        color:
-          currentMultiplier > 5
-            ? "red"
-            : currentMultiplier > 2
-            ? "yellow"
-            : "white",
-        fontSize: "1.5rem",
-        zIndex: 10, // High z-index to ensure visibility
-      }}
-    >
-      {timer5.toFixed(1)}s
-    </span>
 
           {dude55 && (
             <div

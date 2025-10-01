@@ -4,7 +4,7 @@ type Props = {
 
 export default function XLabels({ currentMultiplier }: Props) {
     return (
-      <div>
+      <>
        {
   currentMultiplier > 1 && currentMultiplier < 10 && (
     <span
@@ -284,6 +284,6 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
        
-      </div>
+      </>
     );
   }
