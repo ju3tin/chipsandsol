@@ -427,28 +427,33 @@ const GameVisual: React.FC<GameVisualProps> = ({
             {currentMultiplier}x
           </span>
 {/* */}
-<span
-  style={{
-    top: "0px",
-    left: "0px",
-    position: 'absolute',
-    zIndex: 11,
-    display: 'inline-block'
-  }}
->
-  <ul style={{ listStyle: 'none', marginLeft: 12, padding: 0 }}>
-    <li style={{ marginBottom: '10px' }}>10x</li>
-    <li style={{ marginBottom: '10px' }}>20x</li>
-    <li style={{ marginBottom: '10px' }}>30x</li>
-    <li style={{ marginBottom: '10px' }}>40x</li>
-    <li style={{ marginBottom: '10px' }}>50x</li>
-    <li style={{ marginBottom: '10px' }}>60x</li>
-    <li style={{ marginBottom: '10px' }}>70x</li>
-    <li style={{ marginBottom: '10px' }}>80x</li>
-    <li style={{ marginBottom: '10px' }}>90x</li>
-    <li style={{ marginBottom: '10px' }}>100x</li>
-  </ul>
-</span>
+{
+  timer5 > 2.0 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>20x</li>
+        <li style={{ marginBottom: '10px' }}>30x</li>
+        <li style={{ marginBottom: '10px' }}>40x</li>
+        <li style={{ marginBottom: '10px' }}>50x</li>
+        <li style={{ marginBottom: '10px' }}>60x</li>
+        <li style={{ marginBottom: '10px' }}>70x</li>
+        <li style={{ marginBottom: '10px' }}>80x</li>
+        <li style={{ marginBottom: '10px' }}>90x</li>
+        <li style={{ marginBottom: '10px' }}>100x</li>
+      </ul>
+    </span>
+  )
+}
+
 <span
       style={{
         top: "180px", // Below multiplier to avoid overlap
