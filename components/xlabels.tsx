@@ -5,8 +5,8 @@ type Props = {
 export default function XLabels({ currentMultiplier }: Props) {
     return (
       <>
-       {
-  currentMultiplier > 1 && currentMultiplier < 10 && (
+{
+  currentMultiplier > 1 && currentMultiplier < 5 && (
     <span
       style={{
         top: "0px",
@@ -32,7 +32,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 10.01 && currentMultiplier < 20 && (
+  currentMultiplier > 5.01 && currentMultiplier < 10 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 10.01 && currentMultiplier < 15 && (
     <span
       style={{
         top: "0px",
@@ -60,7 +82,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 20.01 && currentMultiplier < 30 && (
+  currentMultiplier > 15.01 && currentMultiplier < 20 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 20.01 && currentMultiplier < 25 && (
     <span
       style={{
         top: "0px",
@@ -88,7 +132,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 30.01 && currentMultiplier < 40 && (
+  currentMultiplier > 25.01 && currentMultiplier < 30 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 30.01 && currentMultiplier < 35 && (
     <span
       style={{
         top: "0px",
@@ -116,7 +182,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 40.01 && currentMultiplier < 50 && (
+  currentMultiplier > 35.01 && currentMultiplier < 40 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 40.01 && currentMultiplier < 45 && (
     <span
       style={{
         top: "0px",
@@ -142,9 +230,31 @@ export default function XLabels({ currentMultiplier }: Props) {
       </ul>
     </span>
   )
-  } 
+}
 {
-  currentMultiplier > 50.01 && currentMultiplier < 60 && (
+  currentMultiplier > 45.01 && currentMultiplier < 50 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+} 
+{
+  currentMultiplier > 50.01 && currentMultiplier < 55 && (
     <span
       style={{
         top: "0px",
@@ -172,7 +282,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 60.01 && currentMultiplier < 70 && (
+  currentMultiplier > 55.01 && currentMultiplier < 60 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 60.01 && currentMultiplier < 65 && (
     <span
       style={{
         top: "0px",
@@ -200,7 +332,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 70.01 && currentMultiplier < 80 && (
+  currentMultiplier > 65.01 && currentMultiplier < 70 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 70.01 && currentMultiplier < 75 && (
     <span
       style={{
         top: "0px",
@@ -226,9 +380,31 @@ export default function XLabels({ currentMultiplier }: Props) {
       </ul>
     </span>
   )
-} 
+}
 {
-  currentMultiplier > 80.01 && currentMultiplier < 90 && (
+  currentMultiplier > 75.01 && currentMultiplier < 80 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 80.01 && currentMultiplier < 85 && (
     <span
       style={{
         top: "0px",
@@ -256,7 +432,29 @@ export default function XLabels({ currentMultiplier }: Props) {
   )
 }
 {
-  currentMultiplier > 90.01 && currentMultiplier < 100 && (
+  currentMultiplier > 85.01 && currentMultiplier < 90 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 90.01 && currentMultiplier < 95 && (
     <span
       style={{
         top: "0px",
@@ -279,6 +477,28 @@ export default function XLabels({ currentMultiplier }: Props) {
         <li style={{ marginBottom: '10px' }}>99x</li>
         <li style={{ marginBottom: '10px' }}>100x</li>
        
+      </ul>
+    </span>
+  )
+}
+{
+  currentMultiplier > 95.01 && currentMultiplier < 100 && (
+    <span
+      style={{
+        top: "0px",
+        left: "0px",
+        position: 'absolute',
+        zIndex: 11,
+        display: 'inline-block'
+      }}
+    >
+      <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
+       
+        <li style={{ marginBottom: '10px' }}>6x</li>
+        <li style={{ marginBottom: '10px' }}>7x</li>
+        <li style={{ marginBottom: '10px' }}>8x</li>
+        <li style={{ marginBottom: '10px' }}>9x</li>
+        <li style={{ marginBottom: '10px' }}>10x</li>
       </ul>
     </span>
   )
