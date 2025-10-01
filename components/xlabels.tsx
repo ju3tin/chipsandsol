@@ -368,11 +368,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>80x</li>
+        <li style={{ marginBottom: '10px' }}>79x</li>
+        <li style={{ marginBottom: '10px' }}>78x</li>
+        <li style={{ marginBottom: '10px' }}>77x</li>
+        <li style={{ marginBottom: '10px' }}>76x</li>
+        <li style={{ marginBottom: '10px' }}>75x</li>
       </ul>
     </span>
   )
@@ -390,17 +391,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>81x</li>
-        <li style={{ marginBottom: '10px' }}>82x</li>
-        <li style={{ marginBottom: '10px' }}>83x</li>
-        <li style={{ marginBottom: '10px' }}>84x</li>
         <li style={{ marginBottom: '10px' }}>85x</li>
-        <li style={{ marginBottom: '10px' }}>86x</li>
-        <li style={{ marginBottom: '10px' }}>87x</li>
-        <li style={{ marginBottom: '10px' }}>88x</li>
-        <li style={{ marginBottom: '10px' }}>89x</li>
-        <li style={{ marginBottom: '10px' }}>90x</li>
-       
+        <li style={{ marginBottom: '10px' }}>84x</li>
+        <li style={{ marginBottom: '10px' }}>83x</li>
+        <li style={{ marginBottom: '10px' }}>82x</li>
+        <li style={{ marginBottom: '10px' }}>81x</li>
+        <li style={{ marginBottom: '10px' }}>80x</li>
       </ul>
     </span>
   )
@@ -418,11 +414,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>85x</li>
+        <li style={{ marginBottom: '10px' }}>84x</li>
+        <li style={{ marginBottom: '10px' }}>83x</li>
+        <li style={{ marginBottom: '10px' }}>82x</li>
+        <li style={{ marginBottom: '10px' }}>81x</li>
+        <li style={{ marginBottom: '10px' }}>80x</li>
       </ul>
     </span>
   )
@@ -440,16 +437,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>91x</li>
-        <li style={{ marginBottom: '10px' }}>92x</li>
-        <li style={{ marginBottom: '10px' }}>93x</li>
-        <li style={{ marginBottom: '10px' }}>94x</li>
         <li style={{ marginBottom: '10px' }}>95x</li>
-        <li style={{ marginBottom: '10px' }}>96x</li>
-        <li style={{ marginBottom: '10px' }}>97x</li>
-        <li style={{ marginBottom: '10px' }}>98x</li>
-        <li style={{ marginBottom: '10px' }}>99x</li>
-        <li style={{ marginBottom: '10px' }}>100x</li>
+        <li style={{ marginBottom: '10px' }}>94x</li>
+        <li style={{ marginBottom: '10px' }}>93x</li>
+        <li style={{ marginBottom: '10px' }}>92x</li>
+        <li style={{ marginBottom: '10px' }}>91x</li>
+        <li style={{ marginBottom: '10px' }}>90x</li>
        
       </ul>
     </span>
@@ -468,11 +461,12 @@ export default function XLabels({ currentMultiplier }: Props) {
     >
       <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
        
-        <li style={{ marginBottom: '10px' }}>6x</li>
-        <li style={{ marginBottom: '10px' }}>7x</li>
-        <li style={{ marginBottom: '10px' }}>8x</li>
-        <li style={{ marginBottom: '10px' }}>9x</li>
-        <li style={{ marginBottom: '10px' }}>10x</li>
+        <li style={{ marginBottom: '10px' }}>100x</li>
+        <li style={{ marginBottom: '10px' }}>99x</li>
+        <li style={{ marginBottom: '10px' }}>98x</li>
+        <li style={{ marginBottom: '10px' }}>97x</li>
+        <li style={{ marginBottom: '10px' }}>96x</li>
+        <li style={{ marginBottom: '10px' }}>95x</li>
       </ul>
     </span>
   )
