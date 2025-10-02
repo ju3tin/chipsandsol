@@ -1,26 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 type Props = {
   children: React.ReactNode;
-  timerMs: number;       // how long to animate for (e.g., 5000ms)
-  distance: number;      // how many pixels to move (e.g., 200px to the right)
+  timerMs: number;
+  distance: number;
 };
 
 export default function AnimatedHorizontalList({ children, timerMs, distance }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [startTime, setStartTime] = useState<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
-    let frameId: number;
+    let animationFrameId: number;
 
     const animate = (timestamp: number) => {
-      if (!startTime) {
-        setStartTime(timestamp);
-        frameId = requestAnimationFrame(animate);
-        return;
+      if (!startTimeRef.current) {
+        startTimeRef.current = timestamp;
       }
 
-      const elapsed = timestamp - startTime;
+      const elapsed = timestamp - startTimeRef.current;
       const progress = Math.min(elapsed / timerMs, 1); // 0 to 1
       const left = progress * distance;
 
@@ -29,13 +27,17 @@ export default function AnimatedHorizontalList({ children, timerMs, distance }: 
       }
 
       if (progress < 1) {
-        frameId = requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       }
     };
 
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [timerMs, distance]);
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      startTimeRef.current = null; // Reset on cleanup
+    };
+  }, [timerMs, distance]); // only rerun animation when these change
 
   return (
     <div
@@ -45,7 +47,8 @@ export default function AnimatedHorizontalList({ children, timerMs, distance }: 
         top: '180px',
         left: '0px',
         zIndex: 11,
-        display: 'inline-block'
+        display: 'inline-block',
+        whiteSpace: 'nowrap',
       }}
     >
       {children}
