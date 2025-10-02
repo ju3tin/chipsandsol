@@ -43,31 +43,41 @@ export default function XLabels({ currentMultiplier }: Props) {
 
   const { values: multipliers, time, marginBottom: initialMarginBottom } = getMultipliers();
 
-  // Effect to animate marginBottom reduction
+  // Ease-out quadratic function for smooth animation
+  const easeOutQuad = (t: number) => 1 - (1 - t) * (1 - t);
+
+  // Effect to animate marginBottom reduction with easing
   useEffect(() => {
     // Reset marginBottom when currentMultiplier changes
     setMarginBottom(initialMarginBottom);
 
     if (multipliers.length === 0) return;
 
+    const startMargin = initialMarginBottom;
     const endMargin = 0;
     const duration = time;
-    const stepTime = 50; // Update every 50ms
-    const steps = duration / stepTime;
-    const marginStep = (initialMarginBottom - endMargin) / steps;
+    const stepTime = 16; // Update ~60fps (16ms per frame)
+    let startTime: number | null = null;
 
-    const interval = setInterval(() => {
-      setMarginBottom((prev) => {
-        const nextMargin = prev - marginStep;
-        if (nextMargin <= endMargin) {
-          clearInterval(interval);
-          return endMargin;
-        }
-        return nextMargin;
-      });
-    }, stepTime);
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1); // Normalize to [0, 1]
+      const easedProgress = easeOutQuad(progress); // Apply ease-out
+      const newMargin = startMargin + (endMargin - startMargin) * easedProgress;
 
-    return () => clearInterval(interval); // Cleanup on unmount or multiplier change
+      setMarginBottom(newMargin);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setMarginBottom(endMargin); // Ensure final value
+      }
+    };
+
+    const animationId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationId); // Cleanup on unmount or multiplier change
   }, [currentMultiplier, time, initialMarginBottom]);
 
   return (
