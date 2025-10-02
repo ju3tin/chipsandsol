@@ -5,8 +5,8 @@ type Props = {
 };
 
 export default function XLabels({ currentMultiplier }: Props) {
-  // State to manage dynamic marginBottom
-  const [marginBottom, setMarginBottom] = useState(10);
+  // State to toggle between start and end marginBottom
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Function to generate an array of multipliers, animation time, and marginBottom values
   const getMultipliers = () => {
@@ -43,40 +43,19 @@ export default function XLabels({ currentMultiplier }: Props) {
 
   const { values: multipliers, time, startMarginBottom, endMarginBottom } = getMultipliers();
 
-  // Ease-out cubic function for smooth deceleration
-  const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-  // Effect to animate marginBottom reduction with easing
+  // Effect to trigger animation
   useEffect(() => {
-    // Reset marginBottom when currentMultiplier changes
-    setMarginBottom(startMarginBottom);
+    // Reset to start state
+    setIsAnimating(false);
 
     if (multipliers.length === 0) return;
 
-    let startTime: number | null = null;
-    let animationId: number;
+    // Trigger animation after a brief delay to ensure initial render
+    const timeout = setTimeout(() => {
+      setIsAnimating(true);
+    }, 0);
 
-    const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / time, 1); // Normalize to [0, 1]
-      const easedProgress = easeOutCubic(progress); // Apply ease-out cubic
-      const newMargin = startMarginBottom + (endMarginBottom - startMarginBottom) * easedProgress;
-
-      // Clamp to prevent overshoot
-      const clampedMargin = Math.max(Math.min(newMargin, startMarginBottom), endMarginBottom);
-      setMarginBottom(clampedMargin);
-
-      if (progress < 1) {
-        animationId = requestAnimationFrame(animate);
-      } else {
-        setMarginBottom(endMarginBottom); // Ensure exact final value
-      }
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationId); // Cleanup on unmount or multiplier change
+    return () => clearTimeout(timeout); // Cleanup on unmount or multiplier change
   }, [currentMultiplier, time, startMarginBottom, endMarginBottom]);
 
   return (
@@ -93,7 +72,13 @@ export default function XLabels({ currentMultiplier }: Props) {
         >
           <ul style={{ listStyle: 'none', marginLeft: 16, padding: 0 }}>
             {multipliers.map((multiplier) => (
-              <li key={multiplier} style={{ marginBottom: `${marginBottom}px` }}>
+              <li
+                key={multiplier}
+                style={{
+                  marginBottom: isAnimating ? `${endMarginBottom}px` : `${startMarginBottom}px`,
+                  transition: `margin-bottom ${time}ms ease-out`,
+                }}
+              >
                 {multiplier}x
               </li>
             ))}
