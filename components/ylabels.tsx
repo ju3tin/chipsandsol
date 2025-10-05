@@ -70,6 +70,9 @@ type Props = {
           )}
         </span>
   
+        <div className="vertical-line" style={{ width: "1px", height: "200px", backgroundColor: "white" }}></div>
+
+  
         {console.log(timer5 + " timer5 this is it dude")}
       </>
     );
