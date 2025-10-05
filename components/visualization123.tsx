@@ -472,18 +472,21 @@ const GameVisual: React.FC<GameVisualProps> = ({
         <>
          <div
   style={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh", // Full viewport height
-    width: "100vw",  // Full viewport width
+ //   display: "flex",
+ //   justifyContent: "center",
+ //   alignItems: "center",
+   // height: "100vh", // Full viewport height
+    //width: "100vw",  // Full viewport width
     position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     zIndex: 1000,
   }}
 >
   <Image
-    width={275}
-    height={275}
+    width={200}
+    height={200}
     src="/explode1.svg"
     alt="Explosion effect"
   />
