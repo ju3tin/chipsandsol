@@ -401,7 +401,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   return (
     <div className="relative h-64 bg-gray-900 overflow-hidden mb-4">
-      {backgroundImage && backgroundImage.isAvailable ? (
+      
+      {GameStatus !== "Running" && backgroundImage && backgroundImage.isAvailable ? (
         <Image
           src={backgroundImage.url}
           alt={backgroundImage.alt || "Background image"}
@@ -409,10 +410,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
           className="relative overflow-hidden"
         />
       ) : null}
-      {GameStatus === "Running" && (
-        <div className="absolute inset-0">
-          {backgroundImage && backgroundImage.isAvailable ? (
-          <Image
+       {GameStatus === "Running" && backgroundImage && backgroundImage.isAvailable ? (
+        <Image
         src={backgroundImage.url}
         alt={backgroundImage.alt || "Background image"}
         fill
@@ -420,8 +419,11 @@ const GameVisual: React.FC<GameVisualProps> = ({
         style={{
           transform: `scale(${zoom})`,
         }}
-      />     
-    ) : null}   
+      />
+      ) : null}
+      {GameStatus === "Running" && (
+        <div className="absolute inset-0">
+        
           <canvas
             ref={canvasRef}
             width={400}
