@@ -63,7 +63,7 @@ type Props = {
                     marginRight: `${invertedSpacing}px`,
                   }}
                 >
-                  {value}
+                  {value} {canvasheight} {canvaswidth}
                 </li>
               ))}
             </ul>

@@ -82,7 +82,7 @@ export default function XLabels({ currentMultiplier, timer5, canvasheight, canva
                   transition: `margin-bottom ${time}ms ease-out`,
                 }}
               >
-                {multiplier}x
+                {multiplier}x {canvasheight} {canvaswidth}
               </li>
             ))}
           </ul>
