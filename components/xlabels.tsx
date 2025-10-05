@@ -11,10 +11,10 @@ export default function XLabels({ currentMultiplier }: Props) {
   // Function to generate an array of multipliers, animation time, and marginBottom values
   const getMultipliers = () => {
     const ranges = [
-      { min: 1, max: 5, values: [5, 4, 3, 2, 1], time: 800, startMarginBottom: 12, endMarginBottom: 2 },
-      { min: 5.01, max: 10, values: [10, 9, 8, 7, 6, 5], time: 1800, startMarginBottom: 11, endMarginBottom: 2 },
-      { min: 10.01, max: 15, values: [15, 14, 13, 12, 11, 10], time: 1600, startMarginBottom: 10, endMarginBottom: 2 },
-      { min: 15.01, max: 20, values: [20, 19, 18, 17, 16, 15], time: 1400, startMarginBottom: 9, endMarginBottom: 2 },
+      { min: 1, max: 2, values: [2], time: 1000, startMarginBottom: 12, endMarginBottom: 2 },
+      { min: 2.01, max: 4, values: [4, 3, 2], time: 1000, startMarginBottom: 11, endMarginBottom: 2 },
+      { min: 4.01, max: 8, values: [15, 14, 13, 12, 11, 10], time: 1000, startMarginBottom: 10, endMarginBottom: 2 },
+      { min: 8.01, max: 16, values: [20, 19, 18, 17, 16, 15], time: 1400, startMarginBottom: 9, endMarginBottom: 2 },
       { min: 20.01, max: 25, values: [25, 24, 23, 22, 21, 20], time: 1200, startMarginBottom: 8, endMarginBottom: 2 },
       { min: 25.01, max: 30, values: [30, 29, 28, 27, 26, 25], time: 1000, startMarginBottom: 7, endMarginBottom: 2 },
       { min: 30.01, max: 35, values: [35, 34, 33, 32, 31, 30], time: 900, startMarginBottom: 6, endMarginBottom: 2 },
