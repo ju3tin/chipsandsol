@@ -453,6 +453,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
     height: "100vh", // Full viewport height
     width: "100vw",  // Full viewport width
     position: "absolute",
+    zIndex: 1000,
   }}
 >
   <Image
