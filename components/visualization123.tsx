@@ -452,7 +452,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
     alignItems: "center",
     height: "100vh", // Full viewport height
     width: "100vw",  // Full viewport width
-    position: "relative",
+    position: "absolute",
   }}
 >
   <Image
