@@ -71,7 +71,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
 
   useEffect(() => {
     // Start the zoom-out effect after the component is mounted
-    setZoom(1.5); // Start from zoomed-in
+    setZoom(10.5); // Start from zoomed-in
     setTimeout(() => {
       setZoom(1); // Zoom out to normal size
     }, 100); // Give it a small delay before starting the zoom-out
