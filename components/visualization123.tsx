@@ -425,8 +425,8 @@ const GameVisual: React.FC<GameVisualProps> = ({
             {currentMultiplier}x
           </span>
 {/* */}
-<XLabels currentMultiplier={currentMultiplier} />
-<YLabels currentMultiplier={currentMultiplier} timer5={timer5} />
+<XLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width} />
+<YLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width}/>
 
 
           {dude55 && (

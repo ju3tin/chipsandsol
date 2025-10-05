@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 
 type Props = {
   currentMultiplier: number;
+  timer5: number;
+  canvasheight: number | undefined;
+  canvaswidth: number | undefined;
 };
 
-export default function XLabels({ currentMultiplier }: Props) {
+export default function XLabels({ currentMultiplier, timer5, canvasheight, canvaswidth }: Props) {
   // State to toggle animation
   const [isAnimating, setIsAnimating] = useState(false);
 

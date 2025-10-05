@@ -1,9 +1,11 @@
 type Props = {
     currentMultiplier: number;
     timer5: number;
+    canvasheight: number | undefined;
+    canvaswidth: number | undefined;
   };
   
-  export default function YLabels({ currentMultiplier, timer5 }: Props) {
+  export default function YLabels({ currentMultiplier, timer5, canvasheight, canvaswidth }: Props) {
     // Define arrays for each multiplier range with a time property (in seconds)
     const ranges = [
       { min: 1.0, max: 2.60, values: [2, 4, 6, 8, 10, 12], time: 10 },
