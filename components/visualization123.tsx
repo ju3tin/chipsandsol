@@ -66,6 +66,18 @@ const GameVisual: React.FC<GameVisualProps> = ({
   const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<ImageData | null>(null);
   const [timeLabels, setTimeLabels] = useState<number[]>([]);
+  const [zoom, setZoom] = useState(1);
+
+
+  useEffect(() => {
+    // Start the zoom-out effect after the component is mounted
+    setZoom(1.5); // Start from zoomed-in
+    setTimeout(() => {
+      setZoom(1); // Zoom out to normal size
+    }, 100); // Give it a small delay before starting the zoom-out
+  }, []);
+
+
 
   useEffect(() => {
     tValuesRef.current = tValues;
@@ -399,6 +411,17 @@ const GameVisual: React.FC<GameVisualProps> = ({
       ) : null}
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
+          {backgroundImage && backgroundImage.isAvailable ? (
+          <Image
+        src={backgroundImage.url}
+        alt={backgroundImage.alt || "Background image"}
+        fill
+        className="transition-transform duration-[10s] ease-out"
+        style={{
+          transform: `scale(${zoom})`,
+        }}
+      />     
+    ) : null}   
           <canvas
             ref={canvasRef}
             width={400}
