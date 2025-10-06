@@ -116,6 +116,7 @@ const BezierAnimation: React.FC = () => {
   }, []);
 
   return (
+    <div className="absolute inset-0">
     <canvas
       ref={canvasRef}
       width={400}
@@ -125,6 +126,7 @@ const BezierAnimation: React.FC = () => {
         zIndex: 100,
       }}
     />
+    </div>
   );
 };
 
