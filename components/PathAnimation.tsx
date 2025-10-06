@@ -18,13 +18,13 @@ const keyframes: Keyframe[] = [
     { x: 0, y: 200 },
     { x: 134, y: 131 },
     { x: 269, y: 66 },
-    { x: 400, y: 0 },
+    { x: 800, y: 0 },
   ],
   [
     { x: 0, y: 200 },
     { x: 134, y: 131 },
     { x: 269, y: 66 },
-    { x: 400, y: 0 },
+    { x: 800, y: 0 },
   ],
 ];
 
@@ -44,7 +44,7 @@ const BezierAnimation: React.FC = () => {
     let animationFrameId: number;
 
     const draw = (points: Point[]) => {
-      ctx.clearRect(0, 0, 400, 200);
+      ctx.clearRect(0, 0, 800, 200);
 
       // Draw the Bezier curve
       ctx.beginPath();
