@@ -9,12 +9,13 @@ const BezierCurve: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Set canvas size with high-DPI support
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(canvas.offsetWidth * dpr);
+    canvas.height = Math.floor(canvas.offsetHeight * dpr);
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    // Set canvas size
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const startPoint = { x: 0, y: canvas.height };
     const endPoint = { x: canvas.width, y: 0 };
@@ -56,8 +57,8 @@ const BezierCurve: React.FC = () => {
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = (timestamp - startTime) / 1000; // Time in seconds
-      const totalDuration = 50; // Total cycle: 10s + 20s + 20s
-      const cycleTime = elapsed % totalDuration; // Loop every 50s
+      const totalDuration = 50; // 10s + 20s + 20s
+      const cycleTime = Math.min(elapsed, totalDuration); // Clamp to finish after 50s
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -73,17 +74,17 @@ const BezierCurve: React.FC = () => {
         cp2x = endPoint.x;
         cp2y = endPoint.y;
       } else if (cycleTime <= 30) {
-        // First Bezier curve phase (10-30s)
+        // First Bezier curve phase (10-30s) with 20s transition
         t = (cycleTime - 10) / 20;
-        const transitionProgress = Math.min((cycleTime - 10) / 3, 1); // 3s transition
+        const transitionProgress = Math.min((cycleTime - 10) / 20, 1);
         cp1x = lerp(startPoint.x, controlPoint1.x, transitionProgress);
         cp1y = lerp(startPoint.y, controlPoint1.y, transitionProgress);
         cp2x = lerp(endPoint.x, controlPoint2.x, transitionProgress);
         cp2y = lerp(endPoint.y, controlPoint2.y, transitionProgress);
       } else {
-        // Larger Bezier curve phase (30-50s)
+        // Larger Bezier curve phase (30-50s) with 20s transition
         t = (cycleTime - 30) / 20;
-        const transitionProgress = Math.min((cycleTime - 30) / 3, 1); // 3s transition
+        const transitionProgress = Math.min((cycleTime - 30) / 20, 1);
         cp1x = lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress);
         cp1y = lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress);
         cp2x = lerp(controlPoint2.x, controlPoint2Big.x, transitionProgress);
@@ -109,7 +110,7 @@ const BezierCurve: React.FC = () => {
 
       // Draw control points for visualization
       if (cycleTime > 10 && cycleTime <= 30) {
-        const transitionProgress = Math.min((cycleTime - 10) / 3, 1);
+        const transitionProgress = Math.min((cycleTime - 10) / 20, 1);
         drawPoint(
           lerp(startPoint.x, controlPoint1.x, transitionProgress),
           lerp(startPoint.y, controlPoint1.y, transitionProgress),
@@ -121,7 +122,7 @@ const BezierCurve: React.FC = () => {
           'green'
         );
       } else if (cycleTime > 30) {
-        const transitionProgress = Math.min((cycleTime - 30) / 3, 1);
+        const transitionProgress = Math.min((cycleTime - 30) / 20, 1);
         drawPoint(
           lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress),
           lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress),
@@ -134,12 +135,16 @@ const BezierCurve: React.FC = () => {
         );
       }
 
-      requestAnimationFrame(animate);
+      if (cycleTime < totalDuration) {
+        requestAnimationFrame(animate);
+      }
     };
 
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(canvas.offsetWidth * dpr);
+      canvas.height = Math.floor(canvas.offsetHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       startPoint.x = 0;
       startPoint.y = canvas.height;
       endPoint.x = canvas.width;
