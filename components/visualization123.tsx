@@ -418,7 +418,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         className="transition-transform duration-[10s] ease-out"
         style={{
           transform: `scale(${zoom})`,
-          zIndex: 99,
+       //   zIndex: 99,
         }}
       />
       ) : null}
