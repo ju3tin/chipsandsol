@@ -26,9 +26,15 @@ const keyframes: Keyframe[] = [
     { x: 269, y: 66 },
     { x: 400, y: 0 },
   ],
+  [
+    { x: 0, y: 200 },
+    { x: 134, y: 131 },
+    { x: 269, y: 66 },
+    { x: 300, y: 0 },
+  ]
 ];
 
-const transitionDurations: number[] = [10, 10]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
+const transitionDurations: number[] = [10, 10, 20]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
 
 const BezierAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
