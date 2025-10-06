@@ -408,16 +408,20 @@ const GameVisual: React.FC<GameVisualProps> = ({
         />
       ) : null}
        {GameStatus === "Running" && backgroundImage && backgroundImage.isAvailable ? (
-        <Image
-        src={backgroundImage.url}
-        alt={backgroundImage.alt || "Background image"}
-        fill
-        className="transition-transform duration-[10s] ease-out"
-        style={{
-          transform: `scale(${zoom})`,
-       //   zIndex: 99,
-        }}
-      />
+       <div className="relative w-full h-screen overflow-hidden"> {/* Parent: positioned + sized */}
+       <Image
+         src={backgroundImage.url}
+         alt={backgroundImage.alt || "Background image"}
+         fill
+         className="object-cover transition-transform duration-[10s] ease-out" // Added object-cover for better fit
+         style={{
+           transform: `scale(${zoom})`,
+           zIndex: -1, // Push behind content; adjust if needed
+         }}
+         priority // Optional: For faster load if hero image
+       />
+       {/* Your other content here, e.g., <div>Foreground text</div> */}
+     </div>
       ) : null}
       {GameStatus === "Running" && (
         <div className="absolute inset-0">
