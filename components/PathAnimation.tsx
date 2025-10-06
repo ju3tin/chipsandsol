@@ -12,7 +12,7 @@ const BezierCurve: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size to match its container
+    // Set canvas size
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
@@ -51,6 +51,8 @@ const BezierCurve: React.FC = () => {
       return { x, y };
     };
 
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = (timestamp - startTime) / 1000; // Time in seconds
@@ -68,24 +70,38 @@ const BezierCurve: React.FC = () => {
         // Linear phase (0-10s)
         t = elapsed / 10;
         currentPoint = {
-          x: startPoint.x + t * (endPoint.x - startPoint.x),
-          y: startPoint.y + t * (endPoint.y - startPoint.y),
+          x: lerp(startPoint.x, endPoint.x, t),
+          y: lerp(startPoint.y, endPoint.y, t),
         };
         ctx.lineTo(currentPoint.x, currentPoint.y);
       } else if (elapsed <= 30) {
-        // First Bezier curve (10-30s)
+        // Transition to first Bezier curve (10-30s)
         t = (elapsed - 10) / 20;
-        currentPoint = drawBezierCurve(t, startPoint, endPoint, controlPoint1, controlPoint2);
+        // Interpolate control points from linear to Bezier
+        const transitionProgress = Math.min((elapsed - 10) / 2, 1); // 2-second transition
+        const cp1x = lerp(startPoint.x, controlPoint1.x, transitionProgress);
+        const cp1y = lerp(startPoint.y, controlPoint1.y, transitionProgress);
+        const cp2x = lerp(endPoint.x, controlPoint2.x, transitionProgress);
+        const cp2y = lerp(endPoint.y, controlPoint2.y, transitionProgress);
+
+        currentPoint = drawBezierCurve(t, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
         for (let i = 0; i <= t; i += 0.01) {
-          const point = drawBezierCurve(i, startPoint, endPoint, controlPoint1, controlPoint2);
+          const point = drawBezierCurve(i, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
           ctx.lineTo(point.x, point.y);
         }
       } else if (elapsed <= 50) {
         // Bigger Bezier curve (30-50s)
         t = (elapsed - 30) / 20;
-        currentPoint = drawBezierCurve(t, startPoint, endPoint, controlPoint1Big, controlPoint2Big);
+        // Interpolate from first curve to bigger curve
+        const transitionProgress = Math.min((elapsed - 30) / 2, 1); // 2-second transition
+        const cp1x = lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress);
+        const cp1y = lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress);
+        const cp2x = lerp(controlPoint2.x, controlPoint2Big.x, transitionProgress);
+        const cp2y = lerp(controlPoint2.y, controlPoint2Big.y, transitionProgress);
+
+        currentPoint = drawBezierCurve(t, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
         for (let i = 0; i <= t; i += 0.01) {
-          const point = drawBezierCurve(i, startPoint, endPoint, controlPoint1Big, controlPoint2Big);
+          const point = drawBezierCurve(i, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
           ctx.lineTo(point.x, point.y);
         }
       } else {
@@ -103,10 +119,31 @@ const BezierCurve: React.FC = () => {
       drawPoint(currentPoint.x, currentPoint.y, 'red');
 
       // Draw control points for visualization (optional)
-      drawPoint(controlPoint1.x, controlPoint1.y, 'green');
-      drawPoint(controlPoint2.x, controlPoint2.y, 'green');
-      drawPoint(controlPoint1Big.x, controlPoint1Big.y, 'purple');
-      drawPoint(controlPoint2Big.x, controlPoint2Big.y, 'purple');
+      if (elapsed > 10 && elapsed <= 30) {
+        const transitionProgress = Math.min((elapsed - 10) / 2, 1);
+        drawPoint(
+          lerp(startPoint.x, controlPoint1.x, transitionProgress),
+          lerp(startPoint.y, controlPoint1.y, transitionProgress),
+          'green'
+        );
+        drawPoint(
+          lerp(endPoint.x, controlPoint2.x, transitionProgress),
+          lerp(endPoint.y, controlPoint2.y, transitionProgress),
+          'green'
+        );
+      } else if (elapsed > 30) {
+        const transitionProgress = Math.min((elapsed - 30) / 2, 1);
+        drawPoint(
+          lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress),
+          lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress),
+          'purple'
+        );
+        drawPoint(
+          lerp(controlPoint2.x, controlPoint2Big.x, transitionProgress),
+          lerp(controlPoint2.y, controlPoint2Big.y, transitionProgress),
+          'purple'
+        );
+      }
 
       requestAnimationFrame(animate);
     };
