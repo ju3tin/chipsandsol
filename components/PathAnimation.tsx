@@ -57,7 +57,7 @@ const BezierAnimation: React.FC = () => {
         points[3].x,
         points[3].y
       );
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = 'white';
       ctx.lineWidth = 2;
       ctx.stroke();
 
