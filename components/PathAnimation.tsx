@@ -121,7 +121,7 @@ const BezierAnimation: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} width={400} height={200} style={{ border: '1px solid black' }} />;
+  return <canvas ref={canvasRef} width={800} height={200} style={{ border: '1px solid black' }} />;
 };
 
 export default BezierAnimation;
