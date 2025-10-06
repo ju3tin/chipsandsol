@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "../../components/game-chat3a"
+import PathAnimation from '@/components/PathAnimation';
 import Betbutton from "../../components/betbutton1a"
 import BetList from "../../components/BetList1"
 import GameVisual from '../../components/visualization123';
@@ -478,16 +479,7 @@ const CrashGame = () => {
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
-              <GameVisual 
-                betAmount={betAmount}
-                dude56={currency} 
-                dude55={isCashedOut} 
-                onCashout={handleCashout} 
-                GameStatus={gameState5.status}
-                Gametimeremaining={gameState5.timeRemaining}
-                currentMultiplier={gameState5.multiplier} 
-                tValues={[]}
-              />
+             <PathAnimation />
               <GameHistory
                 pressed={pressed} 
                 gameState={gameState5.status} 
