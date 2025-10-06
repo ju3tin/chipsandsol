@@ -1,8 +1,36 @@
-'use client';
+import { useRef, useEffect } from 'react';
 
-import React, { useRef, useEffect } from 'react';
+interface Point {
+  x: number;
+  y: number;
+}
 
-const BezierCurve: React.FC = () => {
+type Keyframe = Point[];
+
+const keyframes: Keyframe[] = [
+  [
+    { x: 0, y: 200 },
+    { x: 50, y: 120 },
+    { x: 115, y: 141 },
+    { x: 133, y: 135 },
+  ],
+  [
+    { x: 0, y: 200 },
+    { x: 134, y: 131 },
+    { x: 269, y: 66 },
+    { x: 400, y: 0 },
+  ],
+  [
+    { x: 0, y: 200 },
+    { x: 134, y: 131 },
+    { x: 269, y: 66 },
+    { x: 400, y: 0 },
+  ],
+];
+
+const transitionDurations: number[] = [10, 10]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
+
+const BezierAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -12,183 +40,88 @@ const BezierCurve: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const startPoint = { x: 0, y: canvas.height };
-    const endPoint = { x: canvas.width, y: 0 };
-    const controlPoint1 = { x: canvas.width * 0.3, y: canvas.height * 0.7 };
-    const controlPoint2 = { x: canvas.width * 0.7, y: canvas.height * 0.3 };
-    const controlPoint1Big = { x: canvas.width * 0.2, y: canvas.height * 0.9 };
-    const controlPoint2Big = { x: canvas.width * 0.8, y: canvas.height * 0.1 };
-
     let startTime: number | null = null;
+    let animationFrameId: number;
 
-    const drawPoint = (x: number, y: number, color: string) => {
-      ctx!.beginPath();
-      ctx!.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx!.fillStyle = color;
-      ctx!.fill();
-    };
+    const draw = (points: Point[]) => {
+      ctx.clearRect(0, 0, 400, 200);
 
-    const drawBezierCurve = (
-      t: number,
-      p0: { x: number; y: number },
-      p1: { x: number; y: number },
-      cp1: { x: number; y: number },
-      cp2: { x: number; y: number }
-    ) => {
-      const u = 1 - t;
-      const tt = t * t;
-      const uu = u * u;
-      const uuu = uu * u;
-      const ttt = tt * t;
-
-      const x = uuu * p0.x + 3 * uu * t * cp1.x + 3 * u * tt * cp2.x + ttt * p1.x;
-      const y = uuu * p0.y + 3 * uu * t * cp1.y + 3 * u * tt * cp2.y + ttt * p1.y;
-
-      return { x, y };
-    };
-
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = (timestamp - startTime) / 1000; // Time in seconds
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw the path
+      // Draw the Bezier curve
       ctx.beginPath();
-      ctx.moveTo(startPoint.x, startPoint.y);
-
-      let currentPoint: { x: number; y: number };
-      let t: number;
-
-      if (elapsed <= 10) {
-        // Linear phase (0-10s)
-        t = elapsed / 10;
-        currentPoint = {
-          x: lerp(startPoint.x, endPoint.x, t),
-          y: lerp(startPoint.y, endPoint.y, t),
-        };
-        ctx.lineTo(currentPoint.x, currentPoint.y);
-      } else if (elapsed <= 20) {
-        // Transition to first Bezier curve (10-20s)
-        t = (elapsed - 10) / 10;
-        // Interpolate control points from linear to Bezier
-        const transitionProgress = Math.min((elapsed - 10) / 1, 1); // 1-second transition
-        const cp1x = lerp(startPoint.x, controlPoint1.x, transitionProgress);
-        const cp1y = lerp(startPoint.y, controlPoint1.y, transitionProgress);
-        const cp2x = lerp(endPoint.x, controlPoint2.x, transitionProgress);
-        const cp2y = lerp(endPoint.y, controlPoint2.y, transitionProgress);
-
-        currentPoint = drawBezierCurve(t, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-        for (let i = 0; i <= t; i += 0.01) {
-          const point = drawBezierCurve(i, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-          ctx.lineTo(point.x, point.y);
-        }
-      } else if (elapsed <= 30) {
-        // Bigger Bezier curve (20-30s)
-        t = (elapsed - 20) / 10;
-        // Interpolate from first curve to bigger curve
-        const transitionProgress = Math.min((elapsed - 20) / 1, 1); // 1-second transition
-        const cp1x = lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress);
-        const cp1y = lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress);
-        const cp2x = lerp(controlPoint2.x, controlPoint2Big.x, transitionProgress);
-        const cp2y = lerp(controlPoint2.y, controlPoint2Big.y, transitionProgress);
-
-        currentPoint = drawBezierCurve(t, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-        for (let i = 0; i <= t; i += 0.01) {
-          const point = drawBezierCurve(i, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-          ctx.lineTo(point.x, point.y);
-        }
-      } else {
-        // Hold final bigger Bezier curve (after 30s) without restarting
-        t = 1;
-        const cp1x = controlPoint1Big.x;
-        const cp1y = controlPoint1Big.y;
-        const cp2x = controlPoint2Big.x;
-        const cp2y = controlPoint2Big.y;
-
-        currentPoint = drawBezierCurve(t, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-        for (let i = 0; i <= t; i += 0.01) {
-          const point = drawBezierCurve(i, startPoint, endPoint, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y });
-          ctx.lineTo(point.x, point.y);
-        }
-      }
-
-      ctx.strokeStyle = 'blue';
+      ctx.moveTo(points[0].x, points[0].y);
+      ctx.bezierCurveTo(
+        points[1].x,
+        points[1].y,
+        points[2].x,
+        points[2].y,
+        points[3].x,
+        points[3].y
+      );
+      ctx.strokeStyle = 'black';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw moving point
-      drawPoint(currentPoint.x, currentPoint.y, 'red');
+      // Draw control handles (dashed lines)
+      ctx.strokeStyle = 'gray';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      ctx.lineTo(points[1].x, points[1].y);
+      ctx.moveTo(points[3].x, points[3].y);
+      ctx.lineTo(points[2].x, points[2].y);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-      // Draw control points for visualization (optional)
-      if (elapsed > 10 && elapsed <= 20) {
-        const transitionProgress = Math.min((elapsed - 10) / 1, 1);
-        drawPoint(
-          lerp(startPoint.x, controlPoint1.x, transitionProgress),
-          lerp(startPoint.y, controlPoint1.y, transitionProgress),
-          'green'
-        );
-        drawPoint(
-          lerp(endPoint.x, controlPoint2.x, transitionProgress),
-          lerp(endPoint.y, controlPoint2.y, transitionProgress),
-          'green'
-        );
-      } else if (elapsed > 20 && elapsed <= 30) {
-        const transitionProgress = Math.min((elapsed - 20) / 1, 1);
-        drawPoint(
-          lerp(controlPoint1.x, controlPoint1Big.x, transitionProgress),
-          lerp(controlPoint1.y, controlPoint1Big.y, transitionProgress),
-          'purple'
-        );
-        drawPoint(
-          lerp(controlPoint2.x, controlPoint2Big.x, transitionProgress),
-          lerp(controlPoint2.y, controlPoint2Big.y, transitionProgress),
-          'purple'
-        );
-      }
-
-      if (elapsed < 30) {
-        requestAnimationFrame(animate);
-      }
+      // Draw points as small circles
+      points.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+      });
     };
 
-    const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      startPoint.x = 0;
-      startPoint.y = canvas.height;
-      endPoint.x = canvas.width;
-      endPoint.y = 0;
-      controlPoint1.x = canvas.width * 0.3;
-      controlPoint1.y = canvas.height * 0.7;
-      controlPoint2.x = canvas.width * 0.7;
-      controlPoint2.y = canvas.height * 0.3;
-      controlPoint1Big.x = canvas.width * 0.2;
-      controlPoint1Big.y = canvas.height * 0.9;
-      controlPoint2Big.x = canvas.width * 0.8;
-      controlPoint2Big.y = canvas.height * 0.1;
+    const animate = (time: number) => {
+      if (!startTime) startTime = time;
+      const elapsed = (time - startTime) / 1000; // in seconds
+
+      // Find the current keyframe segment
+      let cumulativeTime = 0;
+      let segmentIndex = 0;
+      for (; segmentIndex < transitionDurations.length; segmentIndex++) {
+        if (elapsed < cumulativeTime + transitionDurations[segmentIndex]) {
+          break;
+        }
+        cumulativeTime += transitionDurations[segmentIndex];
+      }
+
+      if (segmentIndex === transitionDurations.length) {
+        // At or beyond the last keyframe, draw the final one and continue (or stop if no loop needed)
+        draw(keyframes[keyframes.length - 1]);
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Interpolate between current and next keyframe
+      const t = (elapsed - cumulativeTime) / transitionDurations[segmentIndex];
+      const currentPoints: Point[] = keyframes[segmentIndex].map((p, i) => ({
+        x: p.x + t * (keyframes[segmentIndex + 1][i].x - p.x),
+        y: p.y + t * (keyframes[segmentIndex + 1][i].y - p.y),
+      }));
+
+      draw(currentPoints);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    window.addEventListener('resize', resizeCanvas);
-
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
-  return (
-    <div className="w-full h-[400px] bg-gray-100">
-      <canvas ref={canvasRef} className="w-full h-full" />
-    </div>
-  );
+  return <canvas ref={canvasRef} width={400} height={200} style={{ border: '1px solid black' }} />;
 };
 
-export default BezierCurve;
+export default BezierAnimation;
