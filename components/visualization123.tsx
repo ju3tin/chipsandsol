@@ -418,6 +418,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
         className="transition-transform duration-[10s] ease-out"
         style={{
           transform: `scale(${zoom})`,
+          zIndex: 99,
         }}
       />
       ) : null}
@@ -429,6 +430,9 @@ const GameVisual: React.FC<GameVisualProps> = ({
             width={400}
             height={200}
             className="w-full h-full"
+            style={{
+              zIndex: 100,
+            }}
           />
           {/*<BezierCanvasPage />*/}
           <span
