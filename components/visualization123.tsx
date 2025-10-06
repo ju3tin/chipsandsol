@@ -506,6 +506,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
                   ? "yellow"
                   : "white",
               fontSize: "2rem",
+              zIndex: 1000,
             }}
           >
             {currentMultiplier}x
