@@ -438,6 +438,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
               transform: "translateX(-50%)",
               display: "block",
               position: "absolute",
+              zIndex: 1000,
               color:
                 currentMultiplier > 5
                   ? "red"
@@ -481,7 +482,7 @@ const GameVisual: React.FC<GameVisualProps> = ({
    // top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-  //  zIndex: 1000,
+    zIndex: 1,
   }}
 >
   <Image
