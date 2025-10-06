@@ -34,7 +34,7 @@ const keyframes: Keyframe[] = [
   ]
 ];
 
-const transitionDurations: number[] = [10, 10, 20]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
+const transitionDurations: number[] = [10000, 10000, 5000]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
 
 const BezierAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -78,7 +78,7 @@ const BezierAnimation: React.FC = () => {
 
     const animate = (time: number) => {
       if (!startTime) startTime = time;
-      const elapsed = (time - startTime) / 1000; // in seconds
+      const elapsed = (time - startTime); // in seconds
 
       // Find the current keyframe segment
       let cumulativeTime = 0;
