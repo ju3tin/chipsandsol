@@ -61,18 +61,6 @@ const BezierAnimation: React.FC = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw control handles (dashed lines)
-      ctx.strokeStyle = 'gray';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      ctx.lineTo(points[1].x, points[1].y);
-      ctx.moveTo(points[3].x, points[3].y);
-      ctx.lineTo(points[2].x, points[2].y);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
       // Draw points as small circles
       points.forEach((p) => {
         ctx.beginPath();
@@ -97,7 +85,7 @@ const BezierAnimation: React.FC = () => {
       }
 
       if (segmentIndex === transitionDurations.length) {
-        // At or beyond the last keyframe, draw the final one and continue (or stop if no loop needed)
+        // At or beyond the last keyframe, draw the final one and continue
         draw(keyframes[keyframes.length - 1]);
         animationFrameId = requestAnimationFrame(animate);
         return;
@@ -121,15 +109,17 @@ const BezierAnimation: React.FC = () => {
     };
   }, []);
 
-  return <canvas
-  ref={canvasRef}
-  width={400}
-  height={200}
-  className="w-full h-full"
-  style={{
-    zIndex: 100,
-  }}
-/>;
+  return (
+    <canvas
+      ref={canvasRef}
+      width={400}
+      height={200}
+      className="w-full h-full"
+      style={{
+        zIndex: 100,
+      }}
+    />
+  );
 };
 
 export default BezierAnimation;
