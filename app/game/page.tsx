@@ -479,7 +479,17 @@ const CrashGame = () => {
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
-             <PathAnimation />
+             <PathAnimation 
+              currentMultiplier={gameState5.multiplier}
+              timer5={gameState5.timeRemaining}
+              onCashout={handleCashout}
+              dude55={isCashedOut}
+              dude56={currency}
+              betAmount={betAmount}
+              Gametimeremaining={gameState5.timeRemaining}
+              GameStatus={gameState5.status}
+              tValues={[]}
+             />
               <GameHistory
                 pressed={pressed} 
                 gameState={gameState5.status} 

@@ -1,8 +1,26 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+
+interface ControlPoint {
+  cp1: { x: number; y: number };
+  cp2: { x: number; y: number };
+  pointB: { x: number; y: number };
+}
 
 interface Point {
   x: number;
   y: number;
+}
+
+interface GameVisualProps {
+  currentMultiplier: number;
+  timer5: number; // Server-provided elapsed time
+  onCashout: (multiplier: number) => void;
+  dude55: boolean;
+  dude56: string;
+  betAmount: string;
+  Gametimeremaining: number;
+  GameStatus: string;
+  tValues: { number: number; color: string; svg: string }[];
 }
 
 type Keyframe = Point[];
@@ -36,9 +54,17 @@ const keyframes: Keyframe[] = [
 
 const transitionDurations: number[] = [10000, 10000, 5000]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
 
-const BezierAnimation: React.FC = () => {
+const BezierAnimation: React.FC<GameVisualProps> = ({
+  Gametimeremaining,
+  GameStatus,
+  currentMultiplier,
+  dude55,
+  dude56,
+  betAmount,
+  tValues,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -113,6 +139,25 @@ const BezierAnimation: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
+  }, []);
+
+  useEffect(() => {
+    async function fetchControlPoints() {
+      try {
+        const response = await fetch('/api/bezier');
+        const data = await response.json();
+        if (!data || !data.frames) return;
+        const mappedPoints = data.frames.map((frame: any) => ({
+          cp1: frame.cp1 || { x: 300, y: 50 },
+          cp2: frame.cp2 || { x: 300, y: 50 },
+          pointB: frame.pointB || { x: 300, y: 50 },
+        }));
+        setControlPoints(mappedPoints);
+      } catch (error) {
+        console.error('Error fetching control points:', error);
+      }
+    }
+    fetchControlPoints();
   }, []);
 
   return (
