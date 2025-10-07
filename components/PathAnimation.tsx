@@ -1,7 +1,4 @@
 import { useRef, useEffect, useState } from 'react';
-import Image from "next/image";
-import XLabels  from './xlabels';
-import YLabels  from './ylabels';
 
 // Defines the Point interface for x, y coordinates used in Bezier curve points
 interface Point {
@@ -48,7 +45,6 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   dude55, // Boolean flag prop
   dude56, // String prop
   betAmount, // Bet amount prop
-  timer5, // Timer prop 
   tValues, // Array of t-value objects prop
 }) => {
   // Creates a ref for the canvas element to access its DOM node
@@ -61,7 +57,6 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   const [transitionDurations, setTransitionDurations] = useState<number[]>([]);
   // State to store the starting coordinates fetched from the API
   const [startxy, setStartxy] = useState<Startxy | null>(null);
-  const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
 
   // useEffect to fetch initial coordinates from the API when the component mounts
   useEffect(() => {
@@ -240,131 +235,19 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   return (
     // Container div with relative positioning, black background, and fixed height
     <div className="relative h-64 bg-black overflow-hidden mb-4">
-   {GameStatus === "Running" && (
-        <div className="absolute inset-0">
-        
-          <canvas
-            ref={canvasRef}
-            width={400}
-            height={200}
-            className="w-full h-full"
-            style={{
-              zIndex: 1001,
-            }}
-          />
-          {/*<BezierCanvasPage />*/}
-          <span
-            style={{
-              top: "100px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-              zIndex: 1000,
-              color:
-                currentMultiplier > 5
-                  ? "red"
-                  : currentMultiplier > 2
-                  ? "yellow"
-                  : "white",
-              fontSize: "2rem",
-            }}
-          >
-            {currentMultiplier}x
-          </span>
-{/* */}
-<XLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width} />
-<YLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width}/>
-
-
-          {dude55 && (
-            <div
-              className="absolute w-4 h-4 bg-red-500 rounded-full"
-              style={{
-                left: pointBRef.current.x - currentMultiplier * 10,
-                top: pointBRef.current.y + currentMultiplier * 5,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              {dude56} and your bet amount {betAmount}
-            </div>
-          )}
-        </div>
-      )}
-      {GameStatus === "Crashed" && (
-        <>
-         <div
-  style={{
- //   display: "flex",
- //   justifyContent: "center",
- //   alignItems: "center",
-   // height: "100vh", // Full viewport height
-    //width: "100vw",  // Full viewport width
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    zIndex: 1,
-  }}
->
-  <Image
-    width={200}
-    height={200}
-    src="/explode1.svg"
-    alt="Explosion effect"
-  />
-</div>
-          <span
-            style={{
-              top: "100px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "block",
-              position: "absolute",
-              color:
-                currentMultiplier > 5
-                  ? "red"
-                  : currentMultiplier > 2
-                  ? "yellow"
-                  : "white",
-              fontSize: "2rem",
-              zIndex: 1000,
-            }}
-          >
-            {currentMultiplier}x
-          </span>
-        </>
-      )}
-      {GameStatus === "Waiting" && (
-        <span
+ {GameStatus === "Running" && (
+      <div className="absolute inset-0">
+        <canvas
+          ref={canvasRef} // Attaches the canvas ref
+          width={400} // Sets canvas width to 400 pixels
+          height={200} // Sets canvas height to 200 pixels
+          className="w-full h-full" // Makes canvas fill its container
           style={{
-            top: "100px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "block",
-            position: "absolute",
-            color: "white",
-            fontSize: "2rem",
-            width: "100%",
-            textAlign: "center",
+            zIndex: 100, // Ensures canvas is above other elements
           }}
-        >
-          Launch in{" "}
-          {typeof Gametimeremaining === "number" && !isNaN(Gametimeremaining) ? (
-            <>
-              {Gametimeremaining}{" "}
-              {Gametimeremaining > 1 ? "secs" : "sec"}
-            </>
-          ) : (
-            <>
-              {previousTimeRemaining}{" "}
-              {previousTimeRemaining != null && previousTimeRemaining > 1
-                ? "secs"
-                : "sec"}
-            </>
-          )}
-        </span>
-      )}
+        />
+      </div>
+ )}
     </div>
   );
 };
