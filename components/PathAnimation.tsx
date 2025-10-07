@@ -238,10 +238,8 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   return (
     // Container div with relative positioning, black background, and fixed height
     <div className="relative h-64 bg-black overflow-hidden mb-4">
-      // Conditionally renders the canvas when GameStatus is "Running"
-      {GameStatus === "Running" && (
+     {GameStatus === "Running" && (
         <div className="absolute inset-0">
-          // Canvas element for rendering the Bezier curve
           <canvas
             ref={canvasRef} // Attaches the canvas ref
             width={400} // Sets canvas width to 400 pixels
