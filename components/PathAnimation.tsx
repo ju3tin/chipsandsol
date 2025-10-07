@@ -249,7 +249,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             height={200}
             className="w-full h-full"
             style={{
-              zIndex: 100,
+              zIndex: 1001,
             }}
           />
           {/*<BezierCanvasPage />*/}
