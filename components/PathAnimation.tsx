@@ -1,19 +1,26 @@
 import { useRef, useEffect, useState } from 'react';
 
-interface ControlPoint {
-  cp1: { x: number; y: number };
-  cp2: { x: number; y: number };
-  pointB: { x: number; y: number };
-}
-
 interface Point {
   x: number;
   y: number;
 }
 
+interface ControlPoint {
+  cp1: { x: number; y: number };
+  cp2: { x: number; y: number };
+  pointB: { x: number; y: number };
+  num: number;
+  time: number;
+}
+
+interface Startxy {
+  xvalue: string;
+  yvalue: string;
+}
+
 interface GameVisualProps {
   currentMultiplier: number;
-  timer5: number; // Server-provided elapsed time
+  timer5: number;
   onCashout: (multiplier: number) => void;
   dude55: boolean;
   dude56: string;
@@ -25,35 +32,6 @@ interface GameVisualProps {
 
 type Keyframe = Point[];
 
-const keyframes: Keyframe[] = [
-  [
-    { x: 0, y: 200 },
-    { x: 50, y: 120 },
-    { x: 115, y: 141 },
-    { x: 133, y: 135 },
-  ],
-  [
-    { x: 0, y: 200 },
-    { x: 134, y: 131 },
-    { x: 269, y: 66 },
-    { x: 400, y: 0 },
-  ],
-  [
-    { x: 0, y: 200 },
-    { x: 134, y: 131 },
-    { x: 269, y: 66 },
-    { x: 250, y: 0 },
-  ],
-  [
-    { x: 0, y: 200 },
-    { x: 134, y: 131 },
-    { x: 269, y: 66 },
-    { x: 300, y: 0 },
-  ]
-];
-
-const transitionDurations: number[] = [10000, 10000, 5000]; // Durations in seconds between keyframes (length should be keyframes.length - 1)
-
 const BezierAnimation: React.FC<GameVisualProps> = ({
   Gametimeremaining,
   GameStatus,
@@ -64,10 +42,65 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   tValues,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [controlPoints, setControlPoints] = useState<ControlPoint[]>([]);
+  const pointBRef = useRef<Point>({ x: 0, y: 200 });
+  const [keyframes, setKeyframes] = useState<Keyframe[]>([]);
+  const [transitionDurations, setTransitionDurations] = useState<number[]>([]);
+  const [startxy, setStartxy] = useState<Startxy | null>(null);
+
+  useEffect(() => {
+    async function fetchStartxy() {
+      try {
+        const response = await fetch('/api/coordinates?uniqueName=backgroundimage');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: Startxy = await response.json();
+        setStartxy(data);
+        pointBRef.current = {
+          x: parseInt(data.xvalue, 10),
+          y: parseInt(data.yvalue, 10),
+        };
+      } catch (error) {
+        console.error('Error fetching coordinates:', error);
+        setStartxy(null);
+        pointBRef.current = { x: 0, y: 200 };
+      }
+    }
+    fetchStartxy();
+  }, []);
+
+  useEffect(() => {
+    async function fetchControlPoints() {
+      try {
+        const response = await fetch('/api/bezier');
+        const data = await response.json();
+        if (!data || !data.frames) return;
+
+        const startPoint = pointBRef.current;
+
+        const newKeyframes: Keyframe[] = data.frames.map((frame: ControlPoint) => [
+          startPoint, // pointA (starting point from /api/coordinates)
+          frame.cp1, // control point 1
+          frame.cp2, // control point 2
+          frame.pointB, // end point
+        ]);
+
+        const newTransitionDurations: number[] = data.frames
+          .filter((frame: ControlPoint) => frame.time > 0)
+          .map((frame: ControlPoint) => frame.time);
+
+        setKeyframes(newKeyframes);
+        setTransitionDurations(newTransitionDurations);
+      } catch (error) {
+        console.error('Error fetching control points:', error);
+      }
+    }
+    fetchControlPoints();
+  }, [startxy]); // Re-fetch when startxy changes
+
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || keyframes.length === 0) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -104,7 +137,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 
     const animate = (time: number) => {
       if (!startTime) startTime = time;
-      const elapsed = (time - startTime); // in seconds
+      const elapsed = time - startTime; // in milliseconds
 
       // Find the current keyframe segment
       let cumulativeTime = 0;
@@ -139,40 +172,21 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
-
-  useEffect(() => {
-    async function fetchControlPoints() {
-      try {
-        const response = await fetch('/api/bezier');
-        const data = await response.json();
-        if (!data || !data.frames) return;
-        const mappedPoints = data.frames.map((frame: any) => ({
-          cp1: frame.cp1 || { x: 300, y: 50 },
-          cp2: frame.cp2 || { x: 300, y: 50 },
-          pointB: frame.pointB || { x: 300, y: 50 },
-        }));
-        setControlPoints(mappedPoints);
-      } catch (error) {
-        console.error('Error fetching control points:', error);
-      }
-    }
-    fetchControlPoints();
-  }, []);
+  }, [keyframes, transitionDurations]);
 
   return (
     <div className="relative h-64 bg-black overflow-hidden mb-4">
-    <div className="absolute inset-0">
-    <canvas
-      ref={canvasRef}
-      width={400}
-      height={200}
-      className="w-full h-full"
-      style={{
-        zIndex: 100,
-      }}
-    />
-    </div>
+      <div className="absolute inset-0">
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={200}
+          className="w-full h-full"
+          style={{
+            zIndex: 100,
+          }}
+        />
+      </div>
     </div>
   );
 };
