@@ -42,7 +42,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   tValues,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pointBRef = useRef<Point>({ x: 0, y: 200 });
+  const pointBRef = useRef<Point>({ x: 10, y: 190 });
   const [keyframes, setKeyframes] = useState<Keyframe[]>([]);
   const [transitionDurations, setTransitionDurations] = useState<number[]>([]);
   const [startxy, setStartxy] = useState<Startxy | null>(null);
@@ -63,7 +63,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
       } catch (error) {
         console.error('Error fetching coordinates:', error);
         setStartxy(null);
-        pointBRef.current = { x: 0, y: 200 };
+        pointBRef.current = { x: 10, y: 190 };
       }
     }
     fetchStartxy();
