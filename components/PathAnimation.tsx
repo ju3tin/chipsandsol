@@ -1,4 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
+import Image from "next/image";
+import XLabels  from './xlabels';
+import YLabels  from './ylabels';
+//import BezierCanvasPage from './curveupdate';
+
 
 // Defines the Point interface for x, y coordinates used in Bezier curve points
 interface Point {
@@ -46,6 +51,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   dude56, // String prop
   betAmount, // Bet amount prop
   tValues, // Array of t-value objects prop
+  timer5, // Timer value prop
 }) => {
   // Creates a ref for the canvas element to access its DOM node
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -275,6 +281,8 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
           >
             {currentMultiplier}x
           </span>
+          <XLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width} />
+<YLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width}/>
 
         </div>
       )}
