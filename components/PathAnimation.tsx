@@ -162,17 +162,6 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     const ctx = canvas.getContext('2d');
     // Skips if context is not available
     if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw graph axes
-    ctx.beginPath();
-    ctx.moveTo(10, 10);
-    ctx.lineTo(10, canvas.height - 10);
-    ctx.moveTo(10, canvas.height - 10);
-    ctx.lineTo(canvas.width - 10, canvas.height - 10);
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
-    ctx.stroke();
 
     // Variable to store the animation start time
     let startTime: number | null = null;
@@ -183,6 +172,24 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     const draw = (points: Point[]) => {
       // Clears the canvas for the next frame
       ctx.clearRect(0, 0, 400, 200);
+
+
+         // Draws the x-axis (horizontal line at y=200, bottom of canvas)
+         ctx.beginPath();
+         ctx.moveTo(0, 200); // Start at left edge
+         ctx.lineTo(400, 200); // End at right edge
+         ctx.strokeStyle = 'gray'; // Sets axis color to gray for distinction
+         ctx.lineWidth = 1; // Thinner line for axes
+         ctx.stroke();
+
+            // Draws the y-axis (vertical line at x=0, left of canvas)
+      ctx.beginPath();
+      ctx.moveTo(0, 0); // Start at top-left
+      ctx.lineTo(0, 200); // End at bottom-left
+      ctx.strokeStyle = 'gray'; // Sets axis color to gray
+      ctx.lineWidth = 1; // Thinner line for axes
+      ctx.stroke();
+
 
       // Begins a new path for the Bezier curve
       ctx.beginPath();
