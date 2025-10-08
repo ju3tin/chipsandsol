@@ -65,6 +65,17 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   // State to store the starting coordinates fetched from the API
   const [startxy, setStartxy] = useState<Startxy | null>(null);
 
+  const fishImageRef = useRef<HTMLImageElement | null>(null);
+
+
+  // useEffect to load the fish image when the component mounts
+  useEffect(() => {
+    const fish1 = new window.Image();
+    fish1.src = '/images/chippy.svg';
+    fishImageRef.current = fish1;
+  }, []); // Empty dependency array means this runs once on mount
+
+
   useEffect(() => {
     if (!isNaN(Gametimeremaining)) {
       setPreviousTimeRemaining(Gametimeremaining);
@@ -106,6 +117,9 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 
   // useEffect to fetch Bezier curve control points from the API
   useEffect(() => {
+
+ 
+    
     // Async function to fetch control points
     async function fetchControlPoints() {
       try {
@@ -218,6 +232,25 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
         ctx.fillStyle = 'red'; // Sets fill color to red
         ctx.fill(); // Fills the circle
       });
+
+       // Draws the fish image at the end point with rotation
+       if (fishImageRef.current) {
+        // Saves the current canvas state to restore after transformation
+        ctx.save();
+        // Translates to the end point (points[3])
+        ctx.translate(points[3].x, points[3].y);
+        // Calculates the angle of the tangent using the vector from cp2 to pointB
+        const dx = points[3].x - points[2].x;
+        const dy = points[3].y - points[2].y;
+        const angle = Math.atan2(dy, dx); // Angle in radians
+        // Rotates the canvas to align the fish with the curve's tangent
+        ctx.rotate(angle);
+        // Draws the fish image, centered at the origin (adjusted by translation)
+        ctx.drawImage(fishImageRef.current, -10, -10, 20, 20); // 20x20 pixels, centered
+        // Restores the canvas state
+        ctx.restore();
+      }
+    
     };
 
     // Animation function called for each frame
