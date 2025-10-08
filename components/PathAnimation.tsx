@@ -49,6 +49,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 }) => {
   // Creates a ref for the canvas element to access its DOM node
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   // Creates a ref for the starting point (pointB) with initial coordinates
   const pointBRef = useRef<Point | null>(null);
   // State to store keyframes (arrays of points for Bezier curves)
@@ -57,6 +58,12 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   const [transitionDurations, setTransitionDurations] = useState<number[]>([]);
   // State to store the starting coordinates fetched from the API
   const [startxy, setStartxy] = useState<Startxy | null>(null);
+
+  useEffect(() => {
+    if (!isNaN(Gametimeremaining)) {
+      setPreviousTimeRemaining(Gametimeremaining);
+    }
+  }, [Gametimeremaining]);
 
   // useEffect to fetch initial coordinates from the API when the component mounts
   useEffect(() => {
@@ -249,8 +256,59 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
               zIndex: 100, // Ensures canvas is above other elements
             }}
           />
+   <span
+            style={{
+              top: "100px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "block",
+              position: "absolute",
+              zIndex: 1000,
+              color:
+                currentMultiplier > 5
+                  ? "red"
+                  : currentMultiplier > 2
+                  ? "yellow"
+                  : "white",
+              fontSize: "2rem",
+            }}
+          >
+            {currentMultiplier}x
+          </span>
+
         </div>
       )}
+ {GameStatus === "Waiting" && (
+        <span
+          style={{
+            top: "100px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "block",
+            position: "absolute",
+            color: "white",
+            fontSize: "2rem",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          Launch in{" "}
+          {typeof Gametimeremaining === "number" && !isNaN(Gametimeremaining) ? (
+            <>
+              {Gametimeremaining}{" "}
+              {Gametimeremaining > 1 ? "secs" : "sec"}
+            </>
+          ) : (
+            <>
+              {previousTimeRemaining}{" "}
+              {previousTimeRemaining != null && previousTimeRemaining > 1
+                ? "secs"
+                : "sec"}
+            </>
+          )}
+        </span>
+      )}
+
     </div>
   );
 };
