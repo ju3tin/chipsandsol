@@ -369,7 +369,50 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
           )}
         </span>
       )}
-
+ {GameStatus === "Crashed" && (
+        <>
+         <div
+  style={{
+ //   display: "flex",
+ //   justifyContent: "center",
+ //   alignItems: "center",
+   // height: "100vh", // Full viewport height
+    //width: "100vw",  // Full viewport width
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 1,
+  }}
+>
+  <Image
+    width={200}
+    height={200}
+    src="/explode1.svg"
+    alt="Explosion effect"
+  />
+</div>
+          <span
+            style={{
+              top: "100px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "block",
+              position: "absolute",
+              color:
+                currentMultiplier > 5
+                  ? "red"
+                  : currentMultiplier > 2
+                  ? "yellow"
+                  : "white",
+              fontSize: "2rem",
+              zIndex: 1000,
+            }}
+          >
+            {currentMultiplier}x
+          </span>
+        </>
+      )}
     </div>
   );
 };
