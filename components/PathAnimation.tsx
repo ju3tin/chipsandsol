@@ -156,10 +156,23 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     // Skips if canvas or keyframes are not available
     if (!canvas || keyframes.length === 0) return;
 
+    
+
     // Gets the 2D rendering context of the canvas
     const ctx = canvas.getContext('2d');
     // Skips if context is not available
     if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw graph axes
+    ctx.beginPath();
+    ctx.moveTo(10, 10);
+    ctx.lineTo(10, canvas.height - 10);
+    ctx.moveTo(10, canvas.height - 10);
+    ctx.lineTo(canvas.width - 10, canvas.height - 10);
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+    ctx.stroke();
 
     // Variable to store the animation start time
     let startTime: number | null = null;
