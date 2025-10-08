@@ -50,7 +50,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
   // Creates a ref for the canvas element to access its DOM node
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Creates a ref for the starting point (pointB) with initial coordinates
-  const pointBRef = useRef<Point>({ x: 10, y: 190 });
+  const pointBRef = useRef<Point | null>(null);
   // State to store keyframes (arrays of points for Bezier curves)
   const [keyframes, setKeyframes] = useState<Keyframe[]>([]);
   // State to store transition durations for each keyframe
