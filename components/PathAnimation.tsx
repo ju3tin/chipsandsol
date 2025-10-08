@@ -246,7 +246,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
         // Rotates the canvas to align the fish with the curve's tangent
         ctx.rotate(angle);
         // Draws the fish image, centered at the origin (adjusted by translation)
-        ctx.drawImage(fishImageRef.current, -10, -10, 20, 20); // 20x20 pixels, centered
+        ctx.drawImage(fishImageRef.current, -25, -25, 50, 50); // 20x20 pixels, centered
         // Restores the canvas state
         ctx.restore();
       }
