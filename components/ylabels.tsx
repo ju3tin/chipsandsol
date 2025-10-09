@@ -28,7 +28,7 @@ type Props = {
         <span
           style={{
             top: "200px",
-            left: "50%",
+            left: "0%",
             transform: "translateX(-50%)",
             position: "absolute",
             fontSize: "1.5rem",
