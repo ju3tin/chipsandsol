@@ -227,10 +227,10 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 
       // Draws each point as a small red circle
       points.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); // Draws a circle at point p
-        ctx.fillStyle = 'red'; // Sets fill color to red
-        ctx.fill(); // Fills the circle
+  //     ctx.beginPath();
+   //     ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); // Draws a circle at point p
+   //     ctx.fillStyle = 'red'; // Sets fill color to red
+   //     ctx.fill(); // Fills the circle
       });
 
        // Draws the fish image at the end point with rotation
