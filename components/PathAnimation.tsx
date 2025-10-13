@@ -302,8 +302,8 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 
   // Renders the component
   return (
-    // Container div with relative positioning, black background, and fixed height
-    <div className="relative h-64 bg-black overflow-hidden mb-4">
+    // Container div with relative positioning, transparent background, and fixed height
+    <div className="relative h-64 bg-transparent overflow-hidden mb-4">
      {GameStatus === "Running" && (
         <div className="absolute inset-0">
           <canvas
@@ -312,6 +312,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             height={200} // Sets canvas height to 200 pixels
             className="w-full h-full" // Makes canvas fill its container
             style={{
+              backgroundColor: 'transparent',
               zIndex: 100, // Ensures canvas is above other elements
             }}
           />
