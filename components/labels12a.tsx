@@ -205,7 +205,7 @@ export default function BezierCurve() { // Defines a React functional component
             <svg width={400} height={200} ref={svgRef}  className="w-full h-full" // Makes canvas fill its container
             style={{
                 backgroundColor: 'transparent',
-              zIndex: 101, // Ensures canvas is above other elements
+              zIndex: 90, // Ensures canvas is above other elements
             }}></svg> {/* SVG with typed ref */}
      </>
     );
