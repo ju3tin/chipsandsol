@@ -114,7 +114,7 @@ export default function BezierCurve() { // Defines a React functional component
         function phase1() { // Defines Phase 1 of animation
             console.log("Phase 1: X 0-8 full, Y 0-5 full, Curve grows"); // Logs phase start
             x.domain([0, 10]); // Sets x-domain to 0-10
-            y.domain([0, 5]); // Sets y-domain to 0-5
+            y.domain([0, 2]); // Sets y-domain to 0-5
             data = generateData([0, 10], [0, 5]); // Generates new data
 
             xAxisGroup.transition().duration(500) // Starts 500ms x-axis transition
@@ -180,7 +180,103 @@ export default function BezierCurve() { // Defines a React functional component
                 .attr("cx", x(data[data.length - 1].t)) // Moves to new x
                 .attr("cy", y(data[data.length - 1].value)); // Moves to new y
 
-            setTimeout(phase1, 10000); // Schedules Phase 1 (loop)
+            setTimeout(phase4, 10000); // Schedules Phase 1 (loop)
+        }
+
+        function phase4() { // Defines Phase 4
+            console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
+            x.domain([0, 6]); // Sets x-domain (slides left)
+            y.domain([1, 6]); // Sets y-domain (slides up)
+            data = generateData([0, 6], [1, 6]); // Generates new data
+
+            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
+
+            path.datum(data) // Binds new data
+                .transition() // Starts path transition
+                .duration(2000) // Sets duration
+                .attrTween("d", pathTween); // Animates path
+
+            endpointImage.transition() // Starts circle transition
+                .duration(2000) // Matches duration
+                .attr("cx", x(data[data.length - 1].t)) // Moves to new x
+                .attr("cy", y(data[data.length - 1].value)); // Moves to new y
+
+            setTimeout(phase5, 10000); // Schedules Phase 3
+        }
+
+        function phase5() { // Defines Phase 5
+            console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
+            x.domain([0, 6]); // Sets x-domain (slides left)
+            y.domain([1, 6]); // Sets y-domain (slides up)
+            data = generateData([0, 6], [1, 6]); // Generates new data
+
+            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
+
+            path.datum(data) // Binds new data
+                .transition() // Starts path transition
+                .duration(2000) // Sets duration
+                .attrTween("d", pathTween); // Animates path
+
+            endpointImage.transition() // Starts circle transition
+                .duration(2000) // Matches duration
+                .attr("cx", x(data[data.length - 1].t)) // Moves to new x
+                .attr("cy", y(data[data.length - 1].value)); // Moves to new y
+
+            setTimeout(phase6, 10000); // Schedules Phase 3
+        }
+
+        function phase6() { // Defines Phase 6
+            console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
+            x.domain([0, 6]); // Sets x-domain (slides left)
+            y.domain([1, 6]); // Sets y-domain (slides up)
+            data = generateData([0, 6], [1, 6]); // Generates new data
+
+            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
+
+            path.datum(data) // Binds new data
+                .transition() // Starts path transition
+                .duration(2000) // Sets duration
+                .attrTween("d", pathTween); // Animates path
+
+            endpointImage.transition() // Starts circle transition
+                .duration(2000) // Matches duration
+                .attr("cx", x(data[data.length - 1].t)) // Moves to new x
+                .attr("cy", y(data[data.length - 1].value)); // Moves to new y
+
+            setTimeout(phase7, 10000); // Schedules Phase 3
+        }
+
+        function phase7() { // Defines Phase 7
+            console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
+            x.domain([0, 6]); // Sets x-domain (slides left)
+            y.domain([1, 6]); // Sets y-domain (slides up)
+            data = generateData([0, 6], [1, 6]); // Generates new data
+
+            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
+
+            path.datum(data) // Binds new data
+                .transition() // Starts path transition
+                .duration(2000) // Sets duration
+                .attrTween("d", pathTween); // Animates path
+
+            endpointImage.transition() // Starts circle transition
+                .duration(2000) // Matches duration
+                .attr("cx", x(data[data.length - 1].t)) // Moves to new x
+                .attr("cy", y(data[data.length - 1].value)); // Moves to new y
+
+            setTimeout(phase1, 10000); // Schedules Phase 3
         }
 
         // Start Animation
