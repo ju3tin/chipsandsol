@@ -307,10 +307,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     <div className="relative h-64 bg-black overflow-hidden mb-4">
      {GameStatus === "Running" && (
         <div className="absolute inset-0">
-          <svg width={400} height={200}  className="w-full h-full" // Makes canvas fill its container
-            style={{
-              zIndex: 98, // Ensures canvas is above other elements
-            }}></svg> 
+        
           <canvas
             ref={canvasRef} // Attaches the canvas ref
             width={400} // Sets canvas width to 400 pixels
@@ -341,7 +338,10 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
           </span>
           <XLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width} />
         <YLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width}/>
-
+        <svg width={400} height={200}  className="w-full h-full" // Makes canvas fill its container
+            style={{
+              zIndex: 98, // Ensures canvas is above other elements
+            }}></svg>
         </div>
       )}
  {GameStatus === "Waiting" && (
