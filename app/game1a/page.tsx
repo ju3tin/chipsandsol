@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
-import BezierCurve from '@/components/labels12';
+//import BezierCurve from '@/components/labels12';
 import GameChat from "../../components/game-chat3a"
-import PathAnimation from '@/components/PathAnimation';
+import PathAnimation from '@/components/PathAnimation1';
 import Betbutton from "../../components/betbutton1a"
 import BetList from "../../components/BetList1"
 import GameVisual from '../../components/visualization123';
@@ -480,7 +480,7 @@ const CrashGame = () => {
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
-              <BezierCurve />
+            
              <PathAnimation 
               currentMultiplier={gameState5.multiplier}
               timer5={gameState5.timeRemaining}
