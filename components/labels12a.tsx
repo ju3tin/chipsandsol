@@ -112,7 +112,7 @@ export default function BezierCurve() { // Defines a React functional component
             y.domain([0, 5]); // Sets y-domain to 0-5
             data = generateData([0, 10], [0, 5]); // Generates new data
 
-            xAxisGroup.transition().duration(500) // Starts 500ms x-axis transition
+            xAxisGroup.transition().duration(1000) // Starts 500ms x-axis transition
                 .call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Updates x-axis ticks
             yAxisGroup.transition().duration(500) // Starts 500ms y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Updates y-axis ticks
@@ -123,7 +123,7 @@ export default function BezierCurve() { // Defines a React functional component
                 .attrTween("d", pathTween); // Animates path shape
 
             endpointImage.transition() // Starts circle transition
-                .duration(500) // Matches duration
+                .duration(1000) // Matches duration
                 .attr("cx", x(data[data.length - 1].t)) // Moves to new x
                 .attr("cy", y(data[data.length - 1].value)); // Moves to new y
 
