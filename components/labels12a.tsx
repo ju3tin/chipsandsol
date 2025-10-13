@@ -26,7 +26,7 @@ export default function BezierCurve() { // Defines a React functional component
         const svg: Selection<SVGSVGElement, unknown, null, undefined> = d3.select(svgRef.current); // Selects SVG with typed D3 selection
         const width: number = 400; // Sets SVG width to 400px
         const height: number = 200; // Sets SVG height to 200px
-        const margin: Margin = { top: 40, right: 50, bottom: 60, left: 70 }; // Defines margins with typed interface
+        const margin: Margin = { top: 0, right: 0, bottom: 20, left: 20 }; // Defines margins with typed interface
         const innerWidth: number = width - margin.left - margin.right; // Calculates inner chart width (280px)
         const innerHeight: number = height - margin.top - margin.bottom; // Calculates inner chart height (100px)
 
