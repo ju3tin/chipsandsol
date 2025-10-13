@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
+//import BezierCurve from '@/components/labels12';
 import GameChat from "@/components/game-chat3a"
+import PathAnimation from '@/components/PathAnimation1';
 import Betbutton from "@/components/betbutton1a"
 import BetList from "@/components/BetList1"
 import GameVisual from '@/components/visualization123';
@@ -191,7 +193,6 @@ const CrashGame = () => {
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const [triggerConfetti, setTriggerConfetti] = useState(false);
   const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User";
-  const [lastValidTime, setLastValidTime] = useState<number>(0);
 
   const animationRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
@@ -202,12 +203,6 @@ const CrashGame = () => {
 
   const MAX_MULTIPLIER = 100;
   const GAME_DURATION_MS = 15000;
-
-  useEffect(() => {
-    if (typeof gameState5.timeElapsed === 'number' && !isNaN(gameState5.timeElapsed)) {
-      setLastValidTime(gameState5.timeElapsed);
-    }
-  }, [gameState5.timeElapsed]);
 
   useEffect(() => {
     if (pressed === 1 && !hasLogged) {
@@ -483,19 +478,20 @@ const CrashGame = () => {
             <CardContent className="p-1">
               <div className="flex justify-between items-center mb-4">
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
-                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}{/*gameState5.timeElapsed*/}x</div>
+                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
-              <GameVisual
-                betAmount={betAmount}
-                timer5={gameState5.timeElapsed}
-                dude56={currency} 
-                dude55={isCashedOut} 
-                onCashout={handleCashout} 
-                GameStatus={gameState5.status}
-                Gametimeremaining={gameState5.timeRemaining}
-                currentMultiplier={gameState5.multiplier} 
-                tValues={[]}
-              />
+            
+             <PathAnimation 
+              currentMultiplier={gameState5.multiplier}
+              timer5={gameState5.timeRemaining}
+              onCashout={handleCashout}
+              dude55={isCashedOut}
+              dude56={currency}
+              betAmount={betAmount}
+              Gametimeremaining={gameState5.timeRemaining}
+              GameStatus={gameState5.status}
+              tValues={[]}
+             />
               <GameHistory
                 pressed={pressed} 
                 gameState={gameState5.status} 
