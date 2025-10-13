@@ -52,9 +52,14 @@ export default function BezierCurve() { // Defines a React functional component
             .attr("class", "y-axis"); // Assigns class "y-axis" for styling
 
         // Initial Axes
-        xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Renders x-axis with ticks 0-8
-        yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Renders y-axis with ticks 0-5
+        xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d'))); // Renders x-axis with ticks 0-8
+        yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d'))); // Renders y-axis with ticks 0-5
 
+      //  xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Renders x-axis with ticks 0-8
+      //  yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Renders y-axis with ticks 0-5
+
+
+        
         // Bezier Curve Path Generator
         const line: Line<CurvePoint> = d3.line<CurvePoint>() // Creates typed D3 line generator
             .x(d => x(d.t)) // Maps 't' to x-coordinate
@@ -113,9 +118,9 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 10], [0, 5]); // Generates new data
 
             xAxisGroup.transition().duration(500) // Starts 500ms x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d'))); // Updates x-axis ticks
             yAxisGroup.transition().duration(500) // Starts 500ms y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Updates y-axis ticks
+                .call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
             path.datum(data) // Binds new data to path
                 .transition() // Starts path transition
@@ -137,9 +142,9 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7))); // Updates y-axis ticks
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -151,7 +156,7 @@ export default function BezierCurve() { // Defines a React functional component
                 .attr("cx", x(data[data.length - 1].t)) // Moves to new x
                 .attr("cy", y(data[data.length - 1].value)); // Moves to new y
 
-            setTimeout(phase3, 2000); // Schedules Phase 3
+            setTimeout(phase3, 10000); // Schedules Phase 3
         }
 
         function phase3() { // Defines Phase 3
@@ -161,9 +166,9 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 10], [0, 10]); // Generates new data
 
             xAxisGroup.transition().duration(1000) // Starts 1s x-axis transition
-                .call(d3.axisBottom(x).tickValues([0, 5, 10])); // Updates sparse ticks
+                .call(d3.axisBottom(x).tickValues([0, 5, 10]).tickFormat(d3.format('d'))); // Updates sparse ticks
             yAxisGroup.transition().duration(1000) // Starts 1s y-axis transition
-                .call(d3.axisLeft(y).tickValues([0, 5, 10])); // Updates sparse ticks
+                .call(d3.axisLeft(y).tickValues([0, 5, 10]).tickFormat(d3.format('d'))); // Updates sparse ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -175,7 +180,7 @@ export default function BezierCurve() { // Defines a React functional component
                 .attr("cx", x(data[data.length - 1].t)) // Moves to new x
                 .attr("cy", y(data[data.length - 1].value)); // Moves to new y
 
-            setTimeout(phase1, 3000); // Schedules Phase 1 (loop)
+            setTimeout(phase1, 10000); // Schedules Phase 1 (loop)
         }
 
         // Start Animation
@@ -200,8 +205,8 @@ export default function BezierCurve() { // Defines a React functional component
             
             // Update axes
             xAxisGroup.attr("transform", `translate(0,${newInnerHeight})`);
-            xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)));
-            yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
+            xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d')));
+            yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d')));
             
             // Update path
             path.attr("d", line(data));
