@@ -340,12 +340,14 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
           >
             {currentMultiplier}x
           </span>
+          {/*
           <XLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width} />
         <YLabels currentMultiplier={currentMultiplier} timer5={timer5} canvasheight={canvasRef.current?.height} canvaswidth={canvasRef.current?.width}/>
         <svg width={400} height={200}  className="w-full h-full" // Makes canvas fill its container
             style={{
               zIndex: 98, // Ensures canvas is above other elements
             }}></svg>
+         */}
            
         </div>
         </>
