@@ -24,8 +24,9 @@ export default function BezierCurve() { // Defines a React functional component
 
         // SVG Setup
         const svg: Selection<SVGSVGElement, unknown, null, undefined> = d3.select(svgRef.current); // Selects SVG with typed D3 selection
-        const width: number = 400; // Sets SVG width to 400px
-        const height: number = 200; // Sets SVG height to 200px
+        const svgElement = svgRef.current;
+        const width: number = svgElement.clientWidth || 400; // Uses actual SVG width or fallback to 400px
+        const height: number = svgElement.clientHeight || 200; // Uses actual SVG height or fallback to 200px
         const margin: Margin = { top: 0, right: 0, bottom: 0, left: 0 }; // Defines margins with typed interface
         const innerWidth: number = width - margin.left - margin.right; // Calculates inner chart width (280px)
         const innerHeight: number = height - margin.top - margin.bottom; // Calculates inner chart height (100px)
@@ -179,8 +180,43 @@ export default function BezierCurve() { // Defines a React functional component
         // Start Animation
         phase1(); // Initiates animation
 
+        // Handle window resize
+        const handleResize = () => {
+            if (!svgRef.current) return;
+            
+            const newWidth = svgRef.current.clientWidth || 400;
+            const newHeight = svgRef.current.clientHeight || 200;
+            
+            // Update SVG dimensions
+            svg.attr("width", newWidth).attr("height", newHeight);
+            
+            // Update scales with new dimensions
+            const newInnerWidth = newWidth - margin.left - margin.right;
+            const newInnerHeight = newHeight - margin.top - margin.bottom;
+            
+            x.range([0, newInnerWidth]);
+            y.range([newInnerHeight, 0]);
+            
+            // Update axes
+            xAxisGroup.attr("transform", `translate(0,${newInnerHeight})`);
+            xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)));
+            yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
+            
+            // Update path
+            path.attr("d", line(data));
+            
+            // Update endpoint
+            endpointImage
+                .attr("cx", x(data[data.length - 1].t))
+                .attr("cy", y(data[data.length - 1].value));
+        };
+
+        // Add resize listener
+        window.addEventListener('resize', handleResize);
+
         // Cleanup on unmount
         return () => { // Cleanup function
+            window.removeEventListener('resize', handleResize);
             svg.selectAll("*").remove(); // Removes SVG children to prevent leaks
         };
     }, []); // Empty dependency array for single run
@@ -202,7 +238,7 @@ export default function BezierCurve() { // Defines a React functional component
                     fill: #333;
                 }
             `}</style> {/* Closes inline styles */}
-            <svg width={400} height={200} ref={svgRef}  className="w-full h-full" // Makes canvas fill its container
+            <svg ref={svgRef} className="w-full h-full" // Makes canvas fill its container
             style={{
                 backgroundColor: 'transparent',
               zIndex: 90, // Ensures canvas is above other elements
