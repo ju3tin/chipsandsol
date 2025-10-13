@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bezier Curve with Animated X, Y Axes, and Curve (Offline)</title>
+    <script src="d3.v7.min.js"></script>  <!-- Local D3.js file -->
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        svg { border: 1px solid #ccc; background: #f9f9f9; }
+        .axis-label { font-size: 12px; fill: #333; }
+        .grid line { stroke: #ddd; stroke-opacity: 0.7; shape-rendering: crispEdges; }
+        .title { font-size: 16px; font-weight: bold; fill: #333; }
+    </style>
+</head>
+<body>
+    <h3>Bezier Curve: Animated X (Time), Y (Value), and Curve (Offline)</h3>
+    <p>This demo animates:<br>
+       - <strong>X-Axis (Time)</strong>: 0-8 (full) → slide left (-2 to 6) → sparse 0-10.<br>
+       - <strong>Y-Axis (Value)</strong>: 0-5 (full) → slide up (1 to 6) → sparse 0-10.<br>
+       - <strong>Curve</strong>: Grows from flat to full shape in each phase.<br>
+       Loops every ~8s. All elements labeled. Works offline with local D3.js.</p>
+    <svg width="500" height="400"></svg>
+
+    <script>
+        // SVG Setup
+        const svg = d3.select("svg");
+        const width = +svg.attr("width");
+        const height = +svg.attr("height");
+        const margin = { top: 40, right: 50, bottom: 60, left: 70 };
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
+
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Scales
+        let x = d3.scaleLinear()
+            .domain([0, 8])
+            .range([0, innerWidth]);
+
+        let y = d3.scaleLinear()
+            .domain([0, 5])
+            .range([innerHeight, 0]);
+
+        // Axes Groups
+        const xAxisGroup = g.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0,${innerHeight})`);
+
+        const yAxisGroup = g.append("g")
+            .attr("class", "y-axis");
+
+        // Grid Lines
+        const xGrid = g.append("g").attr("class", "grid x-grid");
+        const yGrid = g.append("g").attr("class", "grid y-grid");
+
+        function updateGrids() {
+            xGrid.call(d3.axisBottom(x).tickSize(-innerHeight).tickFormat(""));
+            yGrid.call(d3.axisLeft(y).tickSize(-innerWidth).tickFormat(""));
+        }
+
+        // Initial Axes
+        xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)));
+        yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
+        updateGrids();
+
+        // Axis Labels
+        svg.append("text")
+            .attr("class", "axis-label")
+            .attr("transform", `translate(${width / 2}, ${height - 10})`)
+            .style("text-anchor", "middle")
+            .text("Time (X-Axis)");
+
+        svg.append("text")
+            .attr("class", "axis-label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 15)
+            .attr("x", - (height / 2))
+            .style("text-anchor", "middle")
+            .text("Value (Y-Axis)");
+
+        // Chart Title
+        svg.append("text")
+            .attr("class", "title")
+            .attr("x", width / 2)
+            .attr("y", 20)
+            .style("text-anchor", "middle")
+            .text("Bezier Curve with Animated Axes and Curve");
+
+        // Bezier Curve Path Generator
+        const line = d3.line()
+            .x(d => x(d.t))
+            .y(d => y(d.value))
+            .curve(d3.curveBasis);
+
+        // Generate Data
+        function generateData(xDomain, yDomain) {
+            const [xMin, xMax] = xDomain;
+            const [yMin, yMax] = yDomain;
+            const yMid = (yMin + yMax) / 2;
+            const yAmp = (yMax - yMin) / 2 * 0.8;
+            return d3.range(xMin, xMax + 0.1, 0.1).map(t => ({
+                t,
+                value: yMid + yAmp * Math.sin(t * Math.PI / 4)
+            }));
+        }
+
+        let data = generateData([0, 8], [0, 5]);
+
+        // Path Tween for Curve Animation
+        function pathTween() {
+            const l = this.getTotalLength();
+            const i = d3.interpolateString(`M0,${y(0)}L${innerWidth},${y(0)}`, this.getAttribute("d"));
+            return t => {
+                if (t < 0.5) {
+                    const p = this.getPointAtLength(t * 2 * l);
+                    return `M0,${y(0)}L${p.x},${p.y}`;
+                } else {
+                    return i((t - 0.5) * 2);
+                }
+            };
+        }
+
+        // Draw Initial Curve
+        const path = g.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("d", `M0,${y(0)}L${innerWidth},${y(0)}`);
+
+        // Animation Sequence
+        function phase1() {
+            console.log("Phase 1: X 0-8 full, Y 0-5 full, Curve grows");
+            x.domain([0, 8]);
+            y.domain([0, 5]);
+            data = generateData([0, 8], [0, 5]);
+
+            xAxisGroup.transition().duration(500)
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 9)));
+            yAxisGroup.transition().duration(500)
+                .call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
+
+            g.selectAll(".grid").transition().duration(500).call(updateGrids);
+
+            path.datum(data)
+                .transition()
+                .duration(500)
+                .attrTween("d", pathTween);
+
+            setTimeout(phase2, 3000);
+        }
+
+        function phase2() {
+            console.log("Phase 2: X slide left (-2,6), Y slide up (1,6), Curve regrows");
+            x.domain([-2, 6]);
+            y.domain([1, 6]);
+            data = generateData([-2, 6], [1, 6]);
+
+            xAxisGroup.transition().duration(2000)
+                .call(d3.axisBottom(x).tickValues(d3.range(-2, 7)));
+            yAxisGroup.transition().duration(2000)
+                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)));
+
+            g.selectAll(".grid").transition().duration(2000).call(updateGrids);
+
+            path.datum(data)
+                .transition()
+                .duration(2000)
+                .attrTween("d", pathTween);
+
+            setTimeout(phase3, 2000);
+        }
+
+        function phase3() {
+            console.log("Phase 3: X sparse 0-10, Y sparse 0-10, Curve regrows");
+            x.domain([0, 10]);
+            y.domain([0, 10]);
+            data = generateData([0, 10], [0, 10]);
+
+            xAxisGroup.transition().duration(1000)
+                .call(d3.axisBottom(x).tickValues([0, 5, 10]));
+            yAxisGroup.transition().duration(1000)
+                .call(d3.axisLeft(y).tickValues([0, 5, 10]));
+
+            g.selectAll(".grid").transition().duration(1000).call(updateGrids);
+
+            path.datum(data)
+                .transition()
+                .duration(1000)
+                .attrTween("d", pathTween);
+
+            setTimeout(phase1, 3000);
+        }
+
+        // Start Animation
+        phase1();
+    </script>
+</body>
+</html>
