@@ -306,8 +306,10 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     // Container div with relative positioning, transparent background, and fixed height
     <div className="relative h-64 bg-transparent overflow-hidden mb-4">
      {GameStatus === "Running" && (
+      <>
+        <BezierCurve />
         <div className="absolute inset-0">
-         <BezierCurve />
+        
           <canvas
             ref={canvasRef} // Attaches the canvas ref
             width={400} // Sets canvas width to 400 pixels
@@ -346,6 +348,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             }}></svg>
            
         </div>
+        </>
       )}
  {GameStatus === "Waiting" && (
         <span
