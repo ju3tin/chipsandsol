@@ -186,10 +186,10 @@ export default function BezierCurve() { // Defines a React functional component
     }, []); // Empty dependency array for single run
 
     return ( // Renders JSX
-        <div> {/* Container div */}
+        <div className="absolute inset-0"> {/* Container div */}
             <style jsx>{` /* Scoped styles */
                 svg {
-                    border: 1px solid #ccc;
+                   
              
                 }
                 .axis-label {
