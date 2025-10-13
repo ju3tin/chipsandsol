@@ -190,7 +190,7 @@ export default function BezierCurve() { // Defines a React functional component
             <style jsx>{` /* Scoped styles */
                 svg {
                     border: 1px solid #ccc;
-                    background: #f9f9f9;
+             
                 }
                 .axis-label {
                     font-size: 12px;
