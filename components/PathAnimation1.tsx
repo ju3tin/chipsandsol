@@ -317,6 +317,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
               zIndex: 100, // Ensures canvas is above other elements
             }}
           />
+           <BezierCurve />
    <span
             style={{
               top: "100px",
@@ -342,7 +343,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             style={{
               zIndex: 98, // Ensures canvas is above other elements
             }}></svg>
-            <BezierCurve />
+           
         </div>
       )}
  {GameStatus === "Waiting" && (
