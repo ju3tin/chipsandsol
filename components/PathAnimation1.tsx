@@ -318,6 +318,8 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             style={{
               backgroundColor: 'transparent',
               zIndex: 100, // Ensures canvas is above other elements
+              marginLeft:20,
+              marginBottom:20,
             }}
           />
           
