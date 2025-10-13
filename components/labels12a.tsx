@@ -90,12 +90,12 @@ export default function BezierCurve() { // Defines a React functional component
         }
 
         // Draw Initial Curve
-        const path = g.append("path") // Appends typed path for Bezier curve
-            .datum(data) // Binds initial data
-            .attr("fill", "none") // Sets no fill
-            .attr("stroke", "steelblue") // Sets line color
-            .attr("stroke-width", 2) // Sets line thickness
-            .attr("d", `M0,${y(0)}L${innerWidth},${y(0)}`); // Sets initial flat line
+    //    const path = g.append("path") // Appends typed path for Bezier curve
+    //        .datum(data) // Binds initial data
+    //        .attr("fill", "none") // Sets no fill
+    //        .attr("stroke", "steelblue") // Sets line color
+    //        .attr("stroke-width", 2) // Sets line thickness
+    //        .attr("d", `M0,${y(0)}L${innerWidth},${y(0)}`); // Sets initial flat line
 
         // Add SVG Image at Curve Endpoint (Inline SVG Circle)
         const endpointImage: Selection<SVGCircleElement, unknown, null, undefined> = g.append("circle") // Appends typed circle for endpoint
@@ -116,10 +116,10 @@ export default function BezierCurve() { // Defines a React functional component
             yAxisGroup.transition().duration(500) // Starts 500ms y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Updates y-axis ticks
 
-            path.datum(data) // Binds new data to path
-                .transition() // Starts path transition
-                .duration(500) // Sets duration
-                .attrTween("d", pathTween); // Animates path shape
+          //  path.datum(data) // Binds new data to path
+          //      .transition() // Starts path transition
+          //      .duration(500) // Sets duration
+          //      .attrTween("d", pathTween); // Animates path shape
 
             endpointImage.transition() // Starts circle transition
                 .duration(500) // Matches duration
@@ -140,10 +140,10 @@ export default function BezierCurve() { // Defines a React functional component
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7))); // Updates y-axis ticks
 
-            path.datum(data) // Binds new data
-                .transition() // Starts path transition
-                .duration(2000) // Sets duration
-                .attrTween("d", pathTween); // Animates path
+        //    path.datum(data) // Binds new data
+        //        .transition() // Starts path transition
+        //        .duration(2000) // Sets duration
+        //        .attrTween("d", pathTween); // Animates path
 
             endpointImage.transition() // Starts circle transition
                 .duration(2000) // Matches duration
@@ -164,10 +164,10 @@ export default function BezierCurve() { // Defines a React functional component
             yAxisGroup.transition().duration(1000) // Starts 1s y-axis transition
                 .call(d3.axisLeft(y).tickValues([0, 5, 10])); // Updates sparse ticks
 
-            path.datum(data) // Binds new data
-                .transition() // Starts path transition
-                .duration(1000) // Sets duration
-                .attrTween("d", pathTween); // Animates path
+       //     path.datum(data) // Binds new data
+       //         .transition() // Starts path transition
+      //          .duration(1000) // Sets duration
+      //          .attrTween("d", pathTween); // Animates path
 
             endpointImage.transition() // Starts circle transition
                 .duration(1000) // Matches duration
@@ -203,7 +203,7 @@ export default function BezierCurve() { // Defines a React functional component
             yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
             
             // Update path
-            path.attr("d", line(data));
+        //    path.attr("d", line(data));
             
             // Update endpoint
             endpointImage
