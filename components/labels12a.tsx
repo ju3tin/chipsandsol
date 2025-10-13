@@ -118,7 +118,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 10], [0, 5]); // Generates new data
 
             xAxisGroup.transition().duration(500) // Starts 500ms x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 11)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8, 10]).tickFormat(d3.format('d'))); // Updates x-axis ticks
             yAxisGroup.transition().duration(500) // Starts 500ms y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
