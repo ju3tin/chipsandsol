@@ -308,7 +308,8 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
      {GameStatus === "Running" && (
       <>
         <BezierCurve />
-        <div className="absolute inset-0">
+        <div className="absolute inset-0" style={{ marginLeft:20,
+              marginBottom:20,}}>
         
           <canvas
             ref={canvasRef} // Attaches the canvas ref
@@ -318,8 +319,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
             style={{
               backgroundColor: 'transparent',
               zIndex: 100, // Ensures canvas is above other elements
-              marginLeft:20,
-              marginBottom:20,
+             
             }}
           />
           
