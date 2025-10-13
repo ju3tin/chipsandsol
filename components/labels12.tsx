@@ -186,6 +186,7 @@ export default function BezierCurve() { // Defines a React functional component
     }, []); // Empty dependency array for single run
 
     return ( // Renders JSX
+        <div className="relative h-64 bg-black overflow-hidden mb-4">
         <div className="absolute inset-0"> {/* Container div */}
             <style jsx>{` /* Scoped styles */
                 svg {
@@ -203,6 +204,7 @@ export default function BezierCurve() { // Defines a React functional component
                 }
             `}</style> {/* Closes inline styles */}
             <svg width="400" height="200" ref={svgRef}></svg> {/* SVG with typed ref */}
+        </div>
         </div>
     );
 }
