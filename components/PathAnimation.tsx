@@ -189,20 +189,20 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
 
 
          // Draws the x-axis (horizontal line at y=200, bottom of canvas)
-         ctx.beginPath();
-         ctx.moveTo(10, 190); // Start at left edge
-         ctx.lineTo(390, 190); // End at right edge
-         ctx.strokeStyle = 'gray'; // Sets axis color to gray for distinction
-         ctx.lineWidth = 1; // Thinner line for axes
-         ctx.stroke();
+//         ctx.beginPath();
+//         ctx.moveTo(10, 190); // Start at left edge
+//         ctx.lineTo(390, 190); // End at right edge
+//         ctx.strokeStyle = 'gray'; // Sets axis color to gray for distinction
+//         ctx.lineWidth = 1; // Thinner line for axes
+//         ctx.stroke();
 
             // Draws the y-axis (vertical line at x=0, left of canvas)
-      ctx.beginPath();
-      ctx.moveTo(10, 10); // Start at top-left
-      ctx.lineTo(10, 190); // End at bottom-left
-      ctx.strokeStyle = 'gray'; // Sets axis color to gray
-      ctx.lineWidth = 1; // Thinner line for axes
-      ctx.stroke();
+//      ctx.beginPath();
+//      ctx.moveTo(10, 10); // Start at top-left
+//      ctx.lineTo(10, 190); // End at bottom-left
+//      ctx.strokeStyle = 'gray'; // Sets axis color to gray
+//      ctx.lineWidth = 1; // Thinner line for axes
+//      ctx.stroke();
 
 
       // Begins a new path for the Bezier curve
