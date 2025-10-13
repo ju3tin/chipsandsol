@@ -40,7 +40,7 @@ export default function BezierCurve() { // Defines a React functional component
             .range([0, innerWidth]); // Maps to pixel range 0 to 280px
 
         let y = d3.scaleLinear() // Creates linear scale for y-axis (value)
-            .domain([0, 5]) // Sets initial y-domain from 0 to 5
+            .domain([0, 2]) // Sets initial y-domain from 0 to 5
             .range([innerHeight, 0]); // Maps to pixel range 100px to 0 (inverted)
 
         // Axes Groups
