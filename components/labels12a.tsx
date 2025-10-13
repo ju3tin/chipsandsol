@@ -102,8 +102,8 @@ export default function BezierCurve() { // Defines a React functional component
         const endpointImage: Selection<SVGCircleElement, unknown, null, undefined> = g.append("circle") // Appends typed circle for endpoint
             .attr("cx", x(data[data.length - 1].t)) // Sets initial x-position
             .attr("cy", y(data[data.length - 1].value)) // Sets initial y-position
-            .attr("r", 5) // Sets radius to 5px
-            .attr("fill", "red"); // Sets fill color
+            .attr("r", 0) // Sets radius to 5px
+            .attr("fill", "none"); // Sets fill color
 
         // Animation Sequence
         function phase1() { // Defines Phase 1 of animation
