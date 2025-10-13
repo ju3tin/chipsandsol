@@ -307,7 +307,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
     <div className="relative h-64 bg-transparent overflow-hidden mb-4">
      {GameStatus === "Running" && (
         <div className="absolute inset-0">
-        
+         <BezierCurve />
           <canvas
             ref={canvasRef} // Attaches the canvas ref
             width={400} // Sets canvas width to 400 pixels
@@ -318,7 +318,7 @@ const BezierAnimation: React.FC<GameVisualProps> = ({
               zIndex: 100, // Ensures canvas is above other elements
             }}
           />
-           <BezierCurve />
+          
    <span
             style={{
               top: "100px",
