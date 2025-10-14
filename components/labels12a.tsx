@@ -52,7 +52,7 @@ export default function BezierCurve() { // Defines a React functional component
             .attr("class", "y-axis"); // Assigns class "y-axis" for styling
 
         // Initial Axes
-        xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d'))); // Renders x-axis with ticks 0-8
+        xAxisGroup.call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8]).tickFormat(d3.format('d'))); // Renders x-axis with ticks 0-8
         yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d'))); // Renders y-axis with ticks 0-5
 
       //  xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Renders x-axis with ticks 0-8
