@@ -52,7 +52,7 @@ export default function BezierCurve() { // Defines a React functional component
             .attr("class", "y-axis"); // Assigns class "y-axis" for styling
 
         // Initial Axes
-        xAxisGroup.call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8]).tickFormat(d3.format('d'))); // Renders x-axis with ticks 0-8
+        xAxisGroup.call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Renders x-axis with ticks 0-8
         yAxisGroup.call(d3.axisLeft(y).tickValues([2]).tickFormat(d3.format('d'))); // Renders y-axis with ticks 0-5
 
       //  xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Renders x-axis with ticks 0-8
@@ -118,7 +118,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 10], [0, 5]); // Generates new data
 
             xAxisGroup.transition().duration(10000) // Starts 500ms x-axis transition
-                .call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8, 10]).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues([0, 2, 4, 6, 8, 10]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(10000) // Starts 500ms y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -142,7 +142,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(10000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -166,7 +166,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 10], [0, 10]); // Generates new data
 
             xAxisGroup.transition().duration(1000) // Starts 1s x-axis transition
-                .call(d3.axisBottom(x).tickValues([0, 5, 10]).tickFormat(d3.format('d'))); // Updates sparse ticks
+                .call(d3.axisBottom(x).tickValues([0, 5, 10]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates sparse ticks
             yAxisGroup.transition().duration(1000) // Starts 1s y-axis transition
                 .call(d3.axisLeft(y).tickValues([0, 5, 10]).tickFormat(d3.format('d'))); // Updates sparse ticks
 
@@ -190,7 +190,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -214,7 +214,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -238,7 +238,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -262,7 +262,7 @@ export default function BezierCurve() { // Defines a React functional component
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d'))); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat(d3.format('d'))); // Updates y-axis ticks
 
@@ -301,7 +301,7 @@ export default function BezierCurve() { // Defines a React functional component
             
             // Update axes
             xAxisGroup.attr("transform", `translate(0,${newInnerHeight})`);
-            xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d')));
+            xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9)).tickFormat(d3.format('d')).tickSizeOuter(0));
             yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat(d3.format('d')));
             
             // Update path
