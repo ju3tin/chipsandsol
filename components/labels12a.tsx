@@ -162,14 +162,14 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase2() { // Defines Phase 2
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
-            x.domain([0, 6]); // Sets x-domain (slides left)
-            y.domain([1, 6]); // Sets y-domain (slides up)
+            x.domain([0, 20]); // Sets x-domain (slides left)
+            y.domain([1, 4]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+                .call(d3.axisBottom(x).tickValues([0, 10, 20]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(10000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+                .call(d3.axisLeft(y).tickValues([2, 3, 4]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
