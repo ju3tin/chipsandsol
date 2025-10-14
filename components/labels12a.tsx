@@ -111,7 +111,7 @@ export default function BezierCurve() { // Defines a React functional component
             .attr("fill", "none"); // Sets fill color
 
         // Animation Sequence
-        function phase1() { // Defines Phase 1 of animation
+        function phase0() { // Defines Phase 1 of animation
             console.log("Phase 1: X 0-8 full, Y 0-5 full, Curve grows"); // Logs phase start
             x.domain([0, 10]); // Sets x-domain to 0-10
             y.domain([2, 2]); // Sets y-domain to 0-5
@@ -121,6 +121,31 @@ export default function BezierCurve() { // Defines a React functional component
                 .call(d3.axisBottom(x).tickValues([2, 4, 6, 8, 10]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(10000) // Starts 500ms y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(0, 6)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+
+            path.datum(data) // Binds new data to path
+                .transition() // Starts path transition
+                .duration(500) // Sets duration
+                .attrTween("d", pathTween); // Animates path shape
+
+            endpointImage.transition() // Starts circle transition
+                .duration(500) // Matches duration
+                .attr("cx", x(data[data.length - 1].t)) // Moves to new x
+                .attr("cy", y(data[data.length - 1].value)); // Moves to new y
+
+            setTimeout(phase2, 10000); // Schedules Phase 2
+        }
+
+
+        function phase1() { // Defines Phase 1 of animation
+            console.log("Phase 1: X 0-8 full, Y 0-5 full, Curve grows"); // Logs phase start
+            x.domain([0, 10]); // Sets x-domain to 0-10
+            y.domain([]); // Sets y-domain to 0-5
+            data = generateData([0, 10], [0, 5]); // Generates new data
+
+            xAxisGroup.transition().duration(10000) // Starts 500ms x-axis transition
+                .call(d3.axisBottom(x).tickValues([2, 4, 6, 8, 10]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+            yAxisGroup.transition().duration(10000) // Starts 500ms y-axis transition
+                .call(d3.axisLeft(y).tickValues([]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data to path
                 .transition() // Starts path transition
