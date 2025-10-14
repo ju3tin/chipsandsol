@@ -187,13 +187,13 @@ export default function BezierCurve() { // Defines a React functional component
         function phase3() { // Defines Phase 3
             console.log("Phase 3: X sparse 0-10, Y sparse 0-10, Curve regrows"); // Logs phase
             x.domain([0, 30]); // Sets x-domain
-            y.domain([0, 10]); // Sets y-domain
+            y.domain([1, 8]); // Sets y-domain
             data = generateData([0, 10], [0, 10]); // Generates new data
 
             xAxisGroup.transition().duration(10000) // Starts 1s x-axis transition
                 .call(d3.axisBottom(x).tickValues([0, 10, 20, 30]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates sparse ticks
             yAxisGroup.transition().duration(10000) // Starts 1s y-axis transition
-                .call(d3.axisLeft(y).tickValues([0, 5, 10]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates sparse ticks
+                .call(d3.axisLeft(y).tickValues([2, 6, 8]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates sparse ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -211,13 +211,13 @@ export default function BezierCurve() { // Defines a React functional component
         function phase4() { // Defines Phase 4
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
             x.domain([0, 40]); // Sets x-domain (slides left)
-            y.domain([1, 6]); // Sets y-domain (slides up)
+            y.domain([1, 16]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
             xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
                 .call(d3.axisBottom(x).tickValues([0, 10, 20, 30, 40]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
-            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+            yAxisGroup.transition().duration(10000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues([4, 8, 16]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -234,14 +234,14 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase5() { // Defines Phase 5
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
-            x.domain([0, 6]); // Sets x-domain (slides left)
-            y.domain([1, 6]); // Sets y-domain (slides up)
+            x.domain([0, 50]); // Sets x-domain (slides left)
+            y.domain([1, 32]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
-            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
-            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+            xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues([0, 10, 20, 30, 40, 50]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+            yAxisGroup.transition().duration(10000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues([16, 24, 32]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -258,14 +258,14 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase6() { // Defines Phase 6
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
-            x.domain([0, 6]); // Sets x-domain (slides left)
-            y.domain([1, 6]); // Sets y-domain (slides up)
+            x.domain([0, 60]); // Sets x-domain (slides left)
+            y.domain([1, 64]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
-            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
-            yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+            xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues([0, 10, 20, 30, 40, 50, 60]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+            yAxisGroup.transition().duration(10000) // Starts 2s y-axis transition
+                .call(d3.axisLeft(y).tickValues([24, 32, 64]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
@@ -282,14 +282,14 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase7() { // Defines Phase 7
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
-            x.domain([0, 6]); // Sets x-domain (slides left)
-            y.domain([1, 6]); // Sets y-domain (slides up)
+            x.domain([0, 70]); // Sets x-domain (slides left)
+            y.domain([1, 128]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
-            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+            xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues([0, 10, 20, 30, 40, 50, 60, 70]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
-                .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
+                .call(d3.axisLeft(y).tickValues([64, 96, 128]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
             path.datum(data) // Binds new data
                 .transition() // Starts path transition
