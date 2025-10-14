@@ -53,7 +53,7 @@ export default function BezierCurve() { // Defines a React functional component
 
         // Initial Axes
         xAxisGroup.call(d3.axisBottom(x).tickValues([2, 4, 6, 8]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Renders x-axis with ticks 0-8
-        yAxisGroup.call(d3.axisLeft(y).tickValues([2]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Renders y-axis with ticks 0-5
+        yAxisGroup.call(d3.axisLeft(y).tickValues([]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Renders y-axis with ticks 0-5
 
       //  xAxisGroup.call(d3.axisBottom(x).tickValues(d3.range(0, 9))); // Renders x-axis with ticks 0-8
       //  yAxisGroup.call(d3.axisLeft(y).tickValues(d3.range(0, 6))); // Renders y-axis with ticks 0-5
