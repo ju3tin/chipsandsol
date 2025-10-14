@@ -41,7 +41,7 @@ export default function BezierCurve() { // Defines a React functional component
 
         let y = d3.scaleLinear() // Creates linear scale for y-axis (value)
             .domain([2, 2]) // Sets initial y-domain from 0 to 5
-            .range([innerHeight, 2]); // Maps to pixel range 100px to 0 (inverted)
+            .range([innerHeight, 0]); // Maps to pixel range 100px to 0 (inverted)
 
         // Axes Groups
         const xAxisGroup: Selection<SVGGElement, unknown, null, undefined> = g.append("g") // Appends <g> for x-axis
