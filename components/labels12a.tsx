@@ -186,12 +186,12 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase3() { // Defines Phase 3
             console.log("Phase 3: X sparse 0-10, Y sparse 0-10, Curve regrows"); // Logs phase
-            x.domain([0, 10]); // Sets x-domain
+            x.domain([0, 30]); // Sets x-domain
             y.domain([0, 10]); // Sets y-domain
             data = generateData([0, 10], [0, 10]); // Generates new data
 
             xAxisGroup.transition().duration(1000) // Starts 1s x-axis transition
-                .call(d3.axisBottom(x).tickValues([0, 5, 10]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates sparse ticks
+                .call(d3.axisBottom(x).tickValues([0, 10, 20, 30]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates sparse ticks
             yAxisGroup.transition().duration(1000) // Starts 1s y-axis transition
                 .call(d3.axisLeft(y).tickValues([0, 5, 10]).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates sparse ticks
 
