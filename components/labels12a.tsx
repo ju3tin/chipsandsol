@@ -210,12 +210,12 @@ export default function BezierCurve() { // Defines a React functional component
 
         function phase4() { // Defines Phase 4
             console.log("Phase 2: X slide left (0,6), Y slide up (1,6), Curve regrows"); // Logs phase
-            x.domain([0, 6]); // Sets x-domain (slides left)
+            x.domain([0, 40]); // Sets x-domain (slides left)
             y.domain([1, 6]); // Sets y-domain (slides up)
             data = generateData([0, 6], [1, 6]); // Generates new data
 
-            xAxisGroup.transition().duration(2000) // Starts 2s x-axis transition
-                .call(d3.axisBottom(x).tickValues(d3.range(0, 7)).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
+            xAxisGroup.transition().duration(10000) // Starts 2s x-axis transition
+                .call(d3.axisBottom(x).tickValues([0, 10, 20, 30, 40]).tickFormat(d3.format('d')).tickSizeOuter(0)); // Updates x-axis ticks
             yAxisGroup.transition().duration(2000) // Starts 2s y-axis transition
                 .call(d3.axisLeft(y).tickValues(d3.range(1, 7)).tickFormat((d: d3.NumberValue, _i: number) => `${Number(d)}x`).tickSizeOuter(0)); // Updates y-axis ticks
 
