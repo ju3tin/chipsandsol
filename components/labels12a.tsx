@@ -113,7 +113,7 @@ export default function BezierCurve() { // Defines a React functional component
         // Animation Sequence
         function phase1() { // Defines Phase 1 of animation
             console.log("Phase 1: X 0-8 full, Y 0-5 full, Curve grows"); // Logs phase start
-            x.domain([0, 8]); // Sets x-domain to 0-10
+            x.domain([0, 10]); // Sets x-domain to 0-10
             y.domain([2, 2]); // Sets y-domain to 0-5
             data = generateData([0, 10], [0, 5]); // Generates new data
 
