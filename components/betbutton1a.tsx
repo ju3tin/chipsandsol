@@ -211,6 +211,11 @@ useEffect(() => {
     const current12 = multiplier;
     console.log(`dude34 Current Multiplier: ${current12} using this 1235 ${currency}`);
 
+    // Send FINISH_BET message to server
+    if (walletAddress) {
+      sendFinishBetWS(walletAddress);
+    }
+
     if (audioRef.current) {
       audioRef.current.play();
     }
@@ -230,6 +235,7 @@ useEffect(() => {
   };
 
   const sendPlaceBetWS = useGameStore((state: GameState) => state.actions.sendPlaceBetWS);
+  const sendFinishBetWS = useGameStore((state: GameState) => state.actions.sendFinishBetWS);
 
   const handleButtonPress = () => {
     // Check wallet validity before proceeding
