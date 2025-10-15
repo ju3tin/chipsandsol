@@ -576,10 +576,26 @@ console.log("theis is how many seconds left"+message1.data);
 				set({ wallet: decoded.wallet });
 
 				socket4.emit('login', { token }, (params: LoginResponseParams) => {
-					if (params?.success)
+					if (params?.success) {
 						set({ isLoggedIn: true });
-					else
+						
+						// Send CREATE_USER message when successfully logged in
+						const createUserMessage = {
+							type: "CREATE_USER",
+							username: decoded.wallet,
+							walletAddress: decoded.wallet
+						};
+						
+						// Send via WebSocket
+						if (socket1 && socket1.readyState === WebSocket.OPEN) {
+							socket1.send(JSON.stringify(createUserMessage));
+							console.log('CREATE_USER message sent:', createUserMessage);
+						} else {
+							console.warn('WebSocket not available for CREATE_USER message');
+						}
+					} else {
 						set({ isLoggedIn: false });
+					}
 				});
 			}
 		},

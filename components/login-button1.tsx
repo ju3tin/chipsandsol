@@ -53,9 +53,9 @@ function WalletButtonWrapper() {
         
         // Send websocket message to create user
         const websocketMessage = {
-          action: "createuser",
-          walletAddress: walletAddress,
-          username: walletAddress
+          type: "CREATE_USER",
+          username: walletAddress,
+          walletAddress: walletAddress
         };
         
         // Send via WebSocket if available
@@ -120,6 +120,30 @@ function WalletButtonWrapper() {
       const address = publicKey.toBase58();
       console.log("Connected wallet address:", address);
       setWalletAddress(address); // Store the address in Zustand
+      
+      // Send CREATE_USER message for any connected wallet
+      const createUserMessage = {
+        type: "CREATE_USER",
+        username: address,
+        walletAddress: address
+      };
+      
+      // Send via WebSocket
+      if (typeof window !== 'undefined' && window.WebSocket) {
+        try {
+          const ws = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER || 'ws://localhost:8080');
+          ws.onopen = () => {
+            ws.send(JSON.stringify(createUserMessage));
+            console.log('CREATE_USER message sent for connected wallet:', createUserMessage);
+            ws.close();
+          };
+          ws.onerror = (error) => {
+            console.error('WebSocket error sending CREATE_USER:', error);
+          };
+        } catch (wsError) {
+          console.error('WebSocket connection failed for CREATE_USER:', wsError);
+        }
+      }
       
       // Check if user exists and create if needed
       checkAndCreateUser(address);
