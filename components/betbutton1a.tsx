@@ -12,19 +12,19 @@ import { Tabs, Tab, CardBody } from "@nextui-org/react";
 import { FaWallet } from "react-icons/fa";
 import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
-import { useGameStore, GameState } from "../store/gameStore";
-import { useWalletStore } from "../store/walletstore1"
-import { useEffectEvent } from "../hooks/useEffectEvent";
-import useWalletAuth from "../hooks/useWalletAuth";
+import { useGameStore, GameState } from "@/store/gameStore";
+import { useWalletStore } from "@/store/walletstore1"
+import { useEffectEvent } from "@/hooks/useEffectEvent";
+import useWalletAuth from "@/hooks/useWalletAuth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { currencies } from "../lib/currencies";
+import { currencies } from "@/lib/currencies";
 import CurrencyList from "./CurrencyList1";
-import styles from "../styles/components/GameControls.module.css";
+import styles from "@/styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
 //import JSConfetti from "js-confetti";
-import { usePressedStore } from '../store/ispressed';
+import { usePressedStore } from '@/store/ispressed';
 import WalletLoginOverlay from './WalletLoginOverlay';
 
 
