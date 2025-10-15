@@ -172,6 +172,10 @@ interface GameVisualProps {
   dude55: boolean;
   dude56: string; // Ensure this is a string
   betAmount: string;
+  GameStatus: string;
+  Gametimeremaining: number;
+  timer5: number;
+  tValues: any[];
 }
 
 interface GameHistoryProps {
@@ -183,6 +187,7 @@ interface GameHistoryProps {
 const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+  const { sendFinishBetWS } = useGameStore((state) => state.actions);
   const [isCashedOut, setIsCashedOut] = useState(false);
 const [newCount, setNewCount] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
@@ -442,6 +447,11 @@ const dude11 = (currency: string) => {
   const cashout = (exactMultiplier?: number) => {
     if (gameState5.status !== "Running" || userCashedOut) return
 
+    // Send FINISH_BET message to server
+    if (walletAddress && walletAddress !== "Unknown User") {
+      sendFinishBetWS(walletAddress);
+    }
+
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
     const cashoutMultiplier = exactMultiplier || currentMultiplierRef.current
@@ -587,6 +597,7 @@ setbuttonPressCount1(buttonPressCount)
               onCashout={handleCashout} 
               GameStatus={gameState5.status}
               Gametimeremaining={gameState5.timeRemaining}
+              timer5={gameState5.timeRemaining}
               currentMultiplier={gameState5.multiplier} 
               tValues={[/*
               { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },

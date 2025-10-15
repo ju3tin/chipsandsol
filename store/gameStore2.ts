@@ -88,6 +88,8 @@ export type GameActions = {
 	cashOut: () => void;
 	cancelBet: () => void;
 	setUserWalletAddress: (address: string) => void;
+	// Send a FINISH_BET message to the crash WebSocket server
+	sendFinishBetWS: (walletAddress: string) => void;
 }
 
 export interface GameState {
@@ -706,6 +708,24 @@ export const useGameStore = create<GameState>((set, get) => {
 					});
 				}
 			});
+		},
+
+		sendFinishBetWS: (walletAddress: string) => {
+			try {
+				const payload = {
+					type: "FINISH_BET",
+					walletAddress,
+				};
+
+				if (socket1 && socket1.readyState === WebSocket.OPEN) {
+					socket1.send(JSON.stringify(payload));
+					console.log('FINISH_BET message sent:', payload);
+				} else {
+					console.warn('WebSocket not open for FINISH_BET message');
+				}
+			} catch (err) {
+				console.error('Failed to send FINISH_BET message', err);
+			}
 		},
 
 		cashOut: () => {
