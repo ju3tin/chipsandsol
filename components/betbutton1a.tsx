@@ -229,6 +229,8 @@ useEffect(() => {
     dude56(currency);
   };
 
+  const sendPlaceBetWS = useGameStore((state: GameState) => state.actions.sendPlaceBetWS);
+
   const handleButtonPress = () => {
     // Check wallet validity before proceeding
     if (!isWalletValid()) {
@@ -251,6 +253,17 @@ useEffect(() => {
     setNewCount(updatedCount);
     console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${updatedCount}`);
     onStartGame(betAmount, autoCashoutAt, currency, updatedCount);
+    // Send PLACE_BET over WS to game server
+    try {
+      const amountNum = Number(betAmount);
+      if (!Number.isFinite(amountNum) || amountNum <= 0) {
+        console.warn('Invalid bet amount for PLACE_BET');
+      } else if (walletAddress) {
+        sendPlaceBetWS(walletAddress, amountNum, currency);
+      }
+    } catch (e) {
+      console.error('Failed sending PLACE_BET', e);
+    }
     dude56(currency);
     dude56a(buttonClicked);
     dude56b(updatedCount);

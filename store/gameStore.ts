@@ -84,6 +84,8 @@ export type GameActions = {
 	cashOut: () => void;
 	cancelBet: () => void;
 	setUserWalletAddress: (address: string) => void;
+	// Send a PLACE_BET message to the crash WebSocket server
+	sendPlaceBetWS: (walletAddress: string, amount: number, currency: string) => void;
 }
 
 export type GameState = GameStateData & { actions: GameActions };
@@ -634,6 +636,30 @@ console.log("theis is how many seconds left"+message1.data);
 					});
 				}
 			});
+		},
+
+		sendPlaceBetWS: (
+			walletAddress: string,
+			amount: number,
+			currency: string
+		) => {
+			try {
+				const payload = {
+					type: "PLACE_BET",
+					walletAddress,
+					amount,
+					currency,
+				};
+
+				if (socket1 && socket1.readyState === WebSocket.OPEN) {
+					socket1.send(JSON.stringify(payload));
+					console.log('PLACE_BET message sent:', payload);
+				} else {
+					console.warn('WebSocket not open for PLACE_BET message');
+				}
+			} catch (err) {
+				console.error('Failed to send PLACE_BET message', err);
+			}
 		},
 
 		cashOut: () => {
