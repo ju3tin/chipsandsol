@@ -10,7 +10,7 @@
    } from '@solana/wallet-adapter-react';
    import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
    import idl from '../../erd.json'; // Your IDL
-   import './App.css';
+   //import './App.css';
 
    const programId = new web3.PublicKey('4JnQm2avRVzUsB2yji4NWER4QVYoQdJtQ4Zy7njMk9Zs');
 
