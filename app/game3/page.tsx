@@ -1,4 +1,5 @@
 
+   "use client"
    import React, { useState, useEffect } from 'react';
    import * as anchor from '@coral-xyz/anchor';
    import { Program, web3, BN } from '@coral-xyz/anchor';
