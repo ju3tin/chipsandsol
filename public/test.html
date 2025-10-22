@@ -21,7 +21,9 @@
 </head>
 <body class="min-h-screen flex flex-col items-center p-4">
   <h1 class="text-3xl font-bold mb-4">Crash Game</h1>
-  <div id="wallet-button" class="mb-4"></div>
+  <div id="wallet-button" class="mb-4">
+    <button id="connect-wallet" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded">Connect Wallet</button>
+  </div>
   <div id="error" class="text-red-500 mb-4 hidden"></div>
   <div id="game-state" class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md mb-4 hidden">
     <p id="players">Players: 0/0</p>
@@ -48,9 +50,9 @@
   <script type="module">
     import * as anchor from 'https://unpkg.com/@coral-xyz/anchor@latest/dist/browser/index.js';
     const { Connection, PublicKey, Keypair, SystemProgram, LAMPORTS_PER_SOL } = solanaWeb3;
-    const { BN } = window.BN; // From bn.js CDN
+    const BN = window.BN;
 
-    // IDL (paste your full IDL here)
+    // IDL (full version from your earlier message)
     const idl = {
       "address": "4JnQm2avRVzUsB2yji4NWER4QVYoQdJtQ4Zy7njMk9Zs",
       "metadata": {
@@ -199,31 +201,59 @@
     const betAmountInput = document.getElementById('bet-amount');
     const cashoutMultiplierInput = document.getElementById('cashout-multiplier');
 
-    // Phantom Wallet Connection
-    async function connectWallet() {
-      if ('phantom' in window) {
-        const phantom = window.phantom?.solana;
-        try {
-          await phantom.connect();
-          wallet = {
-            publicKey: phantom.publicKey,
-            signTransaction: async (tx) => await phantom.signTransaction(tx),
-            signAllTransactions: async (txs) => await phantom.signAllTransactions(txs),
-          };
-          const provider = new anchor.AnchorProvider(connection, wallet, { commitment: 'confirmed' });
-          anchor.setProvider(provider);
-          program = new anchor.Program(idl, programId, provider);
-          walletButton.innerHTML = `<span class="bg-green-600 text-white py-2 px-4 rounded">Connected: ${phantom.publicKey.toString().slice(0, 8)}...</span>`;
-          initializeBtn.disabled = false;
-          setError('');
-        } catch (err) {
-          setError('Phantom connection failed: ' + err.message);
+    // Multi-wallet support for Phantom and Solflare
+    function setupWalletSelection() {
+      walletButton.innerHTML = `
+        <select id="wallet-select" class="bg-gray-700 text-white p-2 rounded">
+          <option value="">Select Wallet</option>
+          <option value="phantom">Phantom</option>
+          <option value="solflare">Solflare</option>
+        </select>
+        <button id="connect-wallet" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded ml-2">Connect</button>
+      `;
+      const walletSelect = document.getElementById('wallet-select');
+      const connectButton = document.getElementById('connect-wallet');
+      connectButton.onclick = async () => {
+        const walletType = walletSelect.value;
+        if (!walletType) {
+          setError('Please select a wallet');
+          return;
         }
+        await connectWallet(walletType);
+      };
+    }
+
+    async function connectWallet(walletType) {
+      let selectedWallet = null;
+      if (walletType === 'phantom' && 'phantom' in window && window.phantom.solana) {
+        selectedWallet = window.phantom.solana;
+      } else if (walletType === 'solflare' && 'solflare' in window && window.solflare) {
+        selectedWallet = window.solflare;
       } else {
-        walletButton.innerHTML = '<button class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded">Install Phantom</button>';
-        walletButton.querySelector('button').onclick = () => {
-          window.open('https://phantom.app/', '_blank');
+        walletButton.innerHTML = `
+          <span class="text-red-500">Install ${walletType}</span>
+          <button class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded ml-2" onclick="window.open('${
+            walletType === 'phantom' ? 'https://phantom.app/' : 'https://solflare.com/'
+          }', '_blank')">Install</button>
+        `;
+        setError(`${walletType} not found. Please install the extension.`);
+        return;
+      }
+      try {
+        await selectedWallet.connect();
+        wallet = {
+          publicKey: selectedWallet.publicKey,
+          signTransaction: async (tx) => await selectedWallet.signTransaction(tx),
+          signAllTransactions: async (txs) => await selectedWallet.signAllTransactions(txs),
         };
+        const provider = new anchor.AnchorProvider(connection, wallet, { commitment: 'confirmed' });
+        anchor.setProvider(provider);
+        program = new anchor.Program(idl, programId, provider);
+        walletButton.innerHTML = `<span class="bg-green-600 text-white py-2 px-4 rounded">Connected with ${walletType}: ${selectedWallet.publicKey.toString().slice(0, 8)}...</span>`;
+        initializeBtn.disabled = false;
+        setError('');
+      } catch (err) {
+        setError(`${walletType} connection failed: ${err.message}`);
       }
     }
 
@@ -386,8 +416,8 @@
       }
     };
 
-    // Initial wallet connection
-    connectWallet();
+    // Initialize wallet selection
+    setupWalletSelection();
   </script>
 </body>
 </html>
