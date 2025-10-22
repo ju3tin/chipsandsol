@@ -25,6 +25,8 @@
      const [multiplier, setMultiplier] = useState<string>('1.000');
      const [error, setError] = useState<string>('');
 
+
+     
      // Initialize program
      useEffect(() => {
        if (wallet) {
@@ -41,7 +43,7 @@
      const fetchGameState = async (gameKey: web3.PublicKey) => {
        if (!program) return;
        try {
-        const game = await program.account.game.fetch(gameKey);
+        const game = await program.account.Game.fetch(gameKey);
          setGameState(game);
        } catch (err) {
          console.error('Error fetching game state:', err);
